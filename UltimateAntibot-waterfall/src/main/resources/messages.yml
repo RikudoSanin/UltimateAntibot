@@ -1,0 +1,19 @@
+version: 1.0
+args_error: '&cUse /uab help'
+reload: '&aReload Completed!'
+antibotmode:
+  - '&6&lAnti&e&lBot'
+  - ''
+  - '&7We are receiving a bot attack!'
+  - '&7Antibot mode is &aOnline&7!'
+  - '&7will remain active for the next $1 seconds!'
+  - ''
+first_join:
+  - '&6&lAnti&e&lBot'
+  - ''
+  - '&7We are analyzing your connection!'
+  - '&7Now you can &are-join'
+blacklisted:
+  - '&6&lAnti&e&lBot'
+  - ''
+  - '&cYou have been blacklisted by the Antibot System'

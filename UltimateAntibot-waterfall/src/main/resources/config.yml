@@ -1,0 +1,17 @@
+version: 1.0
+
+antibotmode:
+  #Duration of the anti-botmode when activated
+  keep: 15
+  #If there are 10 connections in 1 second the antibot mode will be activated!
+  trigger: 5
+
+playtime_for_whitelist: 2 #minutes
+
+taskmanager:
+  files: 1 #minutes
+  analyzer: 5 #seconds
+
+blacklist:
+  #if ip join 15 times in 5 seconds get Blacklisted
+  join_max_every_analyzer: 5
