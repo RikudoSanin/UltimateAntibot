@@ -3,20 +3,19 @@ package me.kr1s_d.ultimateantibot;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AntibotManager {
 
     private boolean antibotModeStatus;
-    private boolean slowantibotmode;
+    private boolean safeAntiBotMode;
     private final List<String> queue;
     private final List<String> whitelist;
     private final List<String> blacklist;
 
     public AntibotManager(UltimateAntibotWaterfall plugin){
         this.antibotModeStatus = false;
-        this.slowantibotmode = false;
+        this.safeAntiBotMode = false;
         this.queue = new ArrayList<>();
         this.whitelist = new ArrayList<>();
         this.blacklist = new ArrayList<>();
@@ -26,12 +25,12 @@ public class AntibotManager {
         this.antibotModeStatus = antibotModeStatus;
     }
 
-    public void setSlowantibotmodeStatus(boolean slowantibotmode) {
-        this.slowantibotmode = slowantibotmode;
+    public void setSafeAntiBotMode(boolean safeAntiBotMode) {
+        this.safeAntiBotMode = safeAntiBotMode;
     }
 
-    public boolean isSlowantibotmodeOnline() {
-        return slowantibotmode;
+    public boolean isSafeAntiBotModeOnline() {
+        return safeAntiBotMode;
     }
 
     public boolean isOnline(){
@@ -79,4 +78,5 @@ public class AntibotManager {
     public List<String> getWhitelist() {
         return whitelist;
     }
+
 }

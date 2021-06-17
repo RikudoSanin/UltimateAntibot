@@ -35,22 +35,35 @@ public class ActionBarTask {
         long pingSec = counter.getPingSecond();
         long botTotal = counter.getTotalBot();
         long pingTotal = counter.getTotalPing();
-        String actionbarOnAttack = utils.colora(utils.prefix() + "&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 » &a&lONLINE")
+        String actionbarOnAttack = utils.colora(utils.prefix() + "&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &a&lONLINE")
                 .replace("$1", String.valueOf(botSec))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
+                .replace("$5", String.valueOf(counter.getCheckPerSecond()))
                 ;
-        String actionbarOnSafe = utils.colora(utils.prefix() + "&6Join &e$1 &b- &6Ping &e$2 &b- &6Queue &e$3 - &6Whitelist &e$4 » &c&lOFFLINE")
+        String actionbaronSafemodeattack = utils.colora(utils.prefix() + "&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &6&lSAFEMODE")
+                .replace("$1", String.valueOf(botSec))
+                .replace("$2", String.valueOf(pingSec))
+                .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
+                .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
+                .replace("$5", String.valueOf(counter.getCheckPerSecond()))
+                ;
+        String actionbarOnSafe = utils.colora(utils.prefix() + "&6Join &e$1 &b- &6Ping &e$2 &b- &6Queue &e$3 - &6Whitelist &e$4 &b- &6Check &e$5 » &c&lOFFLINE")
                 .replace("$1", String.valueOf(counter.getJoinPerSecond()))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getWhitelist().size()))
+                .replace("$5", String.valueOf(counter.getCheckPerSecond()))
                 ;
         if(plugin.getAntibotManager().isOnline()){
             player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbarOnAttack));
         }else {
-            player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbarOnSafe));
+            if(plugin.getAntibotManager().isSafeAntiBotModeOnline()){
+                player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbaronSafemodeattack));
+            }else {
+                player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbarOnSafe));
+            }
         }
     }
 
@@ -62,19 +75,11 @@ public class ActionBarTask {
                     scheduledTask.cancel();
                 }
                 mainData();
-                if(plugin.getAntibotManager().isOnline()){
+                if(plugin.getAntibotManager().isOnline() || plugin.getAntibotManager().isSafeAntiBotModeOnline()){
                     player.sendTitle(title);
                 }
 
             }
         },1, 1, TimeUnit.MILLISECONDS);
-    }
-
-    private long media(List<Long> marks) {
-        long sum = 0;
-        for (int i=0; i< marks.size(); i++) {
-            sum += i;
-        }
-        return sum / marks.size();
     }
 }

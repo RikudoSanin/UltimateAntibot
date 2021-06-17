@@ -24,7 +24,7 @@ public class utils {
     }
 
     public static String prefix(){
-        return "&6&lA&E&LB &8» &7";
+        return "&6&lA&E&LB&r &8» &7";
     }
     public static List<String> coloralista(List<String> a){
         List<String> ready =  new ArrayList<>();

@@ -169,7 +169,7 @@ public class antibotComands extends Command {
                     }
                     sender.sendMessage(new TextComponent("§8§l§n___________________________________________"));
                 }
-
+                return;
             case "reload":
                 if(sender.hasPermission("ab.admin") || sender.hasPermission("ab.admin")){
                     plugin.reload();

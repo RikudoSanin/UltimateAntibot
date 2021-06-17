@@ -17,6 +17,8 @@ public class Counter {
     private Map<String, Integer> analyzer;
     private final List<ProxiedPlayer> joined;
     private final List<String> firstjoin;
+    private long check;
+    private final Map<String, Integer> safemodeping;
 
 
     public Counter(){
@@ -28,6 +30,8 @@ public class Counter {
         this.analyzer = new HashMap<>();
         this.joined = new ArrayList<>();
         this.firstjoin = new ArrayList<>();
+        this.check = 0L;
+        this.safemodeping = new HashMap<>();
     }
 
     public long getBotSecond() {
@@ -98,6 +102,27 @@ public class Counter {
         this.analyzer = analyzer;
     }
 
+    public void safeModeAnalyze(String ip) {
+        if(safemodeping.containsKey(ip)){
+            int count = safemodeping.get(ip);
+            safemodeping.remove(ip);
+            safemodeping.put(ip, count + 1);
+        }else{
+            safemodeping.put(ip, 1);
+        }
+    }
+
+    public void resetSafemodeAnalyzeStatus(String ip){
+        safemodeping.remove(ip);
+    }
+
+    public int getSafeModeAnalyzeStatus(String ip){
+        if (safemodeping.containsKey(ip)) {
+            return safemodeping.get(ip);
+        }
+        return 0;
+    }
+
     public void analyzeIP(String ip){
         if(analyzer.containsKey(ip)){
             int count = analyzer.get(ip);
@@ -158,5 +183,21 @@ public class Counter {
         if(!firstjoin.contains(ip)){
             firstjoin.add(ip);
         }
+    }
+
+    public long getCheckPerSecond() {
+        return check;
+    }
+
+    public void addChecks(long a){
+        this.check = check + a;
+    }
+
+    public void setCheck(long check) {
+        this.check = check;
+    }
+
+    public Map<String, Integer> getPingAnalyZer() {
+        return safemodeping;
     }
 }

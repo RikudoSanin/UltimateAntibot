@@ -21,11 +21,15 @@ public class PingListener implements Listener {
 
     @EventHandler
     public void onPing(ProxyPingEvent e){
-        String ip = e.getConnection().getVirtualHost().getHostString();
+        String ip = e.getConnection().getAddress().getAddress().toString();
         if(antibotManager.getBlacklist().contains(ip)){
             e.setResponse(null);
         }
         counter.addPingSecond(1);
         counter.addTotalPing(1);
+        if(antibotManager.isSafeAntiBotModeOnline()){
+            counter.safeModeAnalyze(ip);
+        }
     }
+
 }

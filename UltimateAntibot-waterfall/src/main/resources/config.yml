@@ -1,17 +1,31 @@
 version: 1.0
-
+#   _    _ _ _   _                 _                        _   _ _           _
+#  | |  | | | | (_)               | |           /\         | | (_) |         | |
+#  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
+#  | |  | | | __| | '_ ` _ \ / _` | __/ _ \   / /\ \ | '_ \| __| | '_ \ / _ \| __|
+#  | |__| | | |_| | | | | | | (_| | ||  __/  / ____ \| | | | |_| | |_) | (_) | |_
+#  \____/|_|\__|_|_| |_| |_|\__,_|\__\___| /_/    \_\_| |_|\__|_|_.__/ \___/ \__|
 antibotmode:
   #Duration of the anti-botmode when activated
   keep: 15
-  #If there are 10 connections in 1 second the antibot mode will be activated!
+  #If there are 5 connections in 1 second the antibot mode will be activated!
   trigger: 5
+
+safemode:
+  #When 85% of the IPs have been blacklisted, safemode is activated
+  percent: 85
+  #Checks Per Second for enable while antibotmode is online
+  modifier: 60
+  #duration of safemode when activated
+  keep: 5
+  #Refresh needed to get Whitelist during Safemode
+  refresh: 5
 
 playtime_for_whitelist: 2 #minutes
 
 taskmanager:
-  files: 1 #minutes
   analyzer: 5 #seconds
 
 blacklist:
-  #if ip join 15 times in 5 seconds get Blacklisted
+  #if ip join 5 times in 5 seconds get Blacklisted
   join_max_every_analyzer: 5

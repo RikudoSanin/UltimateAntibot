@@ -35,13 +35,11 @@ first_join:
   - ''
   - '&7We are analyzing your connection!'
   - '&7Now you can &are-join'
-
 safe_mode:
   - '&4&lUltimate&c&lAnti&f&lBot'
   - ''
   - '&7We were unable to verify you in time!'
   - '&7The server has received a bot attack and you have been disconnected'
-
 blacklisted:
   - '&4&lUltimate&c&lAnti&f&lBot'
   - ''
