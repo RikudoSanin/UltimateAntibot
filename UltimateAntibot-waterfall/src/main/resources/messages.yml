@@ -5,6 +5,7 @@ help:
   - '&4/uab &chelp'
   - '&4/uab &ctoggle &factionbar/title'
   - '&4/uab &creload'
+  - '&4/uab &cstats'
   - '&4/uab &cantibotmode &fon/off'
   - '&4/uab &cclearwhitelist'
   - '&4/uab &cclearblacklist'
@@ -12,19 +13,36 @@ help:
   - '&4/uab &cremoveblacklist &f<ip>'
   - '&4/uab &caddwhitelist &f<ip>'
   - '&4/uab &cremovewhitelist &f<ip>'
+stats:
+  - '&4Current &cBot &f$1'
+  - '&4Current &cPing &f$2'
+  - '&4Current &cQueue &f$3'
+  - '&4Checking &cList &f$4'
+  - '&4First &cJoinChecked &f$5'
+  - '&4Current &CWhitelist &f$6'
+  - '&4Current &cBlacklist &f$7'
+  - '&4Bot &cBlocked &f$8'
+  - '&4Total &cPing &f$9'
 antibotmode:
-  - '&6&lAnti&e&lBot'
+  - '&4&lUltimate&c&lAnti&f&lBot'
   - ''
   - '&7We are receiving a bot attack!'
   - '&7Antibot mode is &aOnline&7!'
-  - '&7will remain active for the next $1 seconds!'
+  - '&7Will remain active for the next seconds!'
   - ''
 first_join:
-  - '&6&lAnti&e&lBot'
+  - '&4&lUltimate&c&lAnti&f&lBot'
   - ''
   - '&7We are analyzing your connection!'
   - '&7Now you can &are-join'
+
+safe_mode:
+  - '&4&lUltimate&c&lAnti&f&lBot'
+  - ''
+  - '&7We were unable to verify you in time!'
+  - '&7The server has received a bot attack and you have been disconnected'
+
 blacklisted:
-  - '&6&lAnti&e&lBot'
+  - '&4&lUltimate&c&lAnti&f&lBot'
   - ''
   - '&cYou have been blacklisted by the Antibot System'

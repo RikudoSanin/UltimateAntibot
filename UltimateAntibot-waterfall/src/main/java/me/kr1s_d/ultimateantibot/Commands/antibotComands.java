@@ -4,6 +4,7 @@ import me.kr1s_d.ultimateantibot.AntibotManager;
 import me.kr1s_d.ultimateantibot.Task.ActionBarTask;
 import me.kr1s_d.ultimateantibot.Task.TitleTask;
 import me.kr1s_d.ultimateantibot.UltimateAntibotWaterfall;
+import me.kr1s_d.ultimateantibot.Utils.Counter;
 import me.kr1s_d.ultimateantibot.Utils.utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -21,6 +22,7 @@ public class antibotComands extends Command {
     private final AntibotManager antibotManager;
     private final List<ProxiedPlayer> toggleplayeractionbar;
     private final List<ProxiedPlayer> toggledplayertitle;
+    private final Counter counter;
 
     public antibotComands(UltimateAntibotWaterfall plugin){
         super("ultimateantibot", "", "uab");
@@ -29,6 +31,7 @@ public class antibotComands extends Command {
         this.antibotManager = plugin.getAntibotManager();
         this.toggleplayeractionbar = new ArrayList<>();
         this.toggledplayertitle = new ArrayList<>();
+        this.counter = plugin.getCounter();
     }
 
     /**
@@ -146,6 +149,27 @@ public class antibotComands extends Command {
                 if(sender.hasPermission("ab.removeblacklist") || sender.hasPermission("ab.admin")){
                     antibotManager.removeBlackList(args[1]);
                 }
+            case "stats":
+                if(sender.hasPermission("ab.stats") || sender.hasPermission("ab.admin")){
+                    sender.sendMessage(new TextComponent("§8§l§n___________________________________________"));
+                    sender.sendMessage(new TextComponent(""));
+                    sender.sendMessage(new TextComponent("§f§lRunning §4§lUltimate§c§lAnti§f§lBot §r§7- V" + plugin.getDescription().getVersion()));
+                    for (String msg : messages.getStringList("stats")) {
+                        sender.sendMessage(new TextComponent(utils.colora(msg)
+                                .replace("$1", String.valueOf(counter.getBotSecond()))
+                                .replace("$2", String.valueOf(counter.getPingSecond()))
+                                .replace("$3", String.valueOf(antibotManager.getQueue().size()))
+                                .replace("$4", String.valueOf(counter.getJoined().size()))
+                                .replace("$5", String.valueOf(counter.getFirstjoin().size()))
+                                .replace("$6", String.valueOf(antibotManager.getWhitelist().size()))
+                                .replace("$7", String.valueOf(antibotManager.getBlacklist().size()))
+                                .replace("$8", String.valueOf(counter.getTotalBot()))
+                                .replace("$9", String.valueOf(counter.getTotalPing()))
+                        ));
+                    }
+                    sender.sendMessage(new TextComponent("§8§l§n___________________________________________"));
+                }
+
             case "reload":
                 if(sender.hasPermission("ab.admin") || sender.hasPermission("ab.admin")){
                     plugin.reload();

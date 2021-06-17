@@ -11,6 +11,7 @@ public class AntibotModeDisable {
 
     private final UltimateAntibotWaterfall plugin;
     private final AntibotManager antibotManager;
+    private ScheduledTask scheduledTask;
 
     public AntibotModeDisable(UltimateAntibotWaterfall plugin){
         this.plugin = plugin;
@@ -18,11 +19,15 @@ public class AntibotModeDisable {
     }
 
     public void disable(){
-        ScheduledTask scheduledTask = ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
+         scheduledTask = ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
             @Override
             public void run() {
                 antibotManager.setAntibotModeStatus(false);
             }
         }, plugin.getConfigYml().getLong("antibotmode.keep"), TimeUnit.SECONDS);
+    }
+
+    public int getId(){
+        return scheduledTask.getId();
     }
 }
