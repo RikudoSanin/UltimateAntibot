@@ -35,11 +35,6 @@ public class ActionBarTask {
         long pingSec = counter.getPingSecond();
         long botTotal = counter.getTotalBot();
         long pingTotal = counter.getTotalPing();
-        title.fadeIn(0);
-        title.fadeOut(0);
-        title.stay(10);
-        title.title((BaseComponent) new TextComponent(utils.colora("&a" + botTotal + " Blocked Connections")));
-        title.subTitle((BaseComponent) new TextComponent(utils.colora(utils.prefix() + "&6Mitigation in progress")));
         String actionbarOnAttack = utils.colora(utils.prefix() + "&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 » &a&lONLINE")
                 .replace("$1", String.valueOf(botSec))
                 .replace("$2", String.valueOf(pingSec))

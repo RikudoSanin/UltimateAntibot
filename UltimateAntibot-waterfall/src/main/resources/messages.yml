@@ -1,6 +1,17 @@
 version: 1.0
 args_error: '&cUse /uab help'
 reload: '&aReload Completed!'
+help:
+  - '&4/uab &chelp'
+  - '&4/uab &ctoggle &factionbar/title'
+  - '&4/uab &creload'
+  - '&4/uab &cantibotmode &fon/off'
+  - '&4/uab &cclearwhitelist'
+  - '&4/uab &cclearblacklist'
+  - '&4/uab &caddblacklist &f<ip>'
+  - '&4/uab &cremoveblacklist &f<ip>'
+  - '&4/uab &caddwhitelist &f<ip>'
+  - '&4/uab &cremovewhitelist &f<ip>'
 antibotmode:
   - '&6&lAnti&e&lBot'
   - ''
