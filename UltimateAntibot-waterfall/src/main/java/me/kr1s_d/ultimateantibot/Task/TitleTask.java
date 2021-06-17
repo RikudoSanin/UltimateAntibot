@@ -46,7 +46,7 @@ public class TitleTask {
                 if(!player.isConnected() || !toggledTitle.contains(player)){
                     scheduledTask.cancel();
                 }
-                if(plugin.getAntibotManager().isOnline()) {
+                if(plugin.getAntibotManager().isOnline() || plugin.getAntibotManager().isSafeAntiBotModeOnline()) {
                     player.sendTitle(title);
                 }
             }

@@ -34,7 +34,7 @@ public class PreloginEventListener implements Listener {
         int blacklistAmount = antibotManager.getBlacklist().size();
         int queueAmount = antibotManager.getQueue().size();
         int totali = blacklistAmount + queueAmount;
-        int percentualeBlacklistata = 1;
+        int percentualeBlacklistata = 0;
         if(blacklistAmount != 0 && totali != 0) {
             percentualeBlacklistata = blacklistAmount / totali * 100;
         }
@@ -76,11 +76,9 @@ public class PreloginEventListener implements Listener {
         /**
          * antibotmode enable
          */
-        if(counter.getJoinPerSecond() > plugin.getConfigYml().getLong("antibotmode.trigger") && percentualeBlacklistata < plugin.getConfigYml().getLong("safemove.percent")){
+        if(counter.getJoinPerSecond() > plugin.getConfigYml().getLong("antibotmode.trigger") && percentualeBlacklistata < plugin.getConfigYml().getLong("safemode.percent")){
             if(!antibotManager.isOnline()) {
-                if(antibotManager.isSafeAntiBotModeOnline()){
-                    antibotManager.setSafeAntiBotMode(false);
-                }
+                antibotManager.setSafeAntiBotMode(false);
                 antibotManager.setAntibotModeStatus(true);
                 new AntibotModeDisable(plugin).disable();
             }
@@ -91,7 +89,7 @@ public class PreloginEventListener implements Listener {
          */
         if(counter.getCheckPerSecond() < plugin.getConfigYml().getLong("safemode.modifier") && antibotManager.isOnline()){
             if(counter.getCheckPerSecond() < plugin.getConfigYml().getLong("safemode.modifier") && percentualeBlacklistata > plugin.getConfigYml().getLong("safemode.percent")) {
-                antibotManager.setAntibotModeStatus(false);
+               antibotManager.setAntibotModeStatus(false);
                 antibotManager.setSafeAntiBotMode(true);
                 new SafemodeDisableListener(plugin).start();
             }
