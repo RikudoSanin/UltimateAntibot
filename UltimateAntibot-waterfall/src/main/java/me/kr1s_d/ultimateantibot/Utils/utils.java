@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class utils {
@@ -30,6 +31,22 @@ public class utils {
         List<String> ready =  new ArrayList<>();
         for(String s : a){
             ready.add(utils.colora(s));
+        }
+        return ready;
+    }
+
+    public static List<String> coloraListaConReplaceUnaVolta(List<String> lista, String variable, String replacement){
+        List<String> ready =  new ArrayList<>();
+        for(String s : lista){
+            ready.add(utils.colora(s).replace(replacement, variable));
+        }
+        return ready;
+    }
+
+    public static List<String> coloraListaConReplaceDueVolte(List<String> lista, String variable, String replacement, String variable2, String replace2){
+        List<String> ready =  new ArrayList<>();
+        for(String s : lista){
+            ready.add(utils.colora(s).replace(replace2, variable2).replace(replacement, variable));
         }
         return ready;
     }

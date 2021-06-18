@@ -15,7 +15,7 @@ safemode:
   #When 85% of the IPs have been blacklisted, safemode is activated
   percent: 85
   #Checks Per Second for enable while antibotmode is online
-  modifier: 60
+  modifier: 100
   #duration of safemode when activated
   keep: 5
   #Refresh needed to get Whitelist during Safemode
@@ -25,6 +25,7 @@ playtime_for_whitelist: 2 #minutes
 
 taskmanager:
   analyzer: 5 #seconds
+  clearcache: 30 #minutes
 
 blacklist:
   #if ip join 5 times in 5 seconds get Blacklisted

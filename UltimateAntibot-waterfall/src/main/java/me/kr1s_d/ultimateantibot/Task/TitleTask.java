@@ -1,5 +1,6 @@
 package me.kr1s_d.ultimateantibot.Task;
 
+import me.kr1s_d.ultimateantibot.AntibotManager;
 import me.kr1s_d.ultimateantibot.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.Utils.Counter;
 import me.kr1s_d.ultimateantibot.Utils.utils;
@@ -20,6 +21,7 @@ public class TitleTask {
     private final List<ProxiedPlayer> toggledTitle;
     private final Counter counter;
     private ScheduledTask scheduledTask;
+    private final AntibotManager antibotManager;
 
     public TitleTask(UltimateAntibotWaterfall plugin, ProxiedPlayer player, List<ProxiedPlayer> toggledTitle){
         this.plugin = plugin;
@@ -27,15 +29,23 @@ public class TitleTask {
         this.title = ProxyServer.getInstance().createTitle();
         this.toggledTitle = toggledTitle;
         this.counter = plugin.getCounter();
+        this.antibotManager = plugin.getAntibotManager();
     }
 
     public void Notification(){
+        int blacklistAmount = antibotManager.getBlacklist().size();
+        int queueAmount = antibotManager.getQueue().size();
+        int totali = blacklistAmount + queueAmount;
+        int percentualeBlacklistata = 0;
+        if(blacklistAmount != 0 && totali != 0) {
+            percentualeBlacklistata = Math.round((float) blacklistAmount / totali * 100);
+        }
         long botTotal = counter.getTotalBot();
         title.fadeIn(0);
         title.fadeOut(0);
         title.stay(10);
-        title.title((BaseComponent) new TextComponent(utils.colora("&a" + botTotal + " Blocked Connections")));
-        title.subTitle((BaseComponent) new TextComponent(utils.colora(utils.prefix() + "&6Mitigation in progress")));
+        title.title((BaseComponent) new TextComponent(utils.colora("&a" + botTotal + " Blocked Bots")));
+        title.subTitle((BaseComponent) new TextComponent(utils.colora(utils.prefix() + "&6$1% BlackListed IP").replace("$1", String.valueOf(percentualeBlacklistata))));
     }
 
     public void start(){

@@ -56,7 +56,7 @@ public class UltimateThreadCore {
                 }
             }
 
-        },  0, 5, TimeUnit.MINUTES);
+        },  0, plugin.getConfigYml().getLong("task.clear"), TimeUnit.MINUTES);
         utils.debug(utils.prefix() + "&aBeatMaximal Loaded!");
     }
 

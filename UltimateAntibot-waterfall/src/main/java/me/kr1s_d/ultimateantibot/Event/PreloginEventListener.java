@@ -14,6 +14,8 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.event.EventHandler;
 
+import java.util.List;
+
 public class PreloginEventListener implements Listener {
 
     private final UltimateAntibotWaterfall plugin;
@@ -36,7 +38,7 @@ public class PreloginEventListener implements Listener {
         int totali = blacklistAmount + queueAmount;
         int percentualeBlacklistata = 0;
         if(blacklistAmount != 0 && totali != 0) {
-            percentualeBlacklistata = blacklistAmount / totali * 100;
+            percentualeBlacklistata = Math.round((float) blacklistAmount / totali * 100);
         }
         counter.addJoinSecond(1);
         if(!antibotManager.getBlacklist().contains(ip)) {
@@ -49,7 +51,7 @@ public class PreloginEventListener implements Listener {
             if(!counter.isFirstJoin(ip)) {
                 if(!antibotManager.getWhitelist().contains(ip)) {
                     counter.addFirstJoin(ip);
-                    e.setCancelReason(new TextComponent(("first_join")));
+                    e.setCancelReason(new TextComponent(convertToString(utils.coloralista(messages.getStringList("first_join")))));
                     e.setCancelled(true);
                 }
             }
@@ -87,9 +89,9 @@ public class PreloginEventListener implements Listener {
         /**
          * Enable safemode
          */
-        if(counter.getCheckPerSecond() < plugin.getConfigYml().getLong("safemode.modifier") && antibotManager.isOnline()){
-            if(counter.getCheckPerSecond() < plugin.getConfigYml().getLong("safemode.modifier") && percentualeBlacklistata > plugin.getConfigYml().getLong("safemode.percent")) {
-               antibotManager.setAntibotModeStatus(false);
+        if(counter.getCheckPerSecond() < plugin.getConfigYml().getLong("safemode.modifier")){
+            if(percentualeBlacklistata >= plugin.getConfigYml().getLong("safemode.percent")) {
+                antibotManager.setAntibotModeStatus(false);
                 antibotManager.setSafeAntiBotMode(true);
                 new SafemodeDisableListener(plugin).start();
             }
@@ -114,7 +116,7 @@ public class PreloginEventListener implements Listener {
             if(antibotManager.getWhitelist().contains(ip)){
                 e.setCancelled(false);
             }else{
-                e.setCancelReason(new TextComponent("safe-mode R $1".replace("$1", String.valueOf(mancanti))));
+                e.setCancelReason(new TextComponent(convertToString(utils.coloralista(utils.coloraListaConReplaceUnaVolta(messages.getStringList("safe_mode"), "$1", String.valueOf(mancanti))))));
                 e.setCancelled(true);
             }
         }
@@ -124,8 +126,8 @@ public class PreloginEventListener implements Listener {
          */
 
         if(antibotManager.isOnline()){
-            counter.addTotalBot(1);
-            counter.addBotSecond(1);
+            counter.addTotalBot(5);
+            counter.addBotSecond(5);
             counter.analyzeHard(ip, 2);
             if(counter.getAnalyzeStatus(ip) > plugin.getConfigYml().getLong("blacklist.join_max_every_analyzer")){
                 antibotManager.addBlackList(ip);
@@ -134,7 +136,7 @@ public class PreloginEventListener implements Listener {
             if(antibotManager.getWhitelist().contains(ip)){
                 e.setCancelled(false);
             }else {
-                e.setCancelReason(new TextComponent("antibotmode"));
+                e.setCancelReason(new TextComponent(convertToString(utils.coloralista(utils.coloraListaConReplaceDueVolte(messages.getStringList("antibotmode"), "$1", plugin.getConfigYml().getString("safemode.percent"), "$2", String.valueOf(percentualeBlacklistata))))));
                 e.setCancelled(true);
             }
         }
@@ -143,7 +145,7 @@ public class PreloginEventListener implements Listener {
          * blacklist & slow-attack check
          */
         if(antibotManager.getBlacklist().contains(ip)){
-            e.setCancelReason(new TextComponent(("blacklisted")));
+            e.setCancelReason(new TextComponent(convertToString(utils.coloralista(messages.getStringList("blacklist")))));
             e.setCancelled(true);
         }
         if(antibotManager.isOnline()){
@@ -165,13 +167,17 @@ public class PreloginEventListener implements Listener {
 
     public void disconnectBots(){
         for(ProxiedPlayer p : counter.getJoined()){
-            p.disconnect(new TextComponent(("safe_mode")));
+            p.disconnect(new TextComponent(convertToString(utils.coloralista(utils.coloraListaConReplaceUnaVolta(messages.getStringList("safe_mode"), "$1", plugin.getConfigYml().getString("safemode.refresh"))))));
         }
         counter.getFirstjoin().clear();
     }
 
     public void disconnect(ProxiedPlayer p){
         p.disconnect((BaseComponent) new TextComponent(utils.colora("&cYou are a bot")));
+    }
+
+    public String convertToString(List<String> stringList) {
+        return String.join(System.lineSeparator(), stringList );
     }
 
 }

@@ -21,14 +21,12 @@ public class ActionBarTask {
     private final Counter counter;
     private final List<ProxiedPlayer> toggledPlayers;
     private ScheduledTask scheduledTask;
-    private final AntibotManager antibotManager;
 
     public ActionBarTask(UltimateAntibotWaterfall plugin, ProxiedPlayer player, List<ProxiedPlayer> toggledPlayers){
         this.plugin = plugin;
         this.player = player;
         this.counter = plugin.getCounter();
         this.toggledPlayers = toggledPlayers;
-        this.antibotManager = plugin.getAntibotManager();
     }
 
     public void mainData() {
@@ -36,28 +34,19 @@ public class ActionBarTask {
         long pingSec = counter.getPingSecond();
         long botTotal = counter.getTotalBot();
         long pingTotal = counter.getTotalPing();
-        int blacklistAmount = antibotManager.getBlacklist().size();
-        int queueAmount = antibotManager.getQueue().size();
-        int totali = blacklistAmount + queueAmount;
-        int percentualeBlacklistata = 0;
-        if(blacklistAmount != 0 && totali != 0) {
-            percentualeBlacklistata = blacklistAmount / totali * 100;
-        }
-        String actionbarOnAttack = utils.colora(utils.prefix() + "&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4|$6% &b- &6Check &e$5 » &a&lONLINE")
+        String actionbarOnAttack = utils.colora(utils.prefix() + "&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &a&lONLINE")
                 .replace("$1", String.valueOf(botSec))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
                 .replace("$5", String.valueOf(counter.getCheckPerSecond()))
-                .replace("$6", String.valueOf(percentualeBlacklistata))
                 ;
-        String actionbaronSafemodeattack = utils.colora(utils.prefix() + "&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4|$6% &b- &6Check &e$5 » &6&lSAFEMODE")
+        String actionbaronSafemodeattack = utils.colora(utils.prefix() + "&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &6&lSAFEMODE")
                 .replace("$1", String.valueOf(botSec))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
                 .replace("$5", String.valueOf(counter.getCheckPerSecond()))
-                .replace("$6", String.valueOf(percentualeBlacklistata))
                 ;
         String actionbarOnSafe = utils.colora(utils.prefix() + "&6Join &e$1 &b- &6Ping &e$2 &b- &6Queue &e$3 - &6Whitelist &e$4 &b- &6Check &e$5 » &c&lOFFLINE")
                 .replace("$1", String.valueOf(counter.getJoinPerSecond()))
