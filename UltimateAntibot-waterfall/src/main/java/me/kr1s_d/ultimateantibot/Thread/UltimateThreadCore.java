@@ -9,9 +9,6 @@ import me.kr1s_d.ultimateantibot.Utils.Metrics;
 import me.kr1s_d.ultimateantibot.Utils.utils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -19,11 +16,13 @@ public class UltimateThreadCore {
     private final UltimateAntibotWaterfall plugin;
     private final Counter counter;
     private final AntibotManager antibotManager;
+    private int count;
 
     public UltimateThreadCore(UltimateAntibotWaterfall plugin){
         this.plugin = plugin;
         this.counter = plugin.getCounter();
         this.antibotManager = plugin.getAntibotManager();
+        this.count = 0;
     }
 
     public void enable(){
@@ -46,23 +45,30 @@ public class UltimateThreadCore {
 
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
             if(!antibotManager.isOnline() || !antibotManager.isSafeAntiBotModeOnline()){
-                antibotManager.getBlacklist().clear();
-                antibotManager.getQueue().clear();
-                for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()){
-                    if(antibotManager.getWhitelist().contains(p.getAddress().getAddress().toString())){
-                        return;
+                count = count + 1;
+                if(count > 3 && !antibotManager.isOnline() || !antibotManager.isSafeAntiBotModeOnline() ) {
+                    antibotManager.getBlacklist().clear();
+                    antibotManager.getQueue().clear();
+                    for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
+                        if (antibotManager.getWhitelist().contains(p.getAddress().getAddress().toString())) {
+                            return;
+                        }
+                        new AutoWhitelistTask(plugin, p).start();
                     }
-                    new AutoWhitelistTask(plugin, p).start();
+                }else{
+                    count = 0;
                 }
             }
 
-        },  0, plugin.getConfigYml().getLong("task.clear"), TimeUnit.MINUTES);
+        },  0, plugin.getConfigYml().getLong("taskmanager.clearcache"), TimeUnit.MINUTES);
         utils.debug(utils.prefix() + "&aBeatMaximal Loaded!");
     }
 
     public void hearthBeatExaminal(){
         utils.debug(utils.prefix() + "&aLoading BeatExaminal...");
-        //
+        ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
+        plugin.getUpdater().check();
+        },  0, 60, TimeUnit.MINUTES);
         utils.debug(utils.prefix() + "&aBeatExaminal loaded...");
     }
     public void heartBeatMinimal(){

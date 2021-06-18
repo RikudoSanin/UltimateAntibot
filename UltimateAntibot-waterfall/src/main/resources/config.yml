@@ -5,28 +5,63 @@ version: 1.0
 #  | |  | | | __| | '_ ` _ \ / _` | __/ _ \   / /\ \ | '_ \| __| | '_ \ / _ \| __|
 #  | |__| | | |_| | | | | | | (_| | ||  __/  / ____ \| | | | |_| | |_) | (_) | |_
 #  \____/|_|\__|_|_| |_| |_|\__,_|\__\___| /_/    \_\_| |_|\__|_|_.__/ \___/ \__|
+
+
+#Antibotmode has the utility of mitigating the attack, blacklisting + ip possible,
+#I tried to make it as secure as possible so as to blacklist only malicious connections
+#
+#At the end of the attack the blacklist is cleared for safety
+#in the future I will try to make the checks as safe as possible
 antibotmode:
   #Duration of the anti-botmode when activated
   keep: 15
   #If there are 5 connections in 1 second the antibot mode will be activated!
   trigger: 5
 
+#safemode, on the other hand, has the task of making access possible
+#through a ping system, and refreshing the server list
+
 safemode:
-  #When 85% of the IPs have been blacklisted, safemode is activated
-  percent: 85
+  #When 75% of the IPs have been blacklisted, safemode is activated
+  percent: 75
   #Checks Per Second for enable while antibotmode is online
   modifier: 100
   #duration of safemode when activated
-  keep: 5
+  keep: 10
   #Refresh needed to get Whitelist during Safemode
-  refresh: 5
+  refresh: 8
 
+#Minimum online time to be whitelisted
 playtime_for_whitelist: 2 #minutes
 
 taskmanager:
   analyzer: 5 #seconds
-  clearcache: 30 #minutes
+  clearcache: 2 #minutes
+  queue: 1 #minutes
 
+#This is the section where you can change the check settings
+#How does it work?
+#
+#There is an analyzer, The analyzer is reset every 5 seconds during
+#anti-botmode or safe mode, If an ip reaches the maximum number of values
+#before resetting the analyzer, It is blacklisted
+#
+#Don't touch anything if you don't know what you are doing!
 blacklist:
-  #if ip join 5 times in 5 seconds get Blacklisted
-  join_max_every_analyzer: 5
+  #This is the section where you can change the
+  #maximum number to get the blacklist for an IP
+  max: 50
+  #If during the safe mode a bot enters and disconnects immediately adds 20
+  bypass: 20
+  #If the antibot mode is online every time the bot tries to connect it adds 15
+  antibot_mode: 15
+  #How much the queue clears up if the antibotmode is online adds 15
+  queue: 15
+  #During safemode all other methods except queue are disabled
+  #This works based on unverified connections, when they connect if blocked they get 25
+  check: 25
+  #on ping during antibotmode
+  ping: 1
+  #percent < 50%
+  usain: 5
+

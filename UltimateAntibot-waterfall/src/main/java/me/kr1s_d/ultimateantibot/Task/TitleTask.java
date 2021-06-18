@@ -10,6 +10,7 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
+import net.md_5.bungee.config.Configuration;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +23,7 @@ public class TitleTask {
     private final Counter counter;
     private ScheduledTask scheduledTask;
     private final AntibotManager antibotManager;
+    private final Configuration message;
 
     public TitleTask(UltimateAntibotWaterfall plugin, ProxiedPlayer player, List<ProxiedPlayer> toggledTitle){
         this.plugin = plugin;
@@ -30,6 +32,7 @@ public class TitleTask {
         this.toggledTitle = toggledTitle;
         this.counter = plugin.getCounter();
         this.antibotManager = plugin.getAntibotManager();
+        this.message = plugin.getMessageYml();
     }
 
     public void Notification(){
@@ -44,8 +47,8 @@ public class TitleTask {
         title.fadeIn(0);
         title.fadeOut(0);
         title.stay(10);
-        title.title((BaseComponent) new TextComponent(utils.colora("&a" + botTotal + " Blocked Bots")));
-        title.subTitle((BaseComponent) new TextComponent(utils.colora(utils.prefix() + "&6$1% BlackListed IP").replace("$1", String.valueOf(percentualeBlacklistata))));
+        title.title((BaseComponent) new TextComponent(utils.colora(message.getString("title.title").replace("%blocked%", String.valueOf(botTotal)))));
+        title.subTitle((BaseComponent) new TextComponent(utils.colora(utils.prefix() + message.getString("title.subtitle").replace("%ip%", String.valueOf(percentualeBlacklistata)))));
     }
 
     public void start(){
@@ -60,6 +63,6 @@ public class TitleTask {
                     player.sendTitle(title);
                 }
             }
-        },1, 1, TimeUnit.MILLISECONDS);
+        },1, 50, TimeUnit.MILLISECONDS);
     }
 }

@@ -7,6 +7,7 @@ import me.kr1s_d.ultimateantibot.Event.PreloginEventListener;
 import me.kr1s_d.ultimateantibot.Thread.UltimateThreadCore;
 import me.kr1s_d.ultimateantibot.Utils.Counter;
 import me.kr1s_d.ultimateantibot.Utils.Metrics;
+import me.kr1s_d.ultimateantibot.Utils.Updater;
 import me.kr1s_d.ultimateantibot.Utils.utils;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -24,6 +25,7 @@ public final class UltimateAntibotWaterfall extends Plugin {
     private Configuration whitelist;
     private Configuration blacklist;
     private Metrics metrics;
+    private Updater updater;
 
     @Override
     public void onEnable() {
@@ -42,6 +44,8 @@ public final class UltimateAntibotWaterfall extends Plugin {
         whitelist = configmanager.getConfiguration("%datafolder%/whitelist.yml");
         //blacklist = configmanager.getConfiguration("%datafolder%/blacklist.yml");
         loadWhitelist();
+        updater = new Updater(this);
+        updater.check();
         metrics = new Metrics(this, 11712);
         antibotManager = new AntibotManager(this);
         counter = new Counter();
@@ -118,5 +122,9 @@ public final class UltimateAntibotWaterfall extends Plugin {
     public void loadWhitelist(){
         utils.debug(utils.prefix() + "&aWhitelist Loading data not Set!");
         utils.debug(utils.prefix() + "&cAborting");
+    }
+
+    public Updater getUpdater() {
+        return updater;
     }
 }

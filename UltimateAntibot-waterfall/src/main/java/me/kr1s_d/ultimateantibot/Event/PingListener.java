@@ -24,9 +24,9 @@ public class PingListener implements Listener {
         String ip = e.getConnection().getAddress().getAddress().toString();
         counter.addPingSecond(1);
         counter.addTotalPing(1);
+        counter.analyzeHard(ip, plugin.getConfigYml().getInt("blacklist.ping"));
         if(antibotManager.isSafeAntiBotModeOnline()){
             counter.safeModeAnalyze(ip);
-            counter.analyzeHard(ip, 2);
         }
     }
 

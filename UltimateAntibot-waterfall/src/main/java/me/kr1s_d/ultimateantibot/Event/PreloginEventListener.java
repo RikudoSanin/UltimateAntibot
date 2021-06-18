@@ -43,6 +43,9 @@ public class PreloginEventListener implements Listener {
         counter.addJoinSecond(1);
         if(!antibotManager.getBlacklist().contains(ip)) {
             counter.addChecks(1);
+            if(antibotManager.isSafeAntiBotModeOnline()){
+                counter.analyzeHard(ip, plugin.getConfigYml().getInt("blacklist.check"));
+            }
         }
         /**
          * First Join
@@ -89,11 +92,13 @@ public class PreloginEventListener implements Listener {
         /**
          * Enable safemode
          */
-        if(counter.getCheckPerSecond() < plugin.getConfigYml().getLong("safemode.modifier")){
+        if(counter.getCheckPerSecond() < plugin.getConfigYml().getLong("safemode.modifier") && counter.getJoinPerSecond() > plugin.getConfigYml().getLong("antibotmode.trigger")){
             if(percentualeBlacklistata >= plugin.getConfigYml().getLong("safemode.percent")) {
-                antibotManager.setAntibotModeStatus(false);
-                antibotManager.setSafeAntiBotMode(true);
-                new SafemodeDisableListener(plugin).start();
+                if(!antibotManager.isSafeAntiBotModeOnline()) {
+                    antibotManager.setAntibotModeStatus(false);
+                    antibotManager.setSafeAntiBotMode(true);
+                    new SafemodeDisableListener(plugin).start();
+                }
             }
         }
 
@@ -105,9 +110,15 @@ public class PreloginEventListener implements Listener {
             counter.addTotalBot(1);
             counter.addBotSecond(1);
             counter.analyzeIP(ip);
+            if(counter.getAnalyzeStatus(ip) > plugin.getConfigYml().getLong("blacklist.max")){
+                antibotManager.addBlackList(ip);
+                antibotManager.removeWhitelist(ip);
+            }
             int mancanti = (int) (plugin.getConfigYml().getLong("safemode.refresh") - counter.getSafeModeAnalyzeStatus(ip));
             if(counter.getSafeModeAnalyzeStatus(ip) == plugin.getConfigYml().getLong("safemode.refresh")){
-                antibotManager.addWhitelist(ip);
+                e.setCancelled(false);
+                counter.analyzeHard(ip, plugin.getConfigYml().getInt("blacklist.bypass"));
+                return;
             }else{
                 if(counter.getSafeModeAnalyzeStatus(ip) != plugin.getConfigYml().getLong("safemode.refresh")){
                     counter.resetSafemodeAnalyzeStatus(ip);
@@ -126,17 +137,20 @@ public class PreloginEventListener implements Listener {
          */
 
         if(antibotManager.isOnline()){
-            counter.addTotalBot(5);
-            counter.addBotSecond(5);
-            counter.analyzeHard(ip, 2);
-            if(counter.getAnalyzeStatus(ip) > plugin.getConfigYml().getLong("blacklist.join_max_every_analyzer")){
+            counter.addTotalBot(1);
+            counter.addBotSecond(1);
+            if(percentualeBlacklistata < 50){
+                counter.analyzeHard(ip, plugin.getConfigYml().getInt("blacklist.usain"));
+            }
+            counter.analyzeHard(ip, plugin.getConfigYml().getInt("blacklist.antibot_mode"));
+            if(counter.getAnalyzeStatus(ip) > plugin.getConfigYml().getLong("blacklist.max")){
                 antibotManager.addBlackList(ip);
                 antibotManager.removeWhitelist(ip);
             }
             if(antibotManager.getWhitelist().contains(ip)){
                 e.setCancelled(false);
             }else {
-                e.setCancelReason(new TextComponent(convertToString(utils.coloralista(utils.coloraListaConReplaceDueVolte(messages.getStringList("antibotmode"), "$1", plugin.getConfigYml().getString("safemode.percent"), "$2", String.valueOf(percentualeBlacklistata))))));
+                e.setCancelReason(new TextComponent(convertToString(utils.coloralista(utils.coloraListaConReplaceDueVolte(messages.getStringList("antibotmode"), "$1", String.valueOf(plugin.getConfigYml().getInt("safemode.percent")), "$2", String.valueOf(percentualeBlacklistata))))));
                 e.setCancelled(true);
             }
         }
@@ -145,9 +159,13 @@ public class PreloginEventListener implements Listener {
          * blacklist & slow-attack check
          */
         if(antibotManager.getBlacklist().contains(ip)){
-            e.setCancelReason(new TextComponent(convertToString(utils.coloralista(messages.getStringList("blacklist")))));
+            e.setCancelReason(new TextComponent(convertToString(utils.coloraListaConReplaceUnaVolta(messages.getStringList("blacklisted"), "$1", blacklisttime()))));
             e.setCancelled(true);
         }
+
+        /**
+         * Slow-mode Cecks
+         */
         if(antibotManager.isOnline()){
             disconnectBots();
         }
@@ -172,12 +190,19 @@ public class PreloginEventListener implements Listener {
         counter.getFirstjoin().clear();
     }
 
-    public void disconnect(ProxiedPlayer p){
-        p.disconnect((BaseComponent) new TextComponent(utils.colora("&cYou are a bot")));
-    }
-
     public String convertToString(List<String> stringList) {
         return String.join(System.lineSeparator(), stringList );
+    }
+
+    private String blacklisttime(){
+        int timemax = plugin.getConfigYml().getInt("taskmanager.clearcache") * 3;
+        if(antibotManager.isSafeAntiBotModeOnline()){
+            return plugin.getMessageYml().getString("stuff.less") + " " + timemax + "m";
+        }
+        if(antibotManager.isOnline()){
+            return plugin.getMessageYml().getString("stuff.plus") + " " + timemax + "m";
+        }
+        return timemax + "m";
     }
 
 }

@@ -34,21 +34,21 @@ public class ActionBarTask {
         long pingSec = counter.getPingSecond();
         long botTotal = counter.getTotalBot();
         long pingTotal = counter.getTotalPing();
-        String actionbarOnAttack = utils.colora(utils.prefix() + "&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &a&lONLINE")
+        String actionbarOnAttack = utils.colora(utils.prefix() + plugin.getMessageYml().getString("actionbar.antibot_mode"))
                 .replace("$1", String.valueOf(botSec))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
                 .replace("$5", String.valueOf(counter.getCheckPerSecond()))
                 ;
-        String actionbaronSafemodeattack = utils.colora(utils.prefix() + "&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &6&lSAFEMODE")
+        String actionbaronSafemodeattack = utils.colora(utils.prefix() + plugin.getMessageYml().getString("actionbar.safe_mode"))
                 .replace("$1", String.valueOf(botSec))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
                 .replace("$5", String.valueOf(counter.getCheckPerSecond()))
                 ;
-        String actionbarOnSafe = utils.colora(utils.prefix() + "&6Join &e$1 &b- &6Ping &e$2 &b- &6Queue &e$3 - &6Whitelist &e$4 &b- &6Check &e$5 » &c&lOFFLINE")
+        String actionbarOnSafe = utils.colora(utils.prefix() + plugin.getMessageYml().getString("actionbar.no-attack"))
                 .replace("$1", String.valueOf(counter.getJoinPerSecond()))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
@@ -76,6 +76,6 @@ public class ActionBarTask {
                 mainData();
 
             }
-        },1, 1, TimeUnit.MILLISECONDS);
+        },1, 50, TimeUnit.MILLISECONDS);
     }
 }

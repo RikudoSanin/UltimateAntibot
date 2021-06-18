@@ -38,7 +38,7 @@ public class utils {
     public static List<String> coloraListaConReplaceUnaVolta(List<String> lista, String variable, String replacement){
         List<String> ready =  new ArrayList<>();
         for(String s : lista){
-            ready.add(utils.colora(s).replace(replacement, variable));
+            ready.add(utils.colora(s).replace(variable, replacement));
         }
         return ready;
     }
@@ -46,7 +46,7 @@ public class utils {
     public static List<String> coloraListaConReplaceDueVolte(List<String> lista, String variable, String replacement, String variable2, String replace2){
         List<String> ready =  new ArrayList<>();
         for(String s : lista){
-            ready.add(utils.colora(s).replace(replace2, variable2).replace(replacement, variable));
+            ready.add(utils.colora(s).replace(variable, replacement).replace(variable2, replace2));
         }
         return ready;
     }

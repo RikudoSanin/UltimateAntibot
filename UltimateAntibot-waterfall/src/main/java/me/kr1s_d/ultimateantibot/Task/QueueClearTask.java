@@ -29,13 +29,12 @@ public class QueueClearTask {
                         antibotManager.removeQueue(ip);
                     }
                     antibotManager.removeQueue(ip);
-                    counter.analyzeIP(ip);
-                    if(antibotManager.isOnline()){
-                        counter.analyzeHard(ip, 2);
+                    if(antibotManager.isOnline() || antibotManager.isSafeAntiBotModeOnline()){
+                        counter.analyzeHard(ip, plugin.getConfigYml().getInt("blacklist.queue"));
                     }
 
                 }
             }
-        }, plugin.getConfigYml().getLong("playtime_for_whitelist"), TimeUnit.MINUTES);
+        }, plugin.getConfigYml().getLong("taskmanager.queue"), TimeUnit.MINUTES);
     }
 }
