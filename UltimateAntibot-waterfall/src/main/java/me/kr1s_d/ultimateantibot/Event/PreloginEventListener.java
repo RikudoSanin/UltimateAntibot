@@ -6,6 +6,7 @@ import me.kr1s_d.ultimateantibot.Task.*;
 import me.kr1s_d.ultimateantibot.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.Utils.Counter;
 import me.kr1s_d.ultimateantibot.Utils.utils;
+import me.kr1s_d.ultimateantibot.checks.SlowDetect;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -180,8 +181,7 @@ public class PreloginEventListener implements Listener {
         ProxiedPlayer p = e.getPlayer();
         if(!antibotManager.getWhitelist().contains(p.getAddress().getAddress().toString())) {
             new AutoWhitelistTask(plugin, p).start();
-        }
-        if(!antibotManager.getWhitelist().contains(p.getAddress().getAddress().toString())){
+            new SlowDetect(plugin).check(p);
             counter.addJoined(p);
             new TempJoin(plugin, p).clear();
         }

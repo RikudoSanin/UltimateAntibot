@@ -42,7 +42,7 @@ pingmode:
 playtime_for_whitelist: 2 #minutes
 
 taskmanager:
-  analyzer: 5 #seconds
+  analyzer: 4 #seconds
   clearcache: 2 #minutes
   queue: 1 #minutes
 
@@ -68,34 +68,11 @@ blacklist:
   #This works based on unverified connections, when they connect if blocked they get 25
   check: 25
   #on ping during antibotmode
-  ping: 1
-  #percent < 50%
+  ping: 3
+  #if percent < 50% add 5 on connection
   usain: 5
   #Only used with ping attacks!
   ping_mode: 5
-# to do
-#during antibotmode!
-attacks:
-  small_attack:
-    #current bot to activate module
-    bot_over: 200
-    #violation to get blacklisted
-    max_violation: 10
-    #on connection add 5
-    increaser_join: 5
-    #violation reset for this module
-    duration: 3
-    #same for all modules!
-  medium_attack:
-    bot_over: 750
-    max_violation: 15
-    increaser_join: 5
-    duration: 3
-  big_attack:
-    bot_over: 1500
-    max_violation: 10
-    increaser_join: 5
-    duration: 2
 
 checks:
   #slowmode check
@@ -104,11 +81,5 @@ checks:
     #out and does not come back in 15 seconds he will be
     #blacklisted for 2 to 6 minutes
     duration: 15
-
-mitigation:
-  #If the checks per second are less than 5
-  checks: 5
-  #and the percentage of blacklisted IPs is 95%
-  percent: 95
-  #AntibotMode & Safe Mode will deactivate
-  allow_join: true
+    #enable this check?
+    enable: true
