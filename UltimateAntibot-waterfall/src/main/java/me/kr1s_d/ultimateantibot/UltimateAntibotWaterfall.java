@@ -2,6 +2,7 @@ package me.kr1s_d.ultimateantibot;
 
 import me.kr1s_d.ultimateantibot.Commands.antibotComands;
 import me.kr1s_d.ultimateantibot.Database.Config;
+import me.kr1s_d.ultimateantibot.Event.HandShake;
 import me.kr1s_d.ultimateantibot.Event.PingListener;
 import me.kr1s_d.ultimateantibot.Event.PreloginEventListener;
 import me.kr1s_d.ultimateantibot.Thread.UltimateThreadCore;
@@ -59,6 +60,7 @@ public final class UltimateAntibotWaterfall extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new antibotComands(this));
         getProxy().getPluginManager().registerListener(this, new PingListener(this));
         getProxy().getPluginManager().registerListener(this, new PreloginEventListener(this));
+        getProxy().getPluginManager().registerListener(this, new HandShake());
         sendLogo();
         utils.debug(utils.colora(utils.prefix() + "&aRunning version " + this.getDescription().getVersion()));
         utils.debug(utils.colora(utils.prefix() + "&aEnabled"));
