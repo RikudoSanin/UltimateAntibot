@@ -2,6 +2,7 @@ package me.kr1s_d.ultimateantibot.Event;
 
 import me.kr1s_d.ultimateantibot.AntibotManager;
 import me.kr1s_d.ultimateantibot.ModeType;
+import me.kr1s_d.ultimateantibot.Task.PingModeDisabler;
 import me.kr1s_d.ultimateantibot.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.Utils.Counter;
 import net.md_5.bungee.api.event.ProxyPingEvent;
@@ -29,12 +30,21 @@ public class PingListener implements Listener {
         /**
          * pinmode enable
          */
-        if(counter.getPingSecond() > plugin.getConfigYml().getLong("pingmode.trigger")){
-            if(antibotManager.isPingModeOnline()){
+        if(counter.getPingSecond() > plugin.getConfigYml().getLong("pingmode.trigger") && !antibotManager.isOnline() && !antibotManager.isSafeAntiBotModeOnline()){
+            if(!antibotManager.isPingModeOnline()){
                 antibotManager.setPingMode(true);
                 antibotManager.setModeType(ModeType.PING);
+                new PingModeDisabler(plugin).clear();
             }
         }
+        if(antibotManager.isPingModeOnline()) {
+            counter.analyzeHard(ip, plugin.getConfigYml().getInt("blacklist.ping_mode"));
+            if (counter.getAnalyzeStatus(ip) > plugin.getConfigYml().getLong("blacklist.max")) {
+                antibotManager.addBlackList(ip);
+                antibotManager.removeWhitelist(ip);
+            }
+        }
+
         /**
          * some safemode checks
          */
@@ -51,7 +61,7 @@ public class PingListener implements Listener {
         /**
          * blacklist + punish
          */
-        if(counter.getAnalyzeStatus(ip) > plugin.getConfigYml().getLong("blacklist.max")){
+        if (counter.getAnalyzeStatus(ip) > plugin.getConfigYml().getLong("blacklist.max")) {
             antibotManager.addBlackList(ip);
             antibotManager.removeWhitelist(ip);
         }

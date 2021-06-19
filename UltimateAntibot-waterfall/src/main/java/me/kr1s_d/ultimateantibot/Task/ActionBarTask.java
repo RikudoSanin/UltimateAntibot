@@ -61,7 +61,7 @@ public class ActionBarTask {
         if(plugin.getAntibotManager().isOnline()){
             player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbarOnAttack));
         }else {
-            if(plugin.getAntibotManager().isSafeAntiBotModeOnline()){
+            if(plugin.getAntibotManager().isSafeAntiBotModeOnline() || plugin.getAntibotManager().isPingModeOnline()){
                 player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbaronSafemodeattack));
             }else {
                 player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbarOnSafe));

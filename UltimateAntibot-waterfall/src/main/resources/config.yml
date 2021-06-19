@@ -1,4 +1,4 @@
-version: 1.0
+version: 2.0
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -36,7 +36,7 @@ pingmode:
   #Duration of the ping-mode when activated
   keep: 10
   #How many pings in 1 second does it take to activate the protection?
-  trigger: 3
+  trigger: 100
 
 #Minimum online time to be whitelisted
 playtime_for_whitelist: 2 #minutes

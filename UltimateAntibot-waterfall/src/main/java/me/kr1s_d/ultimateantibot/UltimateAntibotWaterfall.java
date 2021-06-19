@@ -5,10 +5,7 @@ import me.kr1s_d.ultimateantibot.Database.Config;
 import me.kr1s_d.ultimateantibot.Event.PingListener;
 import me.kr1s_d.ultimateantibot.Event.PreloginEventListener;
 import me.kr1s_d.ultimateantibot.Thread.UltimateThreadCore;
-import me.kr1s_d.ultimateantibot.Utils.Counter;
-import me.kr1s_d.ultimateantibot.Utils.Metrics;
-import me.kr1s_d.ultimateantibot.Utils.Updater;
-import me.kr1s_d.ultimateantibot.Utils.utils;
+import me.kr1s_d.ultimateantibot.Utils.*;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -26,6 +23,7 @@ public final class UltimateAntibotWaterfall extends Plugin {
     private Configuration blacklist;
     private Metrics metrics;
     private Updater updater;
+    private FilesUpdater filesUpdater;
 
     @Override
     public void onEnable() {
@@ -56,6 +54,8 @@ public final class UltimateAntibotWaterfall extends Plugin {
         utils.debug(utils.prefix() + "&aLoaded $1 Whitelisted Ips".replace("$1", String.valueOf(antibotManager.getWhitelist().size())));
         utils.debug(utils.prefix() + "&aLoaded $1 Blacklisted Ips".replace("$1", String.valueOf(antibotManager.getBlacklist().size())));
         configmanager = new Config(this);
+        filesUpdater = new FilesUpdater(this);
+        filesUpdater.check();
         getProxy().getPluginManager().registerCommand(this, new antibotComands(this));
         getProxy().getPluginManager().registerListener(this, new PingListener(this));
         getProxy().getPluginManager().registerListener(this, new PreloginEventListener(this));
@@ -125,5 +125,9 @@ public final class UltimateAntibotWaterfall extends Plugin {
 
     public Updater getUpdater() {
         return updater;
+    }
+
+    public FilesUpdater getFilesUpdater() {
+        return filesUpdater;
     }
 }

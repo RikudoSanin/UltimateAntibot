@@ -85,6 +85,7 @@ public class PreloginEventListener implements Listener {
             if(!antibotManager.isOnline()) {
                 antibotManager.setSafeAntiBotMode(false);
                 antibotManager.setAntibotModeStatus(true);
+                antibotManager.setPingMode(false);
                 antibotManager.setModeType(ModeType.ANTIBOTMODE);
                 new AntibotModeDisable(plugin).disable();
             }
@@ -98,6 +99,7 @@ public class PreloginEventListener implements Listener {
                 if(!antibotManager.isSafeAntiBotModeOnline()) {
                     antibotManager.setAntibotModeStatus(false);
                     antibotManager.setSafeAntiBotMode(true);
+                    antibotManager.setPingMode(false);
                     antibotManager.setModeType(ModeType.SAFEMODE);
                     new SafemodeDisableListener(plugin).start();
                 }

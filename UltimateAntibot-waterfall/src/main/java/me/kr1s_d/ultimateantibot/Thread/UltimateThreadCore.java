@@ -46,19 +46,19 @@ public class UltimateThreadCore {
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
             if(!antibotManager.isOnline()) {
                 if (!antibotManager.isSafeAntiBotModeOnline()) {
-                    count = count + 1;
-                    if (count > 3 && !antibotManager.isOnline() || !antibotManager.isSafeAntiBotModeOnline()) {
-                        antibotManager.getBlacklist().clear();
-                        antibotManager.getQueue().clear();
-                        for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-                            if (antibotManager.getWhitelist().contains(p.getAddress().getAddress().toString())) {
-                                return;
+                        count = count + 1;
+                        if (count > 3 && !antibotManager.isOnline() || !antibotManager.isSafeAntiBotModeOnline()) {
+                            antibotManager.getBlacklist().clear();
+                            antibotManager.getQueue().clear();
+                            for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
+                                if (antibotManager.getWhitelist().contains(p.getAddress().getAddress().toString())) {
+                                    return;
+                                }
+                                new AutoWhitelistTask(plugin, p).start();
                             }
-                            new AutoWhitelistTask(plugin, p).start();
+                        } else {
+                            count = 0;
                         }
-                    } else {
-                        count = 0;
-                    }
                 }
             }
 
