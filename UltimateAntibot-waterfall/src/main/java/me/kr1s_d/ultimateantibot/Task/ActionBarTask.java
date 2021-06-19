@@ -40,6 +40,7 @@ public class ActionBarTask {
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
                 .replace("$5", String.valueOf(counter.getCheckPerSecond()))
+                .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
         String actionbaronSafemodeattack = utils.colora(utils.prefix() + plugin.getMessageYml().getString("actionbar.safe_mode"))
                 .replace("$1", String.valueOf(botSec))
@@ -47,6 +48,7 @@ public class ActionBarTask {
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
                 .replace("$5", String.valueOf(counter.getCheckPerSecond()))
+                .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
         String actionbarOnSafe = utils.colora(utils.prefix() + plugin.getMessageYml().getString("actionbar.no-attack"))
                 .replace("$1", String.valueOf(counter.getJoinPerSecond()))
@@ -54,6 +56,7 @@ public class ActionBarTask {
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getWhitelist().size()))
                 .replace("$5", String.valueOf(counter.getCheckPerSecond()))
+                .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
         if(plugin.getAntibotManager().isOnline()){
             player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbarOnAttack));

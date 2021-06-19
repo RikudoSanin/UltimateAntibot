@@ -31,6 +31,13 @@ safemode:
   #Refresh needed to get Whitelist during Safemode
   refresh: 8
 
+#Pingmode allows player connections to your server!
+pingmode:
+  #Duration of the ping-mode when activated
+  keep: 10
+  #How many pings in 1 second does it take to activate the protection?
+  trigger: 3
+
 #Minimum online time to be whitelisted
 playtime_for_whitelist: 2 #minutes
 
@@ -64,4 +71,6 @@ blacklist:
   ping: 1
   #percent < 50%
   usain: 5
+  #Only used with ping attacks!
+  ping_mode: 5
 

@@ -1,6 +1,7 @@
 package me.kr1s_d.ultimateantibot.Task;
 
 import me.kr1s_d.ultimateantibot.AntibotManager;
+import me.kr1s_d.ultimateantibot.ModeType;
 import me.kr1s_d.ultimateantibot.UltimateAntibotWaterfall;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.scheduler.ScheduledTask;
@@ -23,6 +24,7 @@ public class AntibotModeDisable {
             @Override
             public void run() {
                 antibotManager.setAntibotModeStatus(false);
+                plugin.getAntibotManager().setModeType(ModeType.OFFLINE);
             }
         }, plugin.getConfigYml().getLong("antibotmode.keep"), TimeUnit.SECONDS);
     }

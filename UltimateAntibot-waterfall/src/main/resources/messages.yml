@@ -5,9 +5,9 @@ title:
   title: '&a%blocked% Blocked Bots'
   subtitle: '&6%ip%% BlackListed IP'
 actionbar:
-  no-attack: '&6Join &e$1 &b- &6Ping &e$2 &b- &6Queue &e$3 - &6Whitelist &e$4 &b- &6Check &e$5 » &c&lOFFLINE'
-  safe_mode: '&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &6&lSAFEMODE'
-  antibot_mode: '&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &a&lONLINE'
+  no-attack: '&6Join &e$1 &b- &6Ping &e$2 &b- &6Queue &e$3 - &6Whitelist &e$4 &b- &6Check &e$5 » &c&l%type%'
+  safe_mode: '&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &6&l%type%'
+  antibot_mode: '&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &a&l%type%'
 help:
   - '&4/uab &chelp'
   - '&4/uab &ctoggle &factionbar/title'

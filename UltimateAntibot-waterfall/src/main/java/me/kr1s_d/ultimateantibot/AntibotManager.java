@@ -9,9 +9,11 @@ public class AntibotManager {
 
     private boolean antibotModeStatus;
     private boolean safeAntiBotMode;
+    private boolean pingMode;
     private final List<String> queue;
     private final List<String> whitelist;
     private final List<String> blacklist;
+    private ModeType modeType;
 
     public AntibotManager(UltimateAntibotWaterfall plugin){
         this.antibotModeStatus = false;
@@ -19,6 +21,24 @@ public class AntibotManager {
         this.queue = new ArrayList<>();
         this.whitelist = new ArrayList<>();
         this.blacklist = new ArrayList<>();
+        this.pingMode = false;
+        this.modeType = ModeType.OFFLINE;
+    }
+
+    public void setPingMode(boolean pingMode) {
+        this.pingMode = pingMode;
+    }
+
+    public boolean isPingModeOnline() {
+        return pingMode;
+    }
+
+    public void setModeType(ModeType type){
+        this.modeType = type;
+    }
+
+    public ModeType getModeType() {
+        return modeType;
     }
 
     public void setAntibotModeStatus(boolean antibotModeStatus) {

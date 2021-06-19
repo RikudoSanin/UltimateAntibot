@@ -1,11 +1,11 @@
 package me.kr1s_d.ultimateantibot.Event;
 
 import me.kr1s_d.ultimateantibot.AntibotManager;
+import me.kr1s_d.ultimateantibot.ModeType;
 import me.kr1s_d.ultimateantibot.Task.*;
 import me.kr1s_d.ultimateantibot.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.Utils.Counter;
 import me.kr1s_d.ultimateantibot.Utils.utils;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -85,6 +85,7 @@ public class PreloginEventListener implements Listener {
             if(!antibotManager.isOnline()) {
                 antibotManager.setSafeAntiBotMode(false);
                 antibotManager.setAntibotModeStatus(true);
+                antibotManager.setModeType(ModeType.ANTIBOTMODE);
                 new AntibotModeDisable(plugin).disable();
             }
         }
@@ -97,6 +98,7 @@ public class PreloginEventListener implements Listener {
                 if(!antibotManager.isSafeAntiBotModeOnline()) {
                     antibotManager.setAntibotModeStatus(false);
                     antibotManager.setSafeAntiBotMode(true);
+                    antibotManager.setModeType(ModeType.SAFEMODE);
                     new SafemodeDisableListener(plugin).start();
                 }
             }
