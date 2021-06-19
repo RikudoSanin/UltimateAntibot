@@ -11,7 +11,7 @@ import net.md_5.bungee.event.EventHandler;
 
 public class PingListener implements Listener {
 
-    private UltimateAntibotWaterfall plugin;
+    private final UltimateAntibotWaterfall plugin;
     private final Counter counter;
     private final AntibotManager antibotManager;
 
@@ -26,6 +26,9 @@ public class PingListener implements Listener {
         String ip = e.getConnection().getAddress().getAddress().toString();
         counter.addPingSecond(1);
         counter.addTotalPing(1);
+        if(!antibotManager.getBlacklist().contains(ip)){
+            counter.addChecks(1);
+        }
         counter.analyzeHard(ip, plugin.getConfigYml().getInt("blacklist.ping"));
         /**
          * pinmode enable
