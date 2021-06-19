@@ -10,7 +10,7 @@
         <version>1.2</version>
     </parent>
 
-    <artifactId>UltimateAntibot-waterfall</artifactId>
+    <artifactId>UltimateAntibot-bungeecord</artifactId>
     <packaging>jar</packaging>
 
     <name>UltimateAntibot</name>

@@ -45,9 +45,7 @@
             </plugins>
         </pluginManagement>
     </build>
-
     <modules>
-        <module>ultimateantibot-common</module>
         <module>ultimateantibot-spigot</module>
         <module>ultimateantibot-waterfall</module>
     </modules>
