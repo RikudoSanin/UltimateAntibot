@@ -6,7 +6,7 @@
 
     <groupId>me.kr1s_d</groupId>
     <artifactId>UltimateAntibot</artifactId>
-    <version>1.0</version>
+    <version>1.2</version>
     <packaging>pom</packaging>
 
     <properties>

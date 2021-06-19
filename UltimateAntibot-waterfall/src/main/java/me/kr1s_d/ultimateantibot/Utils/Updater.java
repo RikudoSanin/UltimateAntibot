@@ -13,7 +13,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Updater {
     private String url = "https://api.spigotmc.org/legacy/update.php?resource=";
-    private String id = "88678";
+    private String id = "93439";
     private final UltimateAntibotWaterfall plugin;
 
     public Updater(UltimateAntibotWaterfall plugin){
@@ -32,14 +32,16 @@ public class Updater {
     }
 
 
-    public void startNotification() {
-        ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
-            @Override
-            public void run() {
-                utils.debug(utils.prefix() + "&eNew Update Found!");
-                utils.debug(utils.prefix() + "&EI suggest you to update plugin!");
-            }
-        }, 0, 20L, TimeUnit.MINUTES);
+    public void checkNotification() {
+        if(isAvailable()) {
+            ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    utils.debug(utils.prefix() + "&eNew Update Found!");
+                    utils.debug(utils.prefix() + "&EI suggest you to update plugin!");
+                }
+            }, 0, 20L, TimeUnit.MINUTES);
+        }
     }
 
     public void check() {

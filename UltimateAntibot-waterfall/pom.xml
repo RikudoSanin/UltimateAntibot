@@ -7,13 +7,13 @@
     <parent>
         <groupId>me.kr1s_d</groupId>
         <artifactId>UltimateAntibot</artifactId>
-        <version>1.0</version>
+        <version>1.2</version>
     </parent>
 
     <artifactId>UltimateAntibot-waterfall</artifactId>
     <packaging>jar</packaging>
 
-    <name>UltimateAntibot Waterfall</name>
+    <name>UltimateAntibot</name>
 
     <build>
         <plugins>

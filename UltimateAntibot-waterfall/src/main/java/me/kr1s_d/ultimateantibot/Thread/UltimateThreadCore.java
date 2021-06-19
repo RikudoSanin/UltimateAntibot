@@ -44,19 +44,21 @@ public class UltimateThreadCore {
 
 
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
-            if(!antibotManager.isOnline() || !antibotManager.isSafeAntiBotModeOnline()){
-                count = count + 1;
-                if(count > 3 && !antibotManager.isOnline() || !antibotManager.isSafeAntiBotModeOnline() ) {
-                    antibotManager.getBlacklist().clear();
-                    antibotManager.getQueue().clear();
-                    for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-                        if (antibotManager.getWhitelist().contains(p.getAddress().getAddress().toString())) {
-                            return;
+            if(!antibotManager.isOnline()) {
+                if (!antibotManager.isSafeAntiBotModeOnline()) {
+                    count = count + 1;
+                    if (count > 3 && !antibotManager.isOnline() || !antibotManager.isSafeAntiBotModeOnline()) {
+                        antibotManager.getBlacklist().clear();
+                        antibotManager.getQueue().clear();
+                        for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
+                            if (antibotManager.getWhitelist().contains(p.getAddress().getAddress().toString())) {
+                                return;
+                            }
+                            new AutoWhitelistTask(plugin, p).start();
                         }
-                        new AutoWhitelistTask(plugin, p).start();
+                    } else {
+                        count = 0;
                     }
-                }else{
-                    count = 0;
                 }
             }
 
@@ -68,6 +70,7 @@ public class UltimateThreadCore {
         utils.debug(utils.prefix() + "&aLoading BeatExaminal...");
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
         plugin.getUpdater().check();
+        plugin.getUpdater().checkNotification();
         },  0, 60, TimeUnit.MINUTES);
         utils.debug(utils.prefix() + "&aBeatExaminal loaded...");
     }

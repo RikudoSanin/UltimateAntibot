@@ -45,7 +45,6 @@ public final class UltimateAntibotWaterfall extends Plugin {
         //blacklist = configmanager.getConfiguration("%datafolder%/blacklist.yml");
         loadWhitelist();
         updater = new Updater(this);
-        updater.check();
         metrics = new Metrics(this, 11712);
         antibotManager = new AntibotManager(this);
         counter = new Counter();
