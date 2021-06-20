@@ -19,6 +19,7 @@ public class Counter {
     private final List<String> firstjoin;
     private long check;
     private final Map<String, Integer> safemodeping;
+    private final List<String> stuffs;
 
 
     public Counter(){
@@ -32,6 +33,21 @@ public class Counter {
         this.firstjoin = new ArrayList<>();
         this.check = 0L;
         this.safemodeping = new HashMap<>();
+        this.stuffs = new ArrayList<>();
+    }
+
+    public List<String> getStuffs() {
+        return stuffs;
+    }
+
+    public void addInStuffs(String ip){
+        if(!stuffs.contains(ip)){
+            stuffs.add(ip);
+        }
+    }
+
+    public boolean isInStuffs(String ip){
+        return stuffs.contains(ip);
     }
 
     public long getBotSecond() {

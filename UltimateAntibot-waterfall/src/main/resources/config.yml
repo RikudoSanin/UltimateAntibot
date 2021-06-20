@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -22,8 +22,8 @@ antibotmode:
 #through a ping system, and refreshing the server list
 
 safemode:
-  #When 75% of the IPs have been blacklisted, safemode is activated
-  percent: 75
+  #When 60% of the IPs have been blacklisted, safemode is activated
+  percent: 60
   #Checks Per Second for enable while antibotmode is online
   modifier: 100
   #duration of safemode when activated
@@ -42,7 +42,7 @@ pingmode:
 playtime_for_whitelist: 2 #minutes
 
 taskmanager:
-  analyzer: 4 #seconds
+  analyzer: 5 #seconds
   clearcache: 2 #minutes
   queue: 1 #minutes
 
@@ -64,9 +64,6 @@ blacklist:
   antibot_mode: 15
   #How much the queue clears up if the antibotmode is online adds 15
   queue: 15
-  #During safemode all other methods except queue are disabled
-  #This works based on unverified connections, when they connect if blocked they get 25
-  check: 25
   #on ping during antibotmode
   ping: 3
   #if percent < 50% add 5 on connection
@@ -80,6 +77,29 @@ checks:
     #When a user logs in for the first time and is logged
     #out and does not come back in 15 seconds he will be
     #blacklisted for 2 to 6 minutes
-    duration: 15
+    duration: 15 #seconds
     #enable this check?
+    enable: true
+  timer:
+    #The timer check is an advanced check,
+    #from a long disconnect screen a message
+    #eg: "reconnect in 5 seconds"
+    #if the player reconnects in those 5 seconds
+    #he is whitelisted
+    #here you can set minium time
+    min: 5 #seconds
+    #here you can set max time
+    max: 10 #seconds
+    #When the time for verification runs out,
+    #you have 1 second to enter
+    between: 1000 #milliseconds (1 SECOND)
+    #If you reconnect earlier (in the case of
+    #a standard configuration) after 2 failed
+    #checks it will be blacklisted
+    increaser: 25
+    #There must be exactly 3 correct
+    #checks to be whitelisted
+    repeat: 3
+    #If you don't enable it
+    #you are a really bad person :c
     enable: true

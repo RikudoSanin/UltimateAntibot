@@ -26,7 +26,7 @@ public class FilesUpdater {
     }
 
     public void check(){
-        if(config.getDouble("version") != 2.0){
+        if(config.getDouble("version") != 2.1){
             ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
                 @Override
                 public void run() {
@@ -34,7 +34,7 @@ public class FilesUpdater {
                 }
             }, 0, 1, TimeUnit.MINUTES);
         }
-        if(messages.getDouble("version") != 2.0){
+        if(messages.getDouble("version") != 2.1){
             ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
                 @Override
                 public void run() {

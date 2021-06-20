@@ -1,4 +1,4 @@
-version: 2.0
+version: 2.1
 args_error: '&cUse /uab help'
 reload: '&aReload Completed!'
 title:
@@ -37,6 +37,7 @@ antibotmode:
   - ''
   - '&cThe AntibotMode is currently Online!'
   - '&cIt will remain active until &f$1%&c of IPs are blacklisted'
+  - '&cDon''t connect too many times or you will be blacklisted!'
   - '&cBlacklist status &f$2%'
   - ''
   - '&7______________________________'
@@ -56,9 +57,9 @@ safe_mode:
   - '&7--------------------------------'
   - ''
   - '&cThe server has received a bot attack and you have been disconnected'
-  - '&cRefresh server list exactly &f$1&c times and join'
+  - '&cIt falls into the server exactly between &f$1 &cseconds'
   - '&cIf you are wrong you will have to do it all over again'
-  - ''
+  - '&cRemaining&f $2'
   - '&7--------------------------------'
   - '&emc.yourserver.net'
 blacklisted:

@@ -27,6 +27,6 @@ public class SlowDetect {
                     antibotManager.getQueue().remove(ip);
                 }
             }
-        }, plugin.getConfigYml().getLong("checks.slowmode.duration"), TimeUnit.SECONDS);
+        }, plugin.getConfigYml().getLong("checks.slowmode.duration"), TimeUnit.MILLISECONDS);
     }
 }

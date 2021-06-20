@@ -49,12 +49,6 @@ public class PingListener implements Listener {
         }
 
         /**
-         * some safemode checks
-         */
-        if(antibotManager.isSafeAntiBotModeOnline()){
-            counter.safeModeAnalyze(ip);
-        }
-        /**
          * whitelist protection
          */
         if(antibotManager.getWhitelist().contains(ip) || antibotManager.getBlacklist().contains(ip)){
@@ -67,9 +61,6 @@ public class PingListener implements Listener {
         if (counter.getAnalyzeStatus(ip) > plugin.getConfigYml().getLong("blacklist.max")) {
             antibotManager.addBlackList(ip);
             antibotManager.removeWhitelist(ip);
-        }
-        if(antibotManager.getBlacklist().contains(ip)){
-            e.setResponse(null);
         }
     }
 
