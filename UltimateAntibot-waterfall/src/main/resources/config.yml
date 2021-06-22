@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.2
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -6,7 +6,7 @@ version: 2.1
 #  | |__| | | |_| | | | | | | (_| | ||  __/  / ____ \| | | | |_| | |_) | (_) | |_
 #  \____/|_|\__|_|_| |_| |_|\__,_|\__\___| /_/    \_\_| |_|\__|_|_.__/ \___/ \__|
 
-
+debug: false
 #Antibotmode has the utility of mitigating the attack, blacklisting + ip possible,
 #I tried to make it as secure as possible so as to blacklist only malicious connections
 #
@@ -27,9 +27,7 @@ safemode:
   #Checks Per Second for enable while antibotmode is online
   modifier: 100
   #duration of safemode when activated
-  keep: 10
-  #Refresh needed to get Whitelist during Safemode
-  refresh: 8
+  keep: 20
 
 #Pingmode allows player connections to your server!
 pingmode:
@@ -37,6 +35,9 @@ pingmode:
   keep: 10
   #How many pings in 1 second does it take to activate the protection?
   trigger: 100
+  #MotdKiller Protection
+  #Send the server logo during a ping attack?
+  send_info: false
 
 #Minimum online time to be whitelisted
 playtime_for_whitelist: 2 #minutes
@@ -68,7 +69,7 @@ blacklist:
   ping: 3
   #if percent < 50% add 5 on connection
   usain: 5
-  #Only used with ping attacks!
+  #Increaser Only used with ping attacks!
   ping_mode: 5
 
 checks:
@@ -103,3 +104,16 @@ checks:
     #If you don't enable it
     #you are a really bad person :c
     enable: true
+filter:
+  - 'InitialHandler has'
+  - 'Connection reset by peer'
+  - 'Unexpected packet received'
+  - 'read timed out'
+  - 'to process!'
+  - 'Empty Packet!'
+  - 'bad packet ID'
+  - 'InitialHandler - encountered exception'
+  - 'com.mojang.authlib'
+  - 'lost connection: Timed out'
+  - 'lost connection: Disconnected'
+  - 'Took too long to log in'

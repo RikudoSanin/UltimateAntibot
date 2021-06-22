@@ -6,7 +6,7 @@
 
     <groupId>me.kr1s_d</groupId>
     <artifactId>UltimateAntibot</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -47,6 +47,6 @@
     </build>
     <modules>
         <module>ultimateantibot-spigot</module>
-        <module>ultimateantibot-waterfall</module>
+        <module>UltimateAntibot-waterfall</module>
     </modules>
 </project>

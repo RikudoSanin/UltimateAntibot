@@ -1,4 +1,4 @@
-version: 2.1
+version: 2.2
 args_error: '&cUse /uab help'
 reload: '&aReload Completed!'
 title:
@@ -8,6 +8,8 @@ actionbar:
   no-attack: '&6Join &e$1 &b- &6Ping &e$2 &b- &6Queue &e$3 - &6Whitelist &e$4 &b- &6Check &e$5 » &c&l%type%'
   safe_mode: '&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &6&l%type%'
   antibot_mode: '&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &a&l%type%'
+console:
+  on_attack: '&6Bot &e$1/sec &b- &6Ping &e$2/sec &b- &6Queue &e$3 &b- &6Blacklist &e$4 &b- &6Check &e$5 » &6&l%type%'
 help:
   - '&4/uab &chelp'
   - '&4/uab &ctoggle &factionbar/title'
@@ -61,6 +63,7 @@ safe_mode:
   - '&cIf you are wrong you will have to do it all over again'
   - '&cRemaining&f $2'
   - '&7--------------------------------'
+  - '&7If the counter stays at 3 wait about 20 seconds and try again'
   - '&emc.yourserver.net'
 blacklisted:
   - '&4Ultimate&cAnti&fBot'
