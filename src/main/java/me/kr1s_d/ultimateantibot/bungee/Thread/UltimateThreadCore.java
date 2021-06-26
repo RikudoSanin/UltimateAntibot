@@ -75,10 +75,8 @@ public class UltimateThreadCore {
 
     public void hearthBeatExaminal(){
         utils.debug(utils.prefix() + "&aLoading BeatExaminal...");
-        ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
         plugin.getUpdater().check();
         plugin.getUpdater().checkNotification();
-        },  0, 60, TimeUnit.MINUTES);
         utils.debug(utils.prefix() + "&aBeatExaminal loaded...");
     }
     public void heartBeatMinimal(){

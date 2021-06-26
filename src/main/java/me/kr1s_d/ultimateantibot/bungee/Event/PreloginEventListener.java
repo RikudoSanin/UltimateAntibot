@@ -38,7 +38,7 @@ public class PreloginEventListener implements Listener {
         this.ultimateAnalyzer = new UltimateAnalyzer(plugin);
     }
 
-    @EventHandler
+    @EventHandler(priority = -128)
     public void onPreloginEvent(PreLoginEvent e){
         String ip =  e.getConnection().getAddress().getAddress().toString();
         int blacklistAmount = antibotManager.getBlacklist().size();

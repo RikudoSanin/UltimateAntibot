@@ -23,8 +23,9 @@ public class SlowDetect {
             public void run() {
                 if(!player.isConnected() && plugin.getConfigYml().getBoolean("checks.slowmode.enable")){
                     antibotManager.getWhitelist().remove(ip);
-                    antibotManager.getBlacklist().add(ip);
+                    antibotManager.getBlacklist().remove(ip);
                     antibotManager.getQueue().remove(ip);
+                    plugin.getCounter().analyzeHard(ip, (int) plugin.getConfigYml().getLong("blacklist.strange"));
                 }
             }
         }, plugin.getConfigYml().getLong("checks.slowmode.duration"), TimeUnit.SECONDS);

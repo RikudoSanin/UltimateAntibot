@@ -1,4 +1,4 @@
-version: 2.2
+version: 2.3
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -71,6 +71,8 @@ blacklist:
   usain: 5
   #Increaser Only used with ping attacks!
   ping_mode: 5
+  #strange situation
+  strange: 26
 
 checks:
   #slowmode check
@@ -104,7 +106,7 @@ checks:
     #If you don't enable it
     #you are a really bad person :c
     enable: true
-filter:
+filter: #works on Waterfall Spigot & PaperSpigot no on BungeeCord
   - 'InitialHandler has'
   - 'Connection reset by peer'
   - 'Unexpected packet received'
@@ -117,3 +119,4 @@ filter:
   - 'lost connection: Timed out'
   - 'lost connection: Disconnected'
   - 'Took too long to log in'
+  - 'Another plugin has cancelled the connection for' # for luckyperms on spigot

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 
 public class UltimateAntibotSpigot extends JavaPlugin {
@@ -63,6 +64,12 @@ public class UltimateAntibotSpigot extends JavaPlugin {
         getCommand("ultimateantibot").setExecutor(new antibotCommand(this));
         Utils.debug(Utils.colora(Utils.prefix() + "&aRunning version " + this.getDescription().getVersion()));
         Utils.debug(Utils.colora(Utils.prefix() + "&aEnabled"));
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                sendSpigotAlert();
+            }
+        }.runTaskLater(this, 40L);
     }
 
     public void sendLogo(){
@@ -116,5 +123,15 @@ public class UltimateAntibotSpigot extends JavaPlugin {
 
     public LogFilter getLogFilter() {
         return logFilter;
+    }
+
+    public void sendSpigotAlert(){
+        Utils.debug(Utils.prefix() + "&cAlthough spigot support has been added,");
+        Utils.debug(Utils.prefix() + "&cI absolutely do not recommend that you do not use a bungeecord proxy network for your server.");
+        Utils.debug(Utils.prefix() + "&cSpigot has many processes to manage due to the various plugins");
+        Utils.debug(Utils.prefix() + "&cmoreover the antibot to mitigate the attacks uses a system of tasks that could");
+        Utils.debug(Utils.prefix() + "&cslow down servers with less powerful hardware");
+        Utils.debug(Utils.prefix() + "&cUse safety! Use BungeeCord or Waterfall");
+        //
     }
 }

@@ -86,13 +86,8 @@ public class UltimateThreadCore {
 
     public void hearthBeatExaminal(){
         Utils.debug(Utils.prefix() + "&aLoading BeatExaminal...");
-        new BukkitRunnable() {
-            @Override
-            public void run() {
                 plugin.getUpdater().check();
                 plugin.getUpdater().checkNotification();
-            }
-        }.runTaskTimer(plugin, 0, 60L * 20L * 20L); //20 minutes
         Utils.debug(Utils.prefix() + "&aBeatExaminal loaded...");
     }
     public void heartBeatMinimal(){
