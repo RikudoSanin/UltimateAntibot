@@ -9,6 +9,7 @@ import me.kr1s_d.ultimateantibot.bungee.Filter.LoadFilter;
 import me.kr1s_d.ultimateantibot.bungee.Filter.WaterfallFilter;
 import me.kr1s_d.ultimateantibot.bungee.Thread.UltimateThreadCore;
 import me.kr1s_d.ultimateantibot.bungee.Utils.*;
+import me.kr1s_d.ultimateantibot.spigot.Utils.Utils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -61,7 +62,11 @@ public final class UltimateAntibotWaterfall extends Plugin {
         filesUpdater = new FilesUpdater(this);
         filesUpdater.check();
         loadFilter = new LoadFilter(this);
-        loadFilter.setupFilter();
+        try {
+            loadFilter.setupFilter();
+        }catch (Exception e){
+            Utils.debug(e.getMessage());
+        }
         getProxy().getPluginManager().registerCommand(this, new antibotComands(this));
         getProxy().getPluginManager().registerListener(this, new PingListener(this));
         getProxy().getPluginManager().registerListener(this, new PreloginEventListener(this));

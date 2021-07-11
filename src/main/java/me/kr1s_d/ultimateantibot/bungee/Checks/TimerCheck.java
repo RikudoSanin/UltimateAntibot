@@ -1,6 +1,5 @@
 package me.kr1s_d.ultimateantibot.bungee.Checks;
 
-import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import net.md_5.bungee.api.ProxyServer;
 

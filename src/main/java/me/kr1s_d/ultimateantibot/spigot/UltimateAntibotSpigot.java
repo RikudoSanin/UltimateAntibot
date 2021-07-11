@@ -55,7 +55,11 @@ public class UltimateAntibotSpigot extends JavaPlugin {
         logFilter = new LogFilter(this);
         filesUpdater = new FilesUpdater(this);
         filesUpdater.check();
-        ((Logger)LogManager.getRootLogger()).addFilter(logFilter);
+        try {
+            ((Logger)LogManager.getRootLogger()).addFilter(logFilter);
+        }catch (Exception e){
+            Utils.debug(e.getMessage());
+        }
         Utils.debug(Utils.prefix() + "&aLoaded Filter");
         Utils.debug(Utils.prefix() + "&aLoaded $1 Whitelisted Ips".replace("$1", String.valueOf(antibotManager.getWhitelist().size())));
         sendLogo();
