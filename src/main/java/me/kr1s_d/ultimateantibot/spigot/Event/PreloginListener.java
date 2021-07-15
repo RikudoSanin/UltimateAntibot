@@ -26,6 +26,7 @@ public class PreloginListener implements Listener {
     private final Config messages;
     private final TimerCheck timerCheck;
     private final UltimateAnalyzer ultimateAnalyzer;
+    private final Config config;
 
     public PreloginListener (UltimateAntibotSpigot plugin){
         this.plugin = plugin;
@@ -34,6 +35,7 @@ public class PreloginListener implements Listener {
         this.messages = plugin.getMessageYml();
         this.timerCheck = new TimerCheck(plugin);
         this.ultimateAnalyzer = new UltimateAnalyzer(plugin);
+        this.config = plugin.getConfigYml();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -195,7 +197,9 @@ public class PreloginListener implements Listener {
          * Slow-mode Cecks
          */
         if(antibotManager.isOnline()){
-            disconnectBots();
+            if(config.getBoolean("slowmode.disconnect")) {
+                disconnectBots();
+            }
         }
     }
 

@@ -28,6 +28,7 @@ public class PreloginEventListener implements Listener {
     private final Configuration messages;
     private final TimerCheck timerCheck;
     private final UltimateAnalyzer ultimateAnalyzer;
+    private final Configuration config;
 
     public PreloginEventListener (UltimateAntibotWaterfall plugin){
         this.plugin = plugin;
@@ -36,6 +37,7 @@ public class PreloginEventListener implements Listener {
         this.messages = plugin.getMessageYml();
         this.timerCheck = new TimerCheck(plugin);
         this.ultimateAnalyzer = new UltimateAnalyzer(plugin);
+        this.config = plugin.getConfigYml();
     }
 
     @EventHandler(priority = -128)
@@ -190,7 +192,9 @@ public class PreloginEventListener implements Listener {
          * Slow-mode Cecks
          */
         if(antibotManager.isOnline()){
-            disconnectBots();
+            if(config.getBoolean("slowmode.disconnect")) {
+                disconnectBots();
+            }
         }
     }
 

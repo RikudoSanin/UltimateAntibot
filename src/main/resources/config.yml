@@ -81,6 +81,9 @@ checks:
     #out and does not come back in 15 seconds he will be
     #blacklisted for 2 to 6 minutes
     duration: 15 #seconds
+    #Do I have to disconnect players within 30 seconds
+    #of entering the server when it is attacked?
+    disconnect: true
     #enable this check?
     enable: true
   timer:

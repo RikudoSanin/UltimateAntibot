@@ -62,11 +62,7 @@ public final class UltimateAntibotWaterfall extends Plugin {
         filesUpdater = new FilesUpdater(this);
         filesUpdater.check();
         loadFilter = new LoadFilter(this);
-        try {
-            loadFilter.setupFilter();
-        }catch (Exception e){
-            Utils.debug(e.getMessage());
-        }
+        loadFilter.setupFilter();
         getProxy().getPluginManager().registerCommand(this, new antibotComands(this));
         getProxy().getPluginManager().registerListener(this, new PingListener(this));
         getProxy().getPluginManager().registerListener(this, new PreloginEventListener(this));
