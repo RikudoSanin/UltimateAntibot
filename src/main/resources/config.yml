@@ -1,4 +1,4 @@
-version: 2.3
+version: 2.4
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -22,8 +22,8 @@ antibotmode:
 #through a ping system, and refreshing the server list
 
 safemode:
-  #When 60% of the IPs have been blacklisted, safemode is activated
-  percent: 60
+  #When 75% of the IPs have been blacklisted, safemode is activated
+  percent: 75
   #Checks Per Second for enable while antibotmode is online
   modifier: 100
   #duration of safemode when activated
@@ -105,7 +105,7 @@ checks:
     increaser: 25
     #There must be exactly 3 correct
     #checks to be whitelisted
-    repeat: 3
+    repeat: 1
     #If you don't enable it
     #you are a really bad person :c
     enable: true

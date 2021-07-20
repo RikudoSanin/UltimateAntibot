@@ -23,7 +23,7 @@ public class FilesUpdater {
     }
 
     public void check(){
-        if(config.getDouble("version") != 2.3){
+        if(config.getDouble("version") != 2.4){
             new BukkitRunnable() {
                 @Override
                 public void run() {
