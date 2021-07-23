@@ -1,6 +1,7 @@
 package me.kr1s_d.ultimateantibot.bungee.Event;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
+import me.kr1s_d.ultimateantibot.bungee.service.QueueService;
 import me.kr1s_d.ultimateantibot.commons.ModeType;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.Utils.Counter;
@@ -29,6 +30,7 @@ public class PreloginEventListener implements Listener {
     private final TimerCheck timerCheck;
     private final UltimateAnalyzer ultimateAnalyzer;
     private final Configuration config;
+    private final QueueService queueService;
 
     public PreloginEventListener (UltimateAntibotWaterfall plugin){
         this.plugin = plugin;
@@ -38,6 +40,7 @@ public class PreloginEventListener implements Listener {
         this.timerCheck = new TimerCheck(plugin);
         this.ultimateAnalyzer = new UltimateAnalyzer(plugin);
         this.config = plugin.getConfigYml();
+        this.queueService = plugin.getQueueService();
     }
 
     @EventHandler(priority = -128)
@@ -66,6 +69,13 @@ public class PreloginEventListener implements Listener {
             counter.addBotSecond(1);
         }
 
+        /**
+         * whitelist bypass
+         */
+        if(antibotManager.getWhitelist().contains(ip) || antibotManager.getBlacklist().contains(ip)){
+            antibotManager.removeQueue(ip);
+        }
+
         if(antibotManager.getWhitelist().contains(ip)){
             e.setCancelled(false);
             return;
@@ -79,12 +89,14 @@ public class PreloginEventListener implements Listener {
         /**
          * First Join
          */
-        if(!antibotManager.isOnline()) {
-            if(!counter.isFirstJoin(ip)) {
-                if(!antibotManager.getWhitelist().contains(ip)) {
-                    counter.addFirstJoin(ip);
-                    e.setCancelReason(new TextComponent(convertToString(utils.coloralista(messages.getStringList("first_join")))));
-                    e.setCancelled(true);
+        if(config.getBoolean("checks.first_join.enabled")) {
+            if (!antibotManager.isOnline()) {
+                if (!counter.isFirstJoin(ip)) {
+                    if (!antibotManager.getWhitelist().contains(ip)) {
+                        counter.addFirstJoin(ip);
+                        e.setCancelReason(new TextComponent(convertToString(utils.coloralista(messages.getStringList("first_join")))));
+                        e.setCancelled(true);
+                    }
                 }
             }
         }
@@ -95,16 +107,9 @@ public class PreloginEventListener implements Listener {
             if(!antibotManager.getWhitelist().contains(ip)) {
                 if(!antibotManager.getBlacklist().contains(ip)) {
                     antibotManager.addQueue(ip);
-                    new QueueClearTask(plugin, ip).clear();
+                    queueService.addToQueueService(ip);
                 }
             }
-        }
-
-        /**
-         * whitelist bypass
-         */
-        if(antibotManager.getWhitelist().contains(ip) || antibotManager.getBlacklist().contains(ip)){
-            antibotManager.removeQueue(ip);
         }
 
         /**
@@ -192,7 +197,7 @@ public class PreloginEventListener implements Listener {
          * Slow-mode Cecks
          */
         if(antibotManager.isOnline()){
-            if(config.getBoolean("slowmode.disconnect")) {
+            if(config.getBoolean("checks.slowmode.disconnect")) {
                 disconnectBots();
             }
         }

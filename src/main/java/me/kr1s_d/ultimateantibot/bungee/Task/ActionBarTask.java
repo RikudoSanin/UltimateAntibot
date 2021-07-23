@@ -76,6 +76,6 @@ public class ActionBarTask {
                 mainData();
 
             }
-        },1, 50, TimeUnit.MILLISECONDS);
+        },1, 40, TimeUnit.MILLISECONDS);
     }
 }

@@ -7,6 +7,7 @@ import me.kr1s_d.ultimateantibot.spigot.Event.PreloginListener;
 import me.kr1s_d.ultimateantibot.spigot.Filter.LogFilter;
 import me.kr1s_d.ultimateantibot.spigot.Thread.UltimateThreadCore;
 import me.kr1s_d.ultimateantibot.spigot.Utils.*;
+import me.kr1s_d.ultimateantibot.spigot.service.QueueService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.bukkit.Bukkit;
@@ -26,6 +27,7 @@ public class UltimateAntibotSpigot extends JavaPlugin {
     private Updater updater;
     private FilesUpdater filesUpdater;
     private LogFilter logFilter;
+    private QueueService queueService;
 
     @Override
     public void onEnable() {
@@ -57,6 +59,7 @@ public class UltimateAntibotSpigot extends JavaPlugin {
         filesUpdater.check();
         ((Logger)LogManager.getRootLogger()).addFilter(logFilter);
         Utils.debug(Utils.prefix() + "&aLoaded Filter");
+        queueService = new QueueService(this);
         Utils.debug(Utils.prefix() + "&aLoaded $1 Whitelisted Ips".replace("$1", String.valueOf(antibotManager.getWhitelist().size())));
         sendLogo();
         Bukkit.getPluginManager().registerEvents(new PreloginListener(this), this);
@@ -133,5 +136,9 @@ public class UltimateAntibotSpigot extends JavaPlugin {
         Utils.debug(Utils.prefix() + "&cslow down servers with less powerful hardware");
         Utils.debug(Utils.prefix() + "&cUse safety! Use BungeeCord or Waterfall");
         //
+    }
+
+    public QueueService getQueueService() {
+        return queueService;
     }
 }

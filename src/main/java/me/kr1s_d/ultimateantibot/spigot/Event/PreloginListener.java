@@ -1,5 +1,6 @@
 package me.kr1s_d.ultimateantibot.spigot.Event;
 
+import me.kr1s_d.ultimateantibot.spigot.service.QueueService;
 import me.kr1s_d.ultimateantibot.commons.ModeType;
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
 import me.kr1s_d.ultimateantibot.spigot.Checks.SlowDetect;
@@ -27,6 +28,7 @@ public class PreloginListener implements Listener {
     private final TimerCheck timerCheck;
     private final UltimateAnalyzer ultimateAnalyzer;
     private final Config config;
+    private final QueueService queueService;
 
     public PreloginListener (UltimateAntibotSpigot plugin){
         this.plugin = plugin;
@@ -36,6 +38,7 @@ public class PreloginListener implements Listener {
         this.timerCheck = new TimerCheck(plugin);
         this.ultimateAnalyzer = new UltimateAnalyzer(plugin);
         this.config = plugin.getConfigYml();
+        this.queueService = plugin.getQueueService();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -64,6 +67,13 @@ public class PreloginListener implements Listener {
             counter.addBotSecond(1);
         }
 
+        /**
+         * whitelist bypass
+         */
+        if(antibotManager.getWhitelist().contains(ip) || antibotManager.getBlacklist().contains(ip)){
+            antibotManager.removeQueue(ip);
+        }
+
         if(antibotManager.getWhitelist().contains(ip)){
             return;
         }
@@ -75,11 +85,13 @@ public class PreloginListener implements Listener {
         /**
          * First Join
          */
-        if(!antibotManager.isOnline()) {
-            if(!counter.isFirstJoin(ip)) {
-                if(!antibotManager.getWhitelist().contains(ip)) {
-                    counter.addFirstJoin(ip);
-                    e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, convertToString(Utils.coloralista(messages.getStringList("first_join"))));
+        if(config.getBoolean("checks.first_join.enabled")) {
+            if (!antibotManager.isOnline()) {
+                if (!counter.isFirstJoin(ip)) {
+                    if (!antibotManager.getWhitelist().contains(ip)) {
+                        counter.addFirstJoin(ip);
+                        e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, convertToString(Utils.coloralista(messages.getStringList("first_join"))));
+                    }
                 }
             }
         }
@@ -90,16 +102,9 @@ public class PreloginListener implements Listener {
             if(!antibotManager.getWhitelist().contains(ip)) {
                 if(!antibotManager.getBlacklist().contains(ip)) {
                     antibotManager.addQueue(ip);
-                    new QueueClearTask(plugin, ip).clear();
+                    queueService.addToQueueService(ip);
                 }
             }
-        }
-
-        /**
-         * whitelist bypass
-         */
-        if(antibotManager.getWhitelist().contains(ip) || antibotManager.getBlacklist().contains(ip)){
-            antibotManager.removeQueue(ip);
         }
 
         /**
@@ -197,7 +202,7 @@ public class PreloginListener implements Listener {
          * Slow-mode Cecks
          */
         if(antibotManager.isOnline()){
-            if(config.getBoolean("slowmode.disconnect")) {
+            if(config.getBoolean("checks.slowmode.disconnect")) {
                 disconnectBots();
             }
         }

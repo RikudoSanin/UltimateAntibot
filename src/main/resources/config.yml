@@ -1,4 +1,4 @@
-version: 2.4
+version: 2.5
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -22,8 +22,8 @@ antibotmode:
 #through a ping system, and refreshing the server list
 
 safemode:
-  #When 75% of the IPs have been blacklisted, safemode is activated
-  percent: 75
+  #When 95% of the IPs have been blacklisted, safemode is activated
+  percent: 95
   #Checks Per Second for enable while antibotmode is online
   modifier: 100
   #duration of safemode when activated
@@ -44,7 +44,7 @@ playtime_for_whitelist: 2 #minutes
 
 taskmanager:
   analyzer: 5 #seconds
-  clearcache: 2 #minutes
+  clearcache: 5 #minutes
   queue: 1 #minutes
 
 #This is the section where you can change the check settings
@@ -75,6 +75,9 @@ blacklist:
   strange: 26
 
 checks:
+  #first join check
+  first_join:
+    enabled: true
   #slowmode check
   slowmode:
     #When a user logs in for the first time and is logged
@@ -84,8 +87,6 @@ checks:
     #Do I have to disconnect players within 30 seconds
     #of entering the server when it is attacked?
     disconnect: true
-    #enable this check?
-    enable: true
   timer:
     #The timer check is an advanced check,
     #from a long disconnect screen a message
@@ -105,7 +106,7 @@ checks:
     increaser: 25
     #There must be exactly 3 correct
     #checks to be whitelisted
-    repeat: 1
+    repeat: 3
     #If you don't enable it
     #you are a really bad person :c
     enable: true

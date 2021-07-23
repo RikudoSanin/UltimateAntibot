@@ -2,19 +2,15 @@ package me.kr1s_d.ultimateantibot.bungee;
 
 import me.kr1s_d.ultimateantibot.bungee.Commands.antibotComands;
 import me.kr1s_d.ultimateantibot.bungee.Database.Config;
-import me.kr1s_d.ultimateantibot.bungee.Event.HandShake;
 import me.kr1s_d.ultimateantibot.bungee.Event.PingListener;
 import me.kr1s_d.ultimateantibot.bungee.Event.PreloginEventListener;
 import me.kr1s_d.ultimateantibot.bungee.Filter.LoadFilter;
-import me.kr1s_d.ultimateantibot.bungee.Filter.WaterfallFilter;
 import me.kr1s_d.ultimateantibot.bungee.Thread.UltimateThreadCore;
 import me.kr1s_d.ultimateantibot.bungee.Utils.*;
-import me.kr1s_d.ultimateantibot.spigot.Utils.Utils;
+import me.kr1s_d.ultimateantibot.bungee.service.QueueService;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
 
 public final class UltimateAntibotWaterfall extends Plugin {
 
@@ -30,6 +26,7 @@ public final class UltimateAntibotWaterfall extends Plugin {
     private Updater updater;
     private FilesUpdater filesUpdater;
     private LoadFilter loadFilter;
+    private QueueService queueService;
 
     @Override
     public void onEnable() {
@@ -63,10 +60,10 @@ public final class UltimateAntibotWaterfall extends Plugin {
         filesUpdater.check();
         loadFilter = new LoadFilter(this);
         loadFilter.setupFilter();
+        queueService = new QueueService(this);
         getProxy().getPluginManager().registerCommand(this, new antibotComands(this));
         getProxy().getPluginManager().registerListener(this, new PingListener(this));
         getProxy().getPluginManager().registerListener(this, new PreloginEventListener(this));
-        getProxy().getPluginManager().registerListener(this, new HandShake());
         sendLogo();
         utils.debug(utils.colora(utils.prefix() + "&aRunning version " + this.getDescription().getVersion()));
         utils.debug(utils.colora(utils.prefix() + "&aEnabled"));
@@ -137,5 +134,9 @@ public final class UltimateAntibotWaterfall extends Plugin {
 
     public FilesUpdater getFilesUpdater() {
         return filesUpdater;
+    }
+
+    public QueueService getQueueService() {
+        return queueService;
     }
 }
