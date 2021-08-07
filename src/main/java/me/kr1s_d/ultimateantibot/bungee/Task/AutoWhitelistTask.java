@@ -2,6 +2,7 @@ package me.kr1s_d.ultimateantibot.bungee.Task;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
+import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -22,14 +23,14 @@ public class AutoWhitelistTask {
         ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
             @Override
             public void run() {
-                String ip = player.getAddress().getAddress().toString();
+                String ip = Utils.getIP(player);
                 if(!player.isConnected()){
                     if(!antibotManager.isOnline()){
                         plugin.getCounter().analyzeIP(ip);
                     }
                 }
                 if(player.isConnected()){
-                    antibotManager.getWhitelist().add(ip);
+                    antibotManager.addWhitelist(ip);
                 }
                 antibotManager.getQueue().remove(ip);
             }

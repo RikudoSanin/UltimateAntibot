@@ -9,10 +9,10 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class utils {
+public class Utils {
 
     public static void sendActionBar(ProxiedPlayer p, String msg){
-        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(utils.colora(msg)));
+        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(colora(msg)));
     }
 
     public static String colora(String str){
@@ -20,7 +20,7 @@ public class utils {
     }
 
     public static void debug(String a){
-        ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(utils.colora(a)));
+        ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(colora(a)));
     }
 
     public static String prefix(){
@@ -30,7 +30,7 @@ public class utils {
     public static List<String> coloralista(List<String> a){
         List<String> ready =  new ArrayList<>();
         for(String s : a){
-            ready.add(utils.colora(s));
+            ready.add(colora(s));
         }
         return ready;
     }
@@ -38,7 +38,7 @@ public class utils {
     public static List<String> coloraListaConReplaceUnaVolta(List<String> lista, String variable, String replacement){
         List<String> ready =  new ArrayList<>();
         for(String s : lista){
-            ready.add(utils.colora(s).replace(variable, replacement));
+            ready.add(colora(s).replace(variable, replacement));
         }
         return ready;
     }
@@ -46,8 +46,24 @@ public class utils {
     public static List<String> coloraListaConReplaceDueVolte(List<String> lista, String variable, String replacement, String variable2, String replace2){
         List<String> ready =  new ArrayList<>();
         for(String s : lista){
-            ready.add(utils.colora(s).replace(variable, replacement).replace(variable2, replace2));
+            ready.add(colora(s).replace(variable, replacement).replace(variable2, replace2));
         }
         return ready;
+    }
+
+    public static String getIP(ProxiedPlayer player){
+        return player.getAddress().getAddress().toString();
+    }
+
+    public static String convertToString(List<String> stringList) {
+        return String.join(System.lineSeparator(), stringList);
+    }
+
+    public static void disconnectPlayerFromIp(String ip, List<String> reason){
+        for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()){
+            if(getIP(p).equalsIgnoreCase(ip)){
+                p.disconnect(new TextComponent(colora(convertToString(reason))));
+            }
+        }
     }
 }

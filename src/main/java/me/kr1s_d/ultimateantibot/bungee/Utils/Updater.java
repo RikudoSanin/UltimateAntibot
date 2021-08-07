@@ -37,8 +37,8 @@ public class Updater {
             ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    utils.debug(utils.prefix() + "&eNew Update Found!");
-                    utils.debug(utils.prefix() + "&EI suggest you to update plugin!");
+                    Utils.debug(Utils.prefix() + "&eNew Update Found!");
+                    Utils.debug(Utils.prefix() + "&EI suggest you to update plugin!");
                 }
             }, 0, 20L, TimeUnit.MINUTES);
         }

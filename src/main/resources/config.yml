@@ -1,4 +1,4 @@
-version: 2.5
+version: 2.6
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -19,7 +19,7 @@ antibotmode:
   trigger: 5
 
 #safemode, on the other hand, has the task of making access possible
-#through a ping system, and refreshing the server list
+#through the timer check
 
 safemode:
   #When 95% of the IPs have been blacklisted, safemode is activated
@@ -87,6 +87,14 @@ checks:
     #Do I have to disconnect players within 30 seconds
     #of entering the server when it is attacked?
     disconnect: true
+    #Maximum accounts for each ip
+    #connected at same time
+    limit: 4
+    #If a player is kicked out for having too many online accounts,
+    #do I have to blacklist him?
+    blacklist_on_limit: true
+    #Enabble this check?
+    enable: true
   timer:
     #The timer check is an advanced check,
     #from a long disconnect screen a message
@@ -124,3 +132,4 @@ filter: #works on Waterfall Spigot & PaperSpigot no on BungeeCord
   - 'lost connection: Disconnected'
   - 'Took too long to log in'
   - 'Another plugin has cancelled the connection for' # for luckyperms on spigot
+  - 'disconnected with' #for slowjoincheck

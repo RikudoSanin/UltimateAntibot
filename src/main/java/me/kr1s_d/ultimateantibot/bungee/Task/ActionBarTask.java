@@ -2,7 +2,8 @@ package me.kr1s_d.ultimateantibot.bungee.Task;
 
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.Utils.Counter;
-import me.kr1s_d.ultimateantibot.bungee.Utils.utils;
+import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
+import me.kr1s_d.ultimateantibot.bungee.data.AntibotInfo;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -18,41 +19,44 @@ public class ActionBarTask {
     private final Counter counter;
     private final List<ProxiedPlayer> toggledPlayers;
     private ScheduledTask scheduledTask;
+    private final AntibotInfo antibotInfo;
 
     public ActionBarTask(UltimateAntibotWaterfall plugin, ProxiedPlayer player, List<ProxiedPlayer> toggledPlayers){
         this.plugin = plugin;
         this.player = player;
         this.counter = plugin.getCounter();
         this.toggledPlayers = toggledPlayers;
+        this.antibotInfo = plugin.getAntibotInfo();
     }
 
     public void mainData() {
-        long botSec = counter.getBotSecond();
-        long pingSec = counter.getPingSecond();
+        long botSec = antibotInfo.getBotSecond();
+        long pingSec = antibotInfo.getPingSecond();
+        long checkSec = antibotInfo.getCheckSecond();
         long botTotal = counter.getTotalBot();
         long pingTotal = counter.getTotalPing();
-        String actionbarOnAttack = utils.colora(utils.prefix() + plugin.getMessageYml().getString("actionbar.antibot_mode"))
+        String actionbarOnAttack = Utils.colora(Utils.prefix() + plugin.getMessageYml().getString("actionbar.antibot_mode"))
                 .replace("$1", String.valueOf(botSec))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
-                .replace("$5", String.valueOf(counter.getCheckPerSecond()))
+                .replace("$5", String.valueOf(checkSec))
                 .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
-        String actionbaronSafemodeattack = utils.colora(utils.prefix() + plugin.getMessageYml().getString("actionbar.safe_mode"))
+        String actionbaronSafemodeattack = Utils.colora(Utils.prefix() + plugin.getMessageYml().getString("actionbar.safe_mode"))
                 .replace("$1", String.valueOf(botSec))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
-                .replace("$5", String.valueOf(counter.getCheckPerSecond()))
+                .replace("$5", String.valueOf(checkSec))
                 .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
-        String actionbarOnSafe = utils.colora(utils.prefix() + plugin.getMessageYml().getString("actionbar.no-attack"))
+        String actionbarOnSafe = Utils.colora(Utils.prefix() + plugin.getMessageYml().getString("actionbar.no-attack"))
                 .replace("$1", String.valueOf(counter.getJoinPerSecond()))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getWhitelist().size()))
-                .replace("$5", String.valueOf(counter.getCheckPerSecond()))
+                .replace("$5", String.valueOf(checkSec))
                 .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
         if(plugin.getAntibotManager().isOnline()){
@@ -76,6 +80,6 @@ public class ActionBarTask {
                 mainData();
 
             }
-        },1, 40, TimeUnit.MILLISECONDS);
+        },1, 400, TimeUnit.MILLISECONDS);
     }
 }

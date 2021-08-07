@@ -17,28 +17,18 @@ public class FilesUpdater {
         this.messages = plugin.getMessageYml();
     }
     public void a(String type){
-        utils.debug(utils.prefix() + "&C-----ALERT----");
-        utils.debug(utils.prefix() + "&CYour %s.yml is outdated!".replace("%s", type));
-        utils.debug(utils.prefix()+ "&cRegen it and Restart");
-        utils.debug(utils.prefix() + "&C-----ALERT----");
+        Utils.debug(Utils.prefix() + "&C-----ALERT----");
+        Utils.debug(Utils.prefix() + "&CYour %s.yml is outdated!".replace("%s", type));
+        Utils.debug(Utils.prefix()+ "&cRegen it and Restart");
+        Utils.debug(Utils.prefix() + "&C-----ALERT----");
     }
 
     public void check(){
-        if(config.getDouble("version") != 2.5){
-            ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    a("config");
-                }
-            }, 0, 1, TimeUnit.MINUTES);
+        if(config.getDouble("version") != 2.6){
+            ProxyServer.getInstance().getScheduler().schedule(plugin, () -> a("config"), 0, 1, TimeUnit.MINUTES);
         }
-        if(messages.getDouble("version") != 2.2){
-            ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    a("messages");
-                }
-            }, 0, 1, TimeUnit.MINUTES);
+        if(messages.getDouble("version") != 2.3){
+            ProxyServer.getInstance().getScheduler().schedule(plugin, () -> a("messages"), 0, 1, TimeUnit.MINUTES);
         }
     }
 }

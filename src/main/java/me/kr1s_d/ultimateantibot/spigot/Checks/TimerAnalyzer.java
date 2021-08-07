@@ -1,16 +1,14 @@
-package me.kr1s_d.ultimateantibot.bungee.Checks;
+package me.kr1s_d.ultimateantibot.spigot.Checks;
 
-import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
+import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class UltimateAnalyzer {
-    private UltimateAntibotWaterfall plugin;
+public class TimerAnalyzer {
     private final Map<String, Integer> analyzer;
 
-    public UltimateAnalyzer(UltimateAntibotWaterfall Plugin){
-        this.plugin = Plugin;
+    public TimerAnalyzer(UltimateAntibotSpigot Plugin){
         this.analyzer = new HashMap<>();
     }
 

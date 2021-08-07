@@ -121,4 +121,16 @@ public class Utils {
         }
         return ip;
     }
+
+    public static String convertToString(List<String> stringList) {
+        return String.join(System.lineSeparator(), stringList);
+    }
+
+    public static void disconnectPlayerFromIp(String ip, List<String> reason){
+        for(Player p :  Bukkit.getOnlinePlayers()){
+            if(getIP(p).equalsIgnoreCase(ip)){
+                p.kickPlayer(colora(convertToString(reason)));
+            }
+        }
+    }
 }

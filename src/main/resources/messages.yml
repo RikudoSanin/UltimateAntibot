@@ -1,4 +1,4 @@
-version: 2.2
+version: 2.3
 args_error: '&cUse /uab help'
 reload: '&aReload Completed!'
 title:
@@ -27,7 +27,6 @@ stats:
   - '&4Current &cPing &f$2'
   - '&4Current &cQueue &f$3'
   - '&4Checking &cList &f$4'
-  - '&4First &cJoinChecked &f$5'
   - '&4Current &CWhitelist &f$6'
   - '&4Current &cBlacklist &f$7'
   - '&4Bot &cBlocked &f$8'
@@ -63,7 +62,15 @@ safe_mode:
   - '&cIf you are wrong you will have to do it all over again'
   - '&cRemaining&f $2'
   - '&7--------------------------------'
-  - '&7If the counter stays at 3 wait about 20 seconds and try again'
+  - '&7If the counter stays still for too long it waits 20 seconds'
+  - '&emc.yourserver.net'
+account-online:
+  - '&4Ultimate&cAnti&fBot'
+  - '&7--------------------------------'
+  - ''
+  - '&cYou have too many accounts connected at the same time on the server!'
+  - ''
+  - '&7--------------------------------'
   - '&emc.yourserver.net'
 blacklisted:
   - '&4Ultimate&cAnti&fBot'

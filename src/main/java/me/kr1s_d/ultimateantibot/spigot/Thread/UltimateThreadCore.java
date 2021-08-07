@@ -7,6 +7,7 @@ import me.kr1s_d.ultimateantibot.spigot.Task.AutoWhitelistTask;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 import me.kr1s_d.ultimateantibot.spigot.Utils.Counter;
 import me.kr1s_d.ultimateantibot.spigot.Utils.Utils;
+import me.kr1s_d.ultimateantibot.spigot.data.AntibotInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,6 +18,7 @@ public class UltimateThreadCore {
     private final AntibotManager antibotManager;
     private int count;
     private final Config config;
+    private final AntibotInfo antibotInfo;
 
     public UltimateThreadCore(UltimateAntibotSpigot plugin){
         this.plugin = plugin;
@@ -24,6 +26,7 @@ public class UltimateThreadCore {
         this.antibotManager = plugin.getAntibotManager();
         this.count = 0;
         this.config = plugin.getConfigYml();
+        this.antibotInfo = plugin.getAntibotInfo();
     }
 
     public void enable(){
@@ -41,6 +44,9 @@ public class UltimateThreadCore {
                             .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                     );
                 }
+                antibotInfo.setBotSecond(counter.getBotSecond());
+                antibotInfo.setPingSecond(counter.getPingSecond());
+                antibotInfo.setCheckSecond(counter.getCheckPerSecond());
                 counter.setBotSecond(0L);
                 counter.setPingSecond(0L);
                 counter.setJoinPerSecond(0L);
@@ -90,6 +96,7 @@ public class UltimateThreadCore {
                 plugin.getUpdater().checkNotification();
         Utils.debug(Utils.prefix() + "&aBeatExaminal loaded...");
     }
+
     public void heartBeatMinimal(){
 
     }

@@ -139,6 +139,7 @@ public class antibotCommand implements CommandExecutor {
                 if(sender.hasPermission("ab.addwhitelist") || sender.hasPermission("ab.admin")){
                     antibotManager.addWhitelist(args[1]);
                 }
+                return true;
             case "addblacklist":
                 if(sender.hasPermission("ab.addblacklist") || sender.hasPermission("ab.admin")){
                     antibotManager.addBlackList(args[1]);
@@ -153,6 +154,7 @@ public class antibotCommand implements CommandExecutor {
                 if(sender.hasPermission("ab.removeblacklist") || sender.hasPermission("ab.admin")){
                     antibotManager.removeBlackList(args[1]);
                 }
+                return true;
             case "stats":
                 if(sender.hasPermission("ab.stats") || sender.hasPermission("ab.admin")){
                     sender.sendMessage("§8§l§n___________________________________________");
@@ -164,7 +166,6 @@ public class antibotCommand implements CommandExecutor {
                                 .replace("$2", String.valueOf(counter.getPingSecond()))
                                 .replace("$3", String.valueOf(antibotManager.getQueue().size()))
                                 .replace("$4", String.valueOf(counter.getJoined().size()))
-                                .replace("$5", String.valueOf(counter.getFirstjoin().size()))
                                 .replace("$6", String.valueOf(antibotManager.getWhitelist().size()))
                                 .replace("$7", String.valueOf(antibotManager.getBlacklist().size()))
                                 .replace("$8", String.valueOf(counter.getTotalBot()))
@@ -179,6 +180,7 @@ public class antibotCommand implements CommandExecutor {
                     plugin.reload();
                     sender.sendMessage(Utils.colora(messages.getString("reload")));
                 }
+                return true;
         }
         return true;
     }

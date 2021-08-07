@@ -1,16 +1,18 @@
 package me.kr1s_d.ultimateantibot.spigot.Event;
 
+import me.kr1s_d.ultimateantibot.spigot.Checks.SlowJoinCheck;
 import me.kr1s_d.ultimateantibot.spigot.service.QueueService;
 import me.kr1s_d.ultimateantibot.commons.ModeType;
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
-import me.kr1s_d.ultimateantibot.spigot.Checks.SlowDetect;
+import me.kr1s_d.ultimateantibot.spigot.Checks.DisconnectCheck;
 import me.kr1s_d.ultimateantibot.spigot.Checks.TimerCheck;
-import me.kr1s_d.ultimateantibot.spigot.Checks.UltimateAnalyzer;
+import me.kr1s_d.ultimateantibot.spigot.Checks.TimerAnalyzer;
 import me.kr1s_d.ultimateantibot.spigot.Database.Config;
 import me.kr1s_d.ultimateantibot.spigot.Task.*;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 import me.kr1s_d.ultimateantibot.spigot.Utils.Counter;
 import me.kr1s_d.ultimateantibot.spigot.Utils.Utils;
+import me.kr1s_d.ultimateantibot.spigot.user.UserInfo;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,9 +28,11 @@ public class PreloginListener implements Listener {
     private final Counter counter;
     private final Config messages;
     private final TimerCheck timerCheck;
-    private final UltimateAnalyzer ultimateAnalyzer;
+    private final TimerAnalyzer timerAnalyzer;
     private final Config config;
     private final QueueService queueService;
+    private SlowJoinCheck slowJoinCheck;
+    private UserInfo userInfo;
 
     public PreloginListener (UltimateAntibotSpigot plugin){
         this.plugin = plugin;
@@ -36,9 +40,11 @@ public class PreloginListener implements Listener {
         this.counter = plugin.getCounter();
         this.messages = plugin.getMessageYml();
         this.timerCheck = new TimerCheck(plugin);
-        this.ultimateAnalyzer = new UltimateAnalyzer(plugin);
+        this.timerAnalyzer = new TimerAnalyzer(plugin);
         this.config = plugin.getConfigYml();
         this.queueService = plugin.getQueueService();
+        this.slowJoinCheck = plugin.getSlowJoinCheck();
+        this.userInfo = plugin.getUserInfo();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -74,26 +80,21 @@ public class PreloginListener implements Listener {
             antibotManager.removeQueue(ip);
         }
 
-        if(antibotManager.getWhitelist().contains(ip)){
-            return;
-        }
         if(antibotManager.getBlacklist().contains(ip)){
             e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, convertToString(Utils.coloralista(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("blacklisted"), "$1", blacklisttime()))));
+            antibotManager.removeWhitelist(ip);
+            return;
+        }
+
+        if(antibotManager.getWhitelist().contains(ip)){
             return;
         }
 
         /**
          * First Join
          */
-        if(config.getBoolean("checks.first_join.enabled")) {
-            if (!antibotManager.isOnline()) {
-                if (!counter.isFirstJoin(ip)) {
-                    if (!antibotManager.getWhitelist().contains(ip)) {
-                        counter.addFirstJoin(ip);
-                        e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, convertToString(Utils.coloralista(messages.getStringList("first_join"))));
-                    }
-                }
-            }
+        if(userInfo.checkFirstJoin(e, ip)){
+            return;
         }
         /**
          * Queue
@@ -112,11 +113,7 @@ public class PreloginListener implements Listener {
          */
         if(counter.getJoinPerSecond() > plugin.getConfigYml().getLong("antibotmode.trigger") && percentualeBlacklistata < plugin.getConfigYml().getLong("safemode.percent")){
             if(!antibotManager.isOnline()) {
-                antibotManager.setSafeAntiBotMode(false);
-                antibotManager.setAntibotModeStatus(true);
-                antibotManager.setPingMode(false);
-                antibotManager.setModeType(ModeType.ANTIBOTMODE);
-                new AntibotModeDisable(plugin).disable();
+                antibotManager.enableAntibotMode();
             }
         }
 
@@ -126,11 +123,7 @@ public class PreloginListener implements Listener {
         if(counter.getCheckPerSecond() < plugin.getConfigYml().getLong("safemode.modifier") && counter.getJoinPerSecond() > plugin.getConfigYml().getLong("antibotmode.trigger")){
             if(percentualeBlacklistata >= plugin.getConfigYml().getLong("safemode.percent")) {
                 if(!antibotManager.isSafeAntiBotModeOnline()) {
-                    antibotManager.setAntibotModeStatus(false);
-                    antibotManager.setSafeAntiBotMode(true);
-                    antibotManager.setPingMode(false);
-                    antibotManager.setModeType(ModeType.SAFEMODE);
-                    new SafemodeDisableListener(plugin).start();
+                    antibotManager.enableSafeMode();
                 }
             }
         }
@@ -151,10 +144,10 @@ public class PreloginListener implements Listener {
             }
             if(!timerCheck.isWaitingResponse(ip)){
                 counter.analyzeHard(ip, plugin.getConfigYml().getInt("checks.timer.increaser"));
-                ultimateAnalyzer.reset(ip);
+                timerAnalyzer.reset(ip);
             }else{
-                ultimateAnalyzer.analyzeHard(ip, 1);
-                if(ultimateAnalyzer.getAnalyzeStatus(ip) >= plugin.getConfigYml().getInt("checks.timer.repeat")){
+                timerAnalyzer.analyzeHard(ip, 1);
+                if(timerAnalyzer.getAnalyzeStatus(ip) >= plugin.getConfigYml().getInt("checks.timer.repeat")){
                     antibotManager.addWhitelist(ip);
                     new TimedWhitelist(plugin).check(ip);
                 }
@@ -162,7 +155,7 @@ public class PreloginListener implements Listener {
             if(antibotManager.getWhitelist().contains(ip)){
                 e.setLoginResult(AsyncPlayerPreLoginEvent.Result.ALLOWED);
             }else{
-                e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, convertToString(Utils.coloralista(Utils.coloraListaConReplaceDueVolte(messages.getStringList("safe_mode"), "$1", String.valueOf(checktime), "$2", String.valueOf(String.valueOf(Math.round(plugin.getConfigYml().getInt("checks.timer.repeat") - ultimateAnalyzer.getAnalyzeStatus(ip))))))));
+                e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, convertToString(Utils.coloralista(Utils.coloraListaConReplaceDueVolte(messages.getStringList("safe_mode"), "$1", String.valueOf(checktime), "$2", String.valueOf(String.valueOf(Math.round(plugin.getConfigYml().getInt("checks.timer.repeat") - timerAnalyzer.getAnalyzeStatus(ip))))))));
             }
         }
 
@@ -190,29 +183,15 @@ public class PreloginListener implements Listener {
     @EventHandler
     public void onLoginEvent(PlayerJoinEvent e){
         Player p = e.getPlayer();
-        String  ip = e.getPlayer().getAddress().getAddress().getHostAddress();
+        String  ip = Utils.getIP(p);
+        slowJoinCheck.maxAccountCheck(ip);
         if(!antibotManager.getWhitelist().contains(ip)) {
             new AutoWhitelistTask(plugin, p).start();
-            new SlowDetect(plugin).check(p);
+            new DisconnectCheck(plugin).check(p);
             counter.addJoined(p);
             new TempJoin(plugin, p).clear();
         }
 
-        /**
-         * Slow-mode Cecks
-         */
-        if(antibotManager.isOnline()){
-            if(config.getBoolean("checks.slowmode.disconnect")) {
-                disconnectBots();
-            }
-        }
-    }
-
-    public void disconnectBots(){
-        for(Player p : counter.getJoined()){
-            p.kickPlayer(convertToString(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("safe_mode"), "$1", "3")));
-        }
-        counter.getFirstjoin().clear();
     }
 
     public String convertToString(List<String> stringList) {

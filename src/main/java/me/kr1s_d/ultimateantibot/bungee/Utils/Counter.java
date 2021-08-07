@@ -16,7 +16,6 @@ public class Counter {
     private long joinPerSecond;
     private Map<String, Integer> analyzer;
     private final List<ProxiedPlayer> joined;
-    private final List<String> firstjoin;
     private long check;
     private final Map<String, Integer> safemodeping;
     private final List<String> stuffs;
@@ -30,7 +29,6 @@ public class Counter {
         this.joinPerSecond = 0L;
         this.analyzer = new HashMap<>();
         this.joined = new ArrayList<>();
-        this.firstjoin = new ArrayList<>();
         this.check = 0L;
         this.safemodeping = new HashMap<>();
         this.stuffs = new ArrayList<>();
@@ -182,23 +180,6 @@ public class Counter {
 
     public void removeJoined(ProxiedPlayer p){
         joined.remove(p);
-    }
-
-    public List<String> getFirstjoin() {
-        return firstjoin;
-    }
-
-    public boolean isFirstJoin(String ip){
-        if(firstjoin.contains(ip)){
-            return true;
-        }
-        return false;
-    }
-
-    public void addFirstJoin(String ip){
-        if(!firstjoin.contains(ip)){
-            firstjoin.add(ip);
-        }
     }
 
     public long getCheckPerSecond() {

@@ -1,13 +1,19 @@
 package me.kr1s_d.ultimateantibot.bungee;
 
+import me.kr1s_d.ultimateantibot.bungee.Checks.SlowJoinCheck;
 import me.kr1s_d.ultimateantibot.bungee.Commands.antibotComands;
 import me.kr1s_d.ultimateantibot.bungee.Database.Config;
+import me.kr1s_d.ultimateantibot.bungee.Event.AntibotModeListener;
 import me.kr1s_d.ultimateantibot.bungee.Event.PingListener;
 import me.kr1s_d.ultimateantibot.bungee.Event.PreloginEventListener;
 import me.kr1s_d.ultimateantibot.bungee.Filter.LoadFilter;
 import me.kr1s_d.ultimateantibot.bungee.Thread.UltimateThreadCore;
 import me.kr1s_d.ultimateantibot.bungee.Utils.*;
+import me.kr1s_d.ultimateantibot.bungee.data.AntibotInfo;
 import me.kr1s_d.ultimateantibot.bungee.service.QueueService;
+import me.kr1s_d.ultimateantibot.bungee.service.WhitelistService;
+import me.kr1s_d.ultimateantibot.bungee.user.UserData;
+import me.kr1s_d.ultimateantibot.bungee.user.UserInfo;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -22,20 +28,30 @@ public final class UltimateAntibotWaterfall extends Plugin {
     private Configuration message;
     private Configuration whitelist;
     private Configuration blacklist;
+    private Configuration database;
     private Metrics metrics;
     private Updater updater;
     private FilesUpdater filesUpdater;
     private LoadFilter loadFilter;
     private QueueService queueService;
+    private UserInfo userInfo;
+    private WhitelistService whitelistService;
+    private SlowJoinCheck slowJoinCheck;
+    private AntibotInfo antibotInfo;
+    private UserData userData;
 
     @Override
     public void onEnable() {
+        long a = System.currentTimeMillis();
         this.configmanager = new Config(this);
         configmanager.createConfiguration("%datafolder%/config.yml");
         configmanager.createConfiguration("%datafolder%/messages.yml");
         configmanager.createConfiguration("%datafolder%/whitelist.yml");
        // configmanager.createConfiguration("%datafolder%/blacklist.yml");
+        configmanager.createConfiguration("%datafolder%/database.yml");
         reload();
+        long b = System.currentTimeMillis() - a;
+        Utils.debug("&eTook " + b + " ms");
     }
 
     public void reload(){
@@ -44,9 +60,10 @@ public final class UltimateAntibotWaterfall extends Plugin {
         message = configmanager.getConfiguration("%datafolder%/messages.yml");
         whitelist = configmanager.getConfiguration("%datafolder%/whitelist.yml");
         //blacklist = configmanager.getConfiguration("%datafolder%/blacklist.yml");
-        loadWhitelist();
+        database = configmanager.getConfiguration("%datafolder%/database.yml");
         updater = new Updater(this);
         metrics = new Metrics(this, 11712);
+        antibotInfo = new AntibotInfo();
         antibotManager = new AntibotManager(this);
         counter = new Counter();
         core = new UltimateThreadCore(this);
@@ -54,29 +71,36 @@ public final class UltimateAntibotWaterfall extends Plugin {
         core.heartBeatMinimal();
         core.hearthBeatMaximal();
         core.hearthBeatExaminal();
-        utils.debug(utils.prefix() + "&aLoaded $1 Whitelisted Ips".replace("$1", String.valueOf(antibotManager.getWhitelist().size())));
+        userData = new UserData();
         configmanager = new Config(this);
         filesUpdater = new FilesUpdater(this);
         filesUpdater.check();
         loadFilter = new LoadFilter(this);
         loadFilter.setupFilter();
         queueService = new QueueService(this);
+        userInfo = new UserInfo(this);
+        whitelistService = new WhitelistService(this);
+        whitelistService.loadWhitelist();
+        slowJoinCheck = new SlowJoinCheck(this);
+        userInfo.loadFirstJoin();
         getProxy().getPluginManager().registerCommand(this, new antibotComands(this));
         getProxy().getPluginManager().registerListener(this, new PingListener(this));
         getProxy().getPluginManager().registerListener(this, new PreloginEventListener(this));
+        getProxy().getPluginManager().registerListener(this, new AntibotModeListener(this));
         sendLogo();
-        utils.debug(utils.colora(utils.prefix() + "&aRunning version " + this.getDescription().getVersion()));
-        utils.debug(utils.colora(utils.prefix() + "&aEnabled"));
+        Utils.debug(Utils.colora(Utils.prefix() + "&aRunning version " + this.getDescription().getVersion()));
+        Utils.debug(Utils.colora(Utils.prefix() + "&aEnabled"));
     }
 
     @Override
     public void onDisable() {
-        utils.debug("&aSaving Files");
-        utils.debug("&AThanks for choosing us!");
-        for(String str : antibotManager.getWhitelist()){
-            message.set("data." + str, 0);
-        }
-        configmanager.saveConfiguration(whitelist,"%datafolder%/whitelist.yml");
+        long a = System.currentTimeMillis();
+        Utils.debug(Utils.prefix() + "&aSaving Files");
+        Utils.debug(Utils.prefix() + "&AThanks for choosing us!");
+        whitelistService.saveWhitelist(configmanager);
+        userInfo.save(configmanager);
+        long b = System.currentTimeMillis() - a;
+        Utils.debug(Utils.prefix() + String.format("&eTook %s ms", b));
     }
 
     public Counter getCounter() {
@@ -107,6 +131,10 @@ public final class UltimateAntibotWaterfall extends Plugin {
         return whitelist;
     }
 
+    public Configuration getDatabaseYml() {
+        return database;
+    }
+
     public Config getConfigmanager() {
         return configmanager;
     }
@@ -116,16 +144,12 @@ public final class UltimateAntibotWaterfall extends Plugin {
     }
 
     public void sendLogo(){
-        utils.debug(utils.prefix() + "&a _    _         ____ ");
-        utils.debug(utils.prefix() + "&a| |  | |  /\\   |  _ \\ ");
-        utils.debug(utils.prefix() + "&a| |  | | /  \\  | |_) |");
-        utils.debug(utils.prefix() + "&a| |  | |/ /\\ \\ |  _ <");
-        utils.debug(utils.prefix() + "&a| |__| / ____ \\| |_) |");
-        utils.debug(utils.prefix() + "&a\\____/_/     \\_\\____/");
-    }
-    public void loadWhitelist(){
-        utils.debug(utils.prefix() + "&aWhitelist Loading data not Set!");
-        utils.debug(utils.prefix() + "&cAborting");
+        Utils.debug(Utils.prefix() + "&a _    _         ____ ");
+        Utils.debug(Utils.prefix() + "&a| |  | |  /\\   |  _ \\ ");
+        Utils.debug(Utils.prefix() + "&a| |  | | /  \\  | |_) |");
+        Utils.debug(Utils.prefix() + "&a| |  | |/ /\\ \\ |  _ <");
+        Utils.debug(Utils.prefix() + "&a| |__| / ____ \\| |_) |");
+        Utils.debug(Utils.prefix() + "&a\\____/_/     \\_\\____/");
     }
 
     public Updater getUpdater() {
@@ -138,5 +162,21 @@ public final class UltimateAntibotWaterfall extends Plugin {
 
     public QueueService getQueueService() {
         return queueService;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public SlowJoinCheck getSlowJoinCheck() {
+        return slowJoinCheck;
+    }
+
+    public AntibotInfo getAntibotInfo() {
+        return antibotInfo;
+    }
+
+    public UserData getUserData() {
+        return userData;
     }
 }

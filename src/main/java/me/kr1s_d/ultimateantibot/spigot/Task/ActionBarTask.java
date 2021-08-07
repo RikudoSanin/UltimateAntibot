@@ -3,6 +3,7 @@ package me.kr1s_d.ultimateantibot.spigot.Task;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 import me.kr1s_d.ultimateantibot.spigot.Utils.Counter;
 import me.kr1s_d.ultimateantibot.spigot.Utils.Utils;
+import me.kr1s_d.ultimateantibot.spigot.data.AntibotInfo;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,17 +14,20 @@ public class ActionBarTask {
     private final Player player;
     private final Counter counter;
     private final List<Player> toggledPlayers;
+    private final AntibotInfo antibotInfo;
 
     public ActionBarTask(UltimateAntibotSpigot plugin, Player player, List<Player> toggledPlayers){
         this.plugin = plugin;
         this.player = player;
         this.counter = plugin.getCounter();
         this.toggledPlayers = toggledPlayers;
+        this.antibotInfo = plugin.getAntibotInfo();
     }
 
     public void mainData() {
-        long botSec = counter.getBotSecond();
-        long pingSec = counter.getPingSecond();
+        long botSec = antibotInfo.getBotSecond();
+        long pingSec = antibotInfo.getPingSecond();
+        long checkSec = antibotInfo.getCheckSecond();
         long botTotal = counter.getTotalBot();
         long pingTotal = counter.getTotalPing();
         String actionbarOnAttack = Utils.colora(Utils.prefix() + plugin.getMessageYml().getString("actionbar.antibot_mode"))
@@ -31,7 +35,7 @@ public class ActionBarTask {
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
-                .replace("$5", String.valueOf(counter.getCheckPerSecond()))
+                .replace("$5", String.valueOf(checkSec))
                 .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
         String actionbaronSafemodeattack = Utils.colora(Utils.prefix() + plugin.getMessageYml().getString("actionbar.safe_mode"))
@@ -39,7 +43,7 @@ public class ActionBarTask {
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
-                .replace("$5", String.valueOf(counter.getCheckPerSecond()))
+                .replace("$5", String.valueOf(checkSec))
                 .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
         String actionbarOnSafe = Utils.colora(Utils.prefix() + plugin.getMessageYml().getString("actionbar.no-attack"))
@@ -47,7 +51,7 @@ public class ActionBarTask {
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                 .replace("$4", String.valueOf(plugin.getAntibotManager().getWhitelist().size()))
-                .replace("$5", String.valueOf(counter.getCheckPerSecond()))
+                .replace("$5", String.valueOf(checkSec))
                 .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
         if(plugin.getAntibotManager().isOnline()){
@@ -70,6 +74,6 @@ public class ActionBarTask {
                 }
                 mainData();
             }
-        }.runTaskTimer(plugin,0, 1L);
+        }.runTaskTimer(plugin,0, 3L);
     }
 }

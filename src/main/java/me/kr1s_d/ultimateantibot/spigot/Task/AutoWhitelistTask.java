@@ -37,7 +37,7 @@ public class AutoWhitelistTask {
                     }
                 }
                 if(player.isOnline()){
-                    antibotManager.getWhitelist().add(ip);
+                    antibotManager.addWhitelist(ip);
                 }
                 antibotManager.getQueue().remove(ip);
             }
