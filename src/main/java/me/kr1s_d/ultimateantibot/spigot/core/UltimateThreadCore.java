@@ -1,8 +1,7 @@
-package me.kr1s_d.ultimateantibot.spigot.Thread;
+package me.kr1s_d.ultimateantibot.spigot.core;
 
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
 import me.kr1s_d.ultimateantibot.spigot.Database.Config;
-import me.kr1s_d.ultimateantibot.spigot.Filter.LogFilter;
 import me.kr1s_d.ultimateantibot.spigot.Task.AutoWhitelistTask;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 import me.kr1s_d.ultimateantibot.spigot.Utils.Counter;

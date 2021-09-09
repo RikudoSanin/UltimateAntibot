@@ -19,6 +19,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -184,7 +186,7 @@ public class PreloginListener implements Listener {
     public void onLoginEvent(PlayerJoinEvent e){
         Player p = e.getPlayer();
         String  ip = Utils.getIP(p);
-        slowJoinCheck.maxAccountCheck(ip);
+        slowJoinCheck.maxAccountCheck(ip, e.getPlayer());
         if(!antibotManager.getWhitelist().contains(ip)) {
             new AutoWhitelistTask(plugin, p).start();
             new DisconnectCheck(plugin).check(p);
@@ -192,6 +194,13 @@ public class PreloginListener implements Listener {
             new TempJoin(plugin, p).clear();
         }
 
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e){
+        Player p = e.getPlayer();
+        String ip = Utils.getIP(p);
+        slowJoinCheck.removeFromOnline(ip, p);
     }
 
     public String convertToString(List<String> stringList) {

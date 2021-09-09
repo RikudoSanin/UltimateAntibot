@@ -2,17 +2,23 @@ package me.kr1s_d.ultimateantibot.bungee.Filter;
 
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import net.md_5.bungee.api.ProxyServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
-public class LoadFilter {
-    private final BungeeFilter bungeeFilter;
-    private final WaterfallFilter waterfallFilter;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-    public LoadFilter(UltimateAntibotWaterfall plugin){
-        this.bungeeFilter = new BungeeFilter(plugin);
+public class FilterManager {
+    private UltimateAntibotWaterfall ultimateAntibotWaterfall;
+    private final WaterfallFilter waterfallFilter;
+    private final BungeeFilter bungeeFilter;
+
+    public FilterManager(UltimateAntibotWaterfall plugin){
+        this.ultimateAntibotWaterfall = plugin;
         this.waterfallFilter = new WaterfallFilter(plugin);
+        this.bungeeFilter = new BungeeFilter(plugin);
     }
 
     public void setupFilter(){

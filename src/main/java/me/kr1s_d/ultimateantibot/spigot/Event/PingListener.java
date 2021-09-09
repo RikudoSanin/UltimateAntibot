@@ -44,9 +44,7 @@ public class PingListener implements Listener {
          */
         if(counter.getPingSecond() > plugin.getConfigYml().getLong("pingmode.trigger") && !antibotManager.isOnline() && !antibotManager.isSafeAntiBotModeOnline()){
             if(!antibotManager.isPingModeOnline()){
-                antibotManager.setPingMode(true);
-                antibotManager.setModeType(ModeType.PING);
-                new PingModeDisabler(plugin).clear();
+                antibotManager.enablePingMode();
             }
         }
         if(antibotManager.isPingModeOnline()) {

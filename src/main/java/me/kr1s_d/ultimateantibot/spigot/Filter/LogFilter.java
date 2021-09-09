@@ -1,6 +1,7 @@
 package me.kr1s_d.ultimateantibot.spigot.Filter;
 
 
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
@@ -19,7 +20,7 @@ public class LogFilter implements Filter {
     }
 
     public Result checkMessage(String message) {
-        List<String> lista = plugin.getConfigYml().getStringList("filter");
+        List<String> lista = ConfigManager.getFilterMessages();
         for(String controlla : lista){
             if(message.contains(controlla)){
                 return Result.DENY;

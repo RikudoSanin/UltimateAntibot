@@ -4,6 +4,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
@@ -53,6 +54,10 @@ public class Utils {
 
     public static String getIP(ProxiedPlayer player){
         return player.getAddress().getAddress().toString();
+    }
+
+    public static String getIP(PendingConnection connection){
+        return connection.getAddress().getAddress().toString();
     }
 
     public static String convertToString(List<String> stringList) {

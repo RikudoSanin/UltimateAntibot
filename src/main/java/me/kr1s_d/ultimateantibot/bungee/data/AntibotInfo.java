@@ -2,14 +2,16 @@ package me.kr1s_d.ultimateantibot.bungee.data;
 
 public class AntibotInfo {
 
-    public long botSecond;
-    public long pingSecond;
-    public long checkSecond;
+    private long botSecond;
+    private long pingSecond;
+    private long checkSecond;
+    private long handShakeSecond;
 
     public AntibotInfo() {
         this.botSecond = 0L;
         this.pingSecond = 0L;
         this.checkSecond = 0L;
+        this.handShakeSecond = 0L;
     }
 
     public long getBotSecond() {
@@ -34,5 +36,13 @@ public class AntibotInfo {
 
     public void setCheckSecond(long checkSecond) {
         this.checkSecond = checkSecond;
+    }
+
+    public long getHandShakeSecond() {
+        return handShakeSecond;
+    }
+
+    public void setHandShakeSecond(long handShakeSecond) {
+        this.handShakeSecond = handShakeSecond;
     }
 }

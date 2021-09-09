@@ -1,25 +1,21 @@
 package me.kr1s_d.ultimateantibot.bungee.Task;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
-import me.kr1s_d.ultimateantibot.commons.ModeType;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
+import me.kr1s_d.ultimateantibot.commons.ModeType;
 import net.md_5.bungee.api.ProxyServer;
 
 import java.util.concurrent.TimeUnit;
 
-public class PingModeDisabler {
-    private final UltimateAntibotWaterfall plugin;
+public class HandShakeModeDisable {
+
     private final AntibotManager antibotManager;
 
-    public PingModeDisabler(UltimateAntibotWaterfall plugin){
-        this.plugin = plugin;
+    public HandShakeModeDisable(UltimateAntibotWaterfall plugin){
         this.antibotManager = plugin.getAntibotManager();
-    }
-
-    public void clear(){
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
-            antibotManager.setPingMode(false);
+            antibotManager.setHandShakeModeStatus(false);
             antibotManager.setModeType(ModeType.OFFLINE);
-        }, plugin.getConfigYml().getLong("pingmode.keep"), TimeUnit.SECONDS);
+        }, plugin.getConfigYml().getLong("handshakemode.keep"), TimeUnit.SECONDS);
     }
 }

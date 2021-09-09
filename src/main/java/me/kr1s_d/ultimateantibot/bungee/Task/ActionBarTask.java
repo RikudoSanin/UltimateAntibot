@@ -65,7 +65,18 @@ public class ActionBarTask {
             if(plugin.getAntibotManager().isSafeAntiBotModeOnline() || plugin.getAntibotManager().isPingModeOnline()){
                 player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbaronSafemodeattack));
             }else {
-                player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbarOnSafe));
+                if(plugin.getAntibotManager().isHandShakeModeOnline()){
+                        player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Utils.colora(Utils.prefix() +
+                                plugin.getMessageYml().getString("actionbar.handshake")
+                                .replace("$1", String.valueOf(antibotInfo.getHandShakeSecond()))
+                                .replace("$2", String.valueOf(plugin.getAntibotManager().getQueue().size()))
+                                .replace("$3", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
+                                .replace("$4", String.valueOf(counter.getCheckPerSecond()))
+                                .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
+                        )));
+                }else{
+                    player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbarOnSafe));
+                }
             }
         }
     }
@@ -80,6 +91,6 @@ public class ActionBarTask {
                 mainData();
 
             }
-        },1, 400, TimeUnit.MILLISECONDS);
+        },1, 500, TimeUnit.MILLISECONDS);
     }
 }

@@ -3,16 +3,19 @@ package me.kr1s_d.ultimateantibot.bungee.Checks;
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class SlowJoinCheck {
     private final Configuration config;
     private final Configuration message;
     private final AntibotManager antibotManager;
-    private final Map<String, Integer> maxAccountIp;
+    private final Map<String, Set<ProxiedPlayer>> maxAccountIp;
     private final int accountLimit;
     private final boolean isEnabled;
 
@@ -30,18 +33,20 @@ public class SlowJoinCheck {
      * Chek Online Aomount
      */
 
-    public int getOnlineAccountAmount(String ip){
-        return maxAccountIp.getOrDefault(ip, 0);
+    public Set<ProxiedPlayer> getOnlineAccountAmount(String ip){
+        return maxAccountIp.getOrDefault(ip, new HashSet<>());
     }
 
     public void resetAccounts(String ip){
         maxAccountIp.remove(ip);
     }
 
-    public void maxAccountCheck(String ip) {
+    public void maxAccountCheck(String ip, ProxiedPlayer player) {
         if(isEnabled) {
-            maxAccountIp.put(ip, getOnlineAccountAmount(ip) + 1);
-            if (getOnlineAccountAmount(ip) >= accountLimit) {
+            Set<ProxiedPlayer> newList = getOnlineAccountAmount(ip);
+            newList.add(player);
+            maxAccountIp.put(ip, newList);
+            if (getOnlineAccountAmount(ip).size() >= accountLimit) {
                 resetAccounts(ip);
                 antibotManager.enableAntibotMode();
                 Utils.disconnectPlayerFromIp(ip, message.getStringList("account-online"));
@@ -51,6 +56,10 @@ public class SlowJoinCheck {
                 }
             }
         }
+    }
+
+    public void removeFromOnline(String ip, ProxiedPlayer p){
+        getOnlineAccountAmount(ip).remove(p);
     }
 
 

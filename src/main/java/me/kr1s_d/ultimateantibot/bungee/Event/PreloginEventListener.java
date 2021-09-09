@@ -14,6 +14,7 @@ import me.kr1s_d.ultimateantibot.bungee.Checks.TimerAnalyzer;
 import me.kr1s_d.ultimateantibot.bungee.Task.*;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -52,6 +53,7 @@ public class PreloginEventListener implements Listener {
 
     @EventHandler(priority = -128)
     public void onPreloginEvent(PreLoginEvent e){
+        Utils.debug(e.getConnection().getName());
         String ip =  e.getConnection().getAddress().getAddress().toString();
         int blacklistAmount = antibotManager.getBlacklist().size();
         int queueAmount = antibotManager.getQueue().size();
@@ -189,13 +191,20 @@ public class PreloginEventListener implements Listener {
     public void onLoginEvent(PostLoginEvent e){
         ProxiedPlayer p = e.getPlayer();
         String ip = Utils.getIP(p);
-        slowJoinCheck.maxAccountCheck(ip);
+        slowJoinCheck.maxAccountCheck(ip, p);
         if(!antibotManager.getWhitelist().contains(ip)) {
             new AutoWhitelistTask(plugin, p).start();
             new DisconnectCheck(plugin).checkDisconnect(p);
             counter.addJoined(p);
             new TempJoin(plugin, p).clear();
         }
+    }
+
+    @EventHandler
+    public void onUnlogin(PlayerDisconnectEvent e){
+        ProxiedPlayer p = e.getPlayer();
+        String ip = Utils.getIP(p);
+        slowJoinCheck.removeFromOnline(ip, p);
     }
 
     public String convertToString(List<String> stringList) {

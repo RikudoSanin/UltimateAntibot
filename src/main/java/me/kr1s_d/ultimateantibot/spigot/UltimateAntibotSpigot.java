@@ -1,5 +1,6 @@
 package me.kr1s_d.ultimateantibot.spigot;
 
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.spigot.Checks.SlowJoinCheck;
 import me.kr1s_d.ultimateantibot.spigot.Commands.antibotCommand;
 import me.kr1s_d.ultimateantibot.spigot.Database.Config;
@@ -7,7 +8,7 @@ import me.kr1s_d.ultimateantibot.spigot.Event.AntibotModeListener;
 import me.kr1s_d.ultimateantibot.spigot.Event.PingListener;
 import me.kr1s_d.ultimateantibot.spigot.Event.PreloginListener;
 import me.kr1s_d.ultimateantibot.spigot.Filter.LogFilter;
-import me.kr1s_d.ultimateantibot.spigot.Thread.UltimateThreadCore;
+import me.kr1s_d.ultimateantibot.spigot.core.UltimateThreadCore;
 import me.kr1s_d.ultimateantibot.spigot.Utils.*;
 import me.kr1s_d.ultimateantibot.spigot.data.AntibotInfo;
 import me.kr1s_d.ultimateantibot.spigot.service.QueueService;
@@ -56,12 +57,18 @@ public class UltimateAntibotSpigot extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        long a = System.currentTimeMillis();
+        Utils.debug(Utils.prefix() + "&aSaving Files");
+        Utils.debug(Utils.prefix() + "&AThanks for choosing us!");
+        whitelistService.saveWhitelist();
+        userInfo.save();
+        long b = System.currentTimeMillis() - a;
+        Utils.debug(Utils.prefix() + String.format("&eTook %s ms", b));
     }
 
     public void reload(){
         Bukkit.getScheduler().cancelTasks(this);
-        loadWhitelist();
+        new ConfigManager(this);
         updater = new Updater(this);
         metrics = new Metrics(this, 11777);
         antibotInfo = new AntibotInfo();
@@ -106,10 +113,6 @@ public class UltimateAntibotSpigot extends JavaPlugin {
         Utils.debug(Utils.prefix() + "&a| |  | |/ /\\ \\ |  _ <");
         Utils.debug(Utils.prefix() + "&a| |__| / ____ \\| |_) |");
         Utils.debug(Utils.prefix() + "&a\\____/_/     \\_\\____/");
-    }
-    public void loadWhitelist(){
-        Utils.debug(Utils.prefix() + "&aWhitelist Loading data not Set!");
-        Utils.debug(Utils.prefix() + "&cAborting");
     }
 
     public FilesUpdater getFilesUpdater() {

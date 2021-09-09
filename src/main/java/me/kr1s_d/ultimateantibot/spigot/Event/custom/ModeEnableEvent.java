@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ModeEnableEvent extends Event implements Cancellable {
 
-    private UltimateAntibotSpigot antibotSpigot;
+    private final UltimateAntibotSpigot antibotSpigot;
     private final AntibotManager antibotManager;
     private final Counter counter;
     private final ModeType modeType;

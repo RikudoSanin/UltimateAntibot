@@ -14,6 +14,7 @@ public class Counter {
     private long totalPing;
     private long totalBot;
     private long joinPerSecond;
+    private long handshakeSecond;
     private Map<String, Integer> analyzer;
     private final List<ProxiedPlayer> joined;
     private long check;
@@ -27,6 +28,7 @@ public class Counter {
         this.totalPing = 0L;
         this.totalBot = 0L;
         this.joinPerSecond = 0L;
+        this.handshakeSecond = 0L;
         this.analyzer = new HashMap<>();
         this.joined = new ArrayList<>();
         this.check = 0L;
@@ -80,7 +82,7 @@ public class Counter {
         this.pingSecond = pingSecond + ping;
     }
 
-    public void  addTotalBot(long bot){
+    public void addTotalBot(long bot){
         this.totalBot = totalBot + bot;
     }
 
@@ -196,5 +198,17 @@ public class Counter {
 
     public Map<String, Integer> getPingAnalyZer() {
         return safemodeping;
+    }
+
+    public void setHandshakeSecond(long handshakeSecond) {
+        this.handshakeSecond = handshakeSecond;
+    }
+
+    public long getHandshakeSecond() {
+        return handshakeSecond;
+    }
+
+    public void increaseHandShake(){
+        handshakeSecond++;
     }
 }

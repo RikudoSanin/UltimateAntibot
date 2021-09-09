@@ -1,4 +1,4 @@
-version: 2.6
+version: 2.8
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -39,6 +39,17 @@ pingmode:
   #Send the server logo during a ping attack?
   send_info: false
 
+#Works Only on Bungeecord Waterfall ect...
+handshakemode:
+  #Duration of handshakemode
+  keep: 10
+  #How many handshake in 1 second to enable?
+  trigger: 150 #Set (Your online players * 4) | If you have 40 average online players you have to do 40 x 3 and the result will be the value to write
+  #if the handshake has an invalid protocol do I have to blacklist it?
+  blacklist_protocol: true
+  #Enable this mode?
+  enabled: true
+
 #Minimum online time to be whitelisted
 playtime_for_whitelist: 2 #minutes
 
@@ -72,7 +83,7 @@ blacklist:
   #Increaser Only used with ping attacks!
   ping_mode: 5
   #strange situation
-  strange: 26
+  strange: 10
 
 checks:
   #first join check
@@ -125,6 +136,9 @@ filter: #works on Waterfall Spigot & PaperSpigot no on BungeeCord
   - 'read timed out'
   - 'to process!'
   - 'Empty Packet!'
+  - 'corrupted'
+  - 'has pinged'
+  - 'has connected'
   - 'bad packet ID'
   - 'InitialHandler - encountered exception'
   - 'com.mojang.authlib'

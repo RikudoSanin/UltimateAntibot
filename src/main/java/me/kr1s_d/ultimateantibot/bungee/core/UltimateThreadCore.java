@@ -1,4 +1,4 @@
-package me.kr1s_d.ultimateantibot.bungee.Thread;
+package me.kr1s_d.ultimateantibot.bungee.core;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
 import me.kr1s_d.ultimateantibot.bungee.Task.AutoWhitelistTask;
@@ -38,9 +38,20 @@ public class UltimateThreadCore {
                         .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 );
             }
+            if(antibotManager.isHandShakeModeOnline() && !antibotManager.isOnline() && !antibotManager.isSafeAntiBotModeOnline() && !antibotManager.isPingModeOnline()){
+                Utils.debug(Utils.prefix() + plugin.getMessageYml().getString("console.handshake")
+                        .replace("$1", String.valueOf(counter.getHandshakeSecond()))
+                        .replace("$2", String.valueOf(plugin.getAntibotManager().getQueue().size()))
+                        .replace("$3", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
+                        .replace("$4", String.valueOf(counter.getCheckPerSecond()))
+                        .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
+                );
+            }
+            antibotInfo.setHandShakeSecond(counter.getHandshakeSecond());
             antibotInfo.setBotSecond(counter.getBotSecond());
             antibotInfo.setPingSecond(counter.getPingSecond());
             antibotInfo.setCheckSecond(counter.getCheckPerSecond());
+            counter.setHandshakeSecond(0);
             counter.setBotSecond(0L);
             counter.setPingSecond(0L);
             counter.setJoinPerSecond(0L);

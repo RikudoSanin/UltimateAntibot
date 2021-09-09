@@ -1,19 +1,22 @@
 package me.kr1s_d.ultimateantibot.bungee;
 
+import me.kr1s_d.ultimateantibot.bungee.Checks.HandShakeCheck;
 import me.kr1s_d.ultimateantibot.bungee.Checks.SlowJoinCheck;
 import me.kr1s_d.ultimateantibot.bungee.Commands.antibotComands;
 import me.kr1s_d.ultimateantibot.bungee.Database.Config;
 import me.kr1s_d.ultimateantibot.bungee.Event.AntibotModeListener;
+import me.kr1s_d.ultimateantibot.bungee.Event.HandShakeListener;
 import me.kr1s_d.ultimateantibot.bungee.Event.PingListener;
 import me.kr1s_d.ultimateantibot.bungee.Event.PreloginEventListener;
-import me.kr1s_d.ultimateantibot.bungee.Filter.LoadFilter;
-import me.kr1s_d.ultimateantibot.bungee.Thread.UltimateThreadCore;
+import me.kr1s_d.ultimateantibot.bungee.Filter.FilterManager;
+import me.kr1s_d.ultimateantibot.bungee.core.UltimateThreadCore;
 import me.kr1s_d.ultimateantibot.bungee.Utils.*;
 import me.kr1s_d.ultimateantibot.bungee.data.AntibotInfo;
 import me.kr1s_d.ultimateantibot.bungee.service.QueueService;
 import me.kr1s_d.ultimateantibot.bungee.service.WhitelistService;
 import me.kr1s_d.ultimateantibot.bungee.user.UserData;
 import me.kr1s_d.ultimateantibot.bungee.user.UserInfo;
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -32,13 +35,14 @@ public final class UltimateAntibotWaterfall extends Plugin {
     private Metrics metrics;
     private Updater updater;
     private FilesUpdater filesUpdater;
-    private LoadFilter loadFilter;
+    private FilterManager filterManager;
     private QueueService queueService;
     private UserInfo userInfo;
     private WhitelistService whitelistService;
     private SlowJoinCheck slowJoinCheck;
     private AntibotInfo antibotInfo;
     private UserData userData;
+    private HandShakeCheck handShakeCheck;
 
     @Override
     public void onEnable() {
@@ -61,11 +65,12 @@ public final class UltimateAntibotWaterfall extends Plugin {
         whitelist = configmanager.getConfiguration("%datafolder%/whitelist.yml");
         //blacklist = configmanager.getConfiguration("%datafolder%/blacklist.yml");
         database = configmanager.getConfiguration("%datafolder%/database.yml");
+        new ConfigManager(this);
+        counter = new Counter();
         updater = new Updater(this);
         metrics = new Metrics(this, 11712);
         antibotInfo = new AntibotInfo();
         antibotManager = new AntibotManager(this);
-        counter = new Counter();
         core = new UltimateThreadCore(this);
         core.enable();
         core.heartBeatMinimal();
@@ -75,18 +80,20 @@ public final class UltimateAntibotWaterfall extends Plugin {
         configmanager = new Config(this);
         filesUpdater = new FilesUpdater(this);
         filesUpdater.check();
-        loadFilter = new LoadFilter(this);
-        loadFilter.setupFilter();
+        filterManager = new FilterManager(this);
+        filterManager.setupFilter();
         queueService = new QueueService(this);
         userInfo = new UserInfo(this);
         whitelistService = new WhitelistService(this);
         whitelistService.loadWhitelist();
         slowJoinCheck = new SlowJoinCheck(this);
+        handShakeCheck = new HandShakeCheck(this);
         userInfo.loadFirstJoin();
         getProxy().getPluginManager().registerCommand(this, new antibotComands(this));
         getProxy().getPluginManager().registerListener(this, new PingListener(this));
         getProxy().getPluginManager().registerListener(this, new PreloginEventListener(this));
         getProxy().getPluginManager().registerListener(this, new AntibotModeListener(this));
+        getProxy().getPluginManager().registerListener(this, new HandShakeListener(this));
         sendLogo();
         Utils.debug(Utils.colora(Utils.prefix() + "&aRunning version " + this.getDescription().getVersion()));
         Utils.debug(Utils.colora(Utils.prefix() + "&aEnabled"));
@@ -178,5 +185,13 @@ public final class UltimateAntibotWaterfall extends Plugin {
 
     public UserData getUserData() {
         return userData;
+    }
+
+    public HandShakeCheck getHandShakeCheck() {
+        return handShakeCheck;
+    }
+
+    public FilterManager getFilterManager() {
+        return filterManager;
     }
 }

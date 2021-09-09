@@ -2,11 +2,14 @@ package me.kr1s_d.ultimateantibot.bungee;
 
 
 import me.kr1s_d.ultimateantibot.bungee.Event.custom.ModeEnableEvent;
+import me.kr1s_d.ultimateantibot.bungee.Filter.FilterManager;
 import me.kr1s_d.ultimateantibot.bungee.Task.AntibotModeDisable;
+import me.kr1s_d.ultimateantibot.bungee.Task.HandShakeModeDisable;
 import me.kr1s_d.ultimateantibot.bungee.Task.PingModeDisabler;
 import me.kr1s_d.ultimateantibot.bungee.Task.SafemodeDisableListener;
 import me.kr1s_d.ultimateantibot.commons.ModeType;
 import net.md_5.bungee.api.ProxyServer;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -16,6 +19,7 @@ public class AntibotManager {
     private boolean antibotModeStatus;
     private boolean safeAntiBotMode;
     private boolean pingMode;
+    private boolean handShakeMode;
     private final List<String> queue;
     private final List<String> whitelist;
     private final List<String> blacklist;
@@ -29,7 +33,16 @@ public class AntibotManager {
         this.whitelist = new ArrayList<>();
         this.blacklist = new ArrayList<>();
         this.pingMode = false;
+        this.handShakeMode = false;
         this.modeType = ModeType.OFFLINE;
+    }
+
+    public boolean isHandShakeModeOnline() {
+        return handShakeMode;
+    }
+
+    public void setHandShakeModeStatus(boolean handShakeMode) {
+        this.handShakeMode = handShakeMode;
     }
 
     public boolean isPingModeOnline() {
@@ -75,6 +88,8 @@ public class AntibotManager {
 
     public void addBlackList(String ip){
         if(!blacklist.contains(ip)) {
+            queue.remove(ip);
+            whitelist.remove(ip);
             blacklist.add(ip);
         }
     }
@@ -131,4 +146,17 @@ public class AntibotManager {
         new PingModeDisabler(plugin).clear();
         ProxyServer.getInstance().getPluginManager().callEvent(new ModeEnableEvent(plugin, ModeType.PING));
     }
+
+    public void enableHandShakeMode(){
+        if(plugin.getConfigYml().getBoolean("handshakemode.enabled")) {
+            setHandShakeModeStatus(true);
+            setModeType(ModeType.HANDSHAKE);
+            new HandShakeModeDisable(plugin);
+        }
+    }
+
+    public boolean isSomeModeOnline(){
+        return safeAntiBotMode || pingMode || antibotModeStatus || handShakeMode;
+    }
+
 }
