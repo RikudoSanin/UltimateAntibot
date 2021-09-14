@@ -12,10 +12,8 @@ public class Counter {
     private long totalPing;
     private long totalBot;
     private long joinPerSecond;
-    private Map<String, Integer> analyzer;
     private final List<Player> joined;
     private long check;
-    private final Map<String, Integer> safemodeping;
     private final List<String> stuffs;
 
 
@@ -25,10 +23,8 @@ public class Counter {
         this.totalPing = 0L;
         this.totalBot = 0L;
         this.joinPerSecond = 0L;
-        this.analyzer = new HashMap<>();
         this.joined = new ArrayList<>();
         this.check = 0L;
-        this.safemodeping = new HashMap<>();
         this.stuffs = new ArrayList<>();
     }
 
@@ -106,66 +102,6 @@ public class Counter {
         this.joinPerSecond = joinPerSecond;
     }
 
-    public Map<String, Integer> getAnalyzer() {
-        return analyzer;
-    }
-
-    public void setAnalyzer(Map<String, Integer> analyzer) {
-        this.analyzer = analyzer;
-    }
-
-    public void safeModeAnalyze(String ip) {
-        if(safemodeping.containsKey(ip)){
-            int count = safemodeping.get(ip);
-            safemodeping.remove(ip);
-            safemodeping.put(ip, count + 1);
-        }else{
-            safemodeping.put(ip, 1);
-        }
-    }
-
-    public void resetSafemodeAnalyzeStatus(String ip){
-        safemodeping.remove(ip);
-    }
-
-    public int getSafeModeAnalyzeStatus(String ip){
-        if (safemodeping.containsKey(ip)) {
-            return safemodeping.get(ip);
-        }
-        return 0;
-    }
-
-    public void analyzeIP(String ip){
-        if(analyzer.containsKey(ip)){
-            int count = analyzer.get(ip);
-            analyzer.remove(ip);
-            analyzer.put(ip, count + 1);
-        }else{
-            analyzer.put(ip, 1);
-        }
-    }
-
-    public void analyzeHard(String ip, int increaser){
-        if(analyzer.containsKey(ip)){
-            int count = analyzer.get(ip);
-            analyzer.remove(ip);
-            analyzer.put(ip, count + increaser);
-        }else{
-            analyzer.put(ip, 1);
-        }
-    }
-
-    public int getAnalyzeStatus(String ip){
-        if (analyzer.containsKey(ip)){
-            return analyzer.get(ip);
-        }
-        return 0;
-    }
-
-    public boolean isAnalyzed(String ip){
-        return analyzer.containsKey(ip);
-    }
-
     public List<Player> getJoined() {
         return joined;
     }
@@ -192,7 +128,4 @@ public class Counter {
         this.check = check;
     }
 
-    public Map<String, Integer> getPingAnalyZer() {
-        return safemodeping;
-    }
 }

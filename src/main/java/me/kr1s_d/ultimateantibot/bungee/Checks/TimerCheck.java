@@ -1,6 +1,7 @@
 package me.kr1s_d.ultimateantibot.bungee.Checks;
 
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import net.md_5.bungee.api.ProxyServer;
 
 import java.util.ArrayList;
@@ -11,11 +12,13 @@ public class TimerCheck {
     private final UltimateAntibotWaterfall plugin;
     private final List<String> pendingChecks;
     private final List<String> completedChecksWaiting;
+    private final ConfigManager configManager;
 
     public TimerCheck(UltimateAntibotWaterfall plugin){
         this.plugin = plugin;
         this.pendingChecks = new ArrayList<>();
         this.completedChecksWaiting = new ArrayList<>();
+        this.configManager = plugin.getConfigManager();
     }
 
     public void startCountDown(String ip, int waitTime){
@@ -46,6 +49,6 @@ public class TimerCheck {
             public void run() {
                 completedChecksWaiting.remove(ip);
             }
-        }, plugin.getConfigYml().getLong("checks.timer.between"), TimeUnit.MILLISECONDS);
+        }, configManager.getTimer_between(), TimeUnit.MILLISECONDS);
     }
 }

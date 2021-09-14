@@ -11,23 +11,17 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 
-import javax.naming.ldap.PagedResultsControl;
 import java.util.List;
 
 public class WaterfallFilter implements Filter {
-        private final UltimateAntibotWaterfall plugin;
-        private final AntibotManager antibotManager;
+        private final ConfigManager configManager;
 
     public WaterfallFilter(UltimateAntibotWaterfall plugin){
-        this.plugin = plugin;
-        this.antibotManager = plugin.getAntibotManager();
+        this.configManager = plugin.getConfigManager();
     }
 
     public Result checkMessage(String message) {
-        if(antibotManager.isSomeModeOnline()){
-            return Result.DENY;
-        }
-        List<String> lista = ConfigManager.getFilterMessages();
+        List<String> lista = configManager.getFilter();
         for(String controlla : lista){
             if(message.contains(controlla)){
                 return Result.DENY;

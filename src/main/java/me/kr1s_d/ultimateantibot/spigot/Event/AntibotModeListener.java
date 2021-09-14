@@ -19,7 +19,7 @@ public class AntibotModeListener implements Listener {
         /**
          * Slow-mode Cecks
          */
-        if(e.getAntibotManager().isOnline()){
+        if(e.getAntibotManager().isOnline() || e.getAntibotManager().isSafeAntiBotModeOnline()){
             if(config.getBoolean("checks.slowmode.disconnect")) {
                 e.disconnectBots();
             }

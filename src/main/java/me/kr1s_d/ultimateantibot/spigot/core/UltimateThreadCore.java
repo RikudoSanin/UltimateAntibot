@@ -46,24 +46,18 @@ public class UltimateThreadCore {
                 antibotInfo.setBotSecond(counter.getBotSecond());
                 antibotInfo.setPingSecond(counter.getPingSecond());
                 antibotInfo.setCheckSecond(counter.getCheckPerSecond());
+                antibotInfo.setJoinSecond(counter.getJoinPerSecond());
                 counter.setBotSecond(0L);
                 counter.setPingSecond(0L);
                 counter.setJoinPerSecond(0L);
                 counter.setCheck(0L);
+                counter.setJoinPerSecond(0L);
             }
         }.runTaskTimer(plugin, 0, 20L);
     }
 
     public void hearthBeatMaximal() {
         Utils.debug(Utils.prefix() + "&aLoading BeatMaximal..");
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                counter.getAnalyzer().clear();
-                counter.getPingAnalyZer().clear();
-            }
-        }.runTaskTimer(plugin, 0,config.getLong("taskmanager.analyzer") * 20L);
-
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -85,7 +79,7 @@ public class UltimateThreadCore {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 0, config.getLong("taskmanager.clearcache") * 20L * 60L);
+        }.runTaskTimer(plugin, 0, plugin.getConfigManager().getTaskManager_clearCache() * 20L * 60L);
         Utils.debug(Utils.prefix() + "&aBeatMaximal Loaded!");
     }
 

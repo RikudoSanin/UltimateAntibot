@@ -10,17 +10,19 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogFilter implements Filter {
-    private final UltimateAntibotSpigot plugin;
+
+    private final ConfigManager configManager;
 
     public LogFilter(UltimateAntibotSpigot plugin){
-        this.plugin = plugin;
+        this.configManager = plugin.getConfigManager();
     }
 
     public Result checkMessage(String message) {
-        List<String> lista = ConfigManager.getFilterMessages();
+        List<String> lista = configManager.getFilter();
         for(String controlla : lista){
             if(message.contains(controlla)){
                 return Result.DENY;

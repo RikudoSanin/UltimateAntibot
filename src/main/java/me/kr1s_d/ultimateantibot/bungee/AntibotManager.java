@@ -8,6 +8,7 @@ import me.kr1s_d.ultimateantibot.bungee.Task.HandShakeModeDisable;
 import me.kr1s_d.ultimateantibot.bungee.Task.PingModeDisabler;
 import me.kr1s_d.ultimateantibot.bungee.Task.SafemodeDisableListener;
 import me.kr1s_d.ultimateantibot.commons.ModeType;
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import net.md_5.bungee.api.ProxyServer;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -24,6 +25,7 @@ public class AntibotManager {
     private final List<String> whitelist;
     private final List<String> blacklist;
     private ModeType modeType;
+    private final ConfigManager configManager;
 
     public AntibotManager(UltimateAntibotWaterfall plugin){
         this.plugin = plugin;
@@ -35,6 +37,7 @@ public class AntibotManager {
         this.pingMode = false;
         this.handShakeMode = false;
         this.modeType = ModeType.OFFLINE;
+        this.configManager = plugin.getConfigManager();
     }
 
     public boolean isHandShakeModeOnline() {
@@ -148,7 +151,7 @@ public class AntibotManager {
     }
 
     public void enableHandShakeMode(){
-        if(plugin.getConfigYml().getBoolean("handshakemode.enabled")) {
+        if(configManager.isHandShakeMode_enabled()) {
             setHandShakeModeStatus(true);
             setModeType(ModeType.HANDSHAKE);
             new HandShakeModeDisable(plugin);

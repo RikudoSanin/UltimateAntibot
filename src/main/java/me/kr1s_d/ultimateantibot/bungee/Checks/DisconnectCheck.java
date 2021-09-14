@@ -3,25 +3,25 @@ package me.kr1s_d.ultimateantibot.bungee.Checks;
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.config.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
 public class DisconnectCheck {
     private final UltimateAntibotWaterfall plugin;
     private final AntibotManager antibotManager;
-    private final Configuration config;
+    private final ConfigManager configManager;
 
     public DisconnectCheck(UltimateAntibotWaterfall plugin){
         this.plugin = plugin;
         this.antibotManager = plugin.getAntibotManager();
-        this.config = plugin.getConfigYml();
+        this.configManager = plugin.getConfigManager();
     }
 
     public boolean isEnabled(){
-        return config.getBoolean("checks.slowmode.enable");
+        return configManager.isSlowMode_enabled();
     }
 
     public void checkDisconnect(ProxiedPlayer player){
@@ -33,9 +33,8 @@ public class DisconnectCheck {
                     antibotManager.getWhitelist().remove(ip);
                     antibotManager.getBlacklist().remove(ip);
                     antibotManager.getQueue().remove(ip);
-                    plugin.getCounter().analyzeHard(ip, (int) config.getLong("blacklist.strange"));
                 }
             }
-        },config.getLong("checks.slowmode.duration"), TimeUnit.SECONDS);
+        },configManager.getSlowMode_duration(), TimeUnit.SECONDS);
     }
 }

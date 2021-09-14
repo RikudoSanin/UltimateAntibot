@@ -6,11 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TimerAnalyzer {
-    private UltimateAntibotWaterfall plugin;
     private final Map<String, Integer> analyzer;
 
     public TimerAnalyzer(UltimateAntibotWaterfall Plugin){
-        this.plugin = Plugin;
         this.analyzer = new HashMap<>();
     }
 

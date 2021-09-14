@@ -59,10 +59,10 @@ public class TitleTask {
                 if(!player.isConnected() || !toggledTitle.contains(player)){
                     scheduledTask.cancel();
                 }
-                if(plugin.getAntibotManager().isOnline() || plugin.getAntibotManager().isSafeAntiBotModeOnline()) {
+                if(antibotManager.isOnline() || antibotManager.isSafeAntiBotModeOnline()) {
                     player.sendTitle(title);
                 }
             }
-        },1, 400, TimeUnit.MILLISECONDS);
+        },1, 500, TimeUnit.MILLISECONDS);
     }
 }

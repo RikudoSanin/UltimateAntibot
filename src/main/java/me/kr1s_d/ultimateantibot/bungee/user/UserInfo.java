@@ -4,6 +4,7 @@ import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
 import me.kr1s_d.ultimateantibot.bungee.Database.Config;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.config.Configuration;
@@ -18,6 +19,7 @@ public class UserInfo {
     private final AntibotManager antibotManager;
     private final Configuration messages;
     private final UserData userData;
+    private final ConfigManager configManager;
 
     public UserInfo(UltimateAntibotWaterfall plugin) {
         this.database = plugin.getDatabaseYml();
@@ -25,13 +27,14 @@ public class UserInfo {
         this.antibotManager = plugin.getAntibotManager();
         this.messages = plugin.getMessageYml();
         this.userData = plugin.getUserData();
+        this.configManager = plugin.getConfigManager();
     }
 
     /**
      * Metodi del First Join
      */
     public boolean checkFirstJoin(PreLoginEvent e, String ip){
-        if(config.getBoolean("checks.first_join.enabled")) {
+        if(configManager.isFirstJoin_enabled()) {
             if (!antibotManager.isOnline() && userData.isFirstJoin(ip)) {
                 antibotManager.removeWhitelist(ip);
                 antibotManager.removeBlackList(ip);
@@ -48,11 +51,11 @@ public class UserInfo {
      * Adapter
      *
      */
-    public String adapt(String str){
+    private String adapt(String str){
         return str.replace(".", ",");
     }
 
-    public String deAdapt(String str){
+    private String deAdapt(String str){
         return str.replace(",", ".");
     }
 

@@ -32,6 +32,7 @@ public final class UltimateAntibotWaterfall extends Plugin {
     private Configuration whitelist;
     private Configuration blacklist;
     private Configuration database;
+    private ConfigManager configManage;
     private Metrics metrics;
     private Updater updater;
     private FilesUpdater filesUpdater;
@@ -65,7 +66,7 @@ public final class UltimateAntibotWaterfall extends Plugin {
         whitelist = configmanager.getConfiguration("%datafolder%/whitelist.yml");
         //blacklist = configmanager.getConfiguration("%datafolder%/blacklist.yml");
         database = configmanager.getConfiguration("%datafolder%/database.yml");
-        new ConfigManager(this);
+        configManage = new ConfigManager(this);
         counter = new Counter();
         updater = new Updater(this);
         metrics = new Metrics(this, 11712);
@@ -193,5 +194,9 @@ public final class UltimateAntibotWaterfall extends Plugin {
 
     public FilterManager getFilterManager() {
         return filterManager;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManage;
     }
 }

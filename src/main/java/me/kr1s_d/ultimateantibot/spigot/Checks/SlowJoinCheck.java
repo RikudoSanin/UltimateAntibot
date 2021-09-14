@@ -2,6 +2,7 @@ package me.kr1s_d.ultimateantibot.spigot.Checks;
 
 
 
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.spigot.Utils.Utils;
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
 import me.kr1s_d.ultimateantibot.spigot.Database.Config;
@@ -16,17 +17,14 @@ public class SlowJoinCheck {
     private final Config message;
     private final AntibotManager antibotManager;
     private final Map<String, Set<Player>> maxAccountIp;
-    private final int accountLimit;
-    private final boolean isEnabled;
-
+    private final ConfigManager configManager;
 
     public SlowJoinCheck(UltimateAntibotSpigot plugin){
         this.config = plugin.getConfigYml();
         this.message = plugin.getMessageYml();
         this.antibotManager = plugin.getAntibotManager();
         this.maxAccountIp = new HashMap<>();
-        this.accountLimit = config.getInt("checks.slowmode.limit");
-        this.isEnabled = config.getBoolean("checks.slowmode.enable");
+        this.configManager = plugin.getConfigManager();
     }
 
     /**
@@ -42,15 +40,15 @@ public class SlowJoinCheck {
     }
 
     public void maxAccountCheck(String ip, Player player) {
-        if(isEnabled) {
+        if(configManager.isSlowMode_enabled()) {
             Set<Player> newList = getOnlineAccountAmount(ip);
             newList.add(player);
             maxAccountIp.put(ip, newList);
-            if (getOnlineAccountAmount(ip).size() >= accountLimit) {
+            if (getOnlineAccountAmount(ip).size() >= configManager.getSlowMode_limit()) {
                 resetAccounts(ip);
                 antibotManager.enableAntibotMode();
                 Utils.disconnectPlayerFromIp(ip, message.getStringList("account-online"));
-                if (config.getBoolean("checks.slowmode.blacklist_on_limit")) {
+                if (configManager.isSlowMode_blacklist_limit()) {
                     antibotManager.addBlackList(ip);
                     antibotManager.removeWhitelist(ip);
                 }

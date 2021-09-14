@@ -1,7 +1,7 @@
 package me.kr1s_d.ultimateantibot.spigot.Checks;
 
 
-import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -12,13 +12,13 @@ public class TimerCheck {
     private final UltimateAntibotSpigot plugin;
     private final List<String> pendingChecks;
     private final List<String> completedChecksWaiting;
+    private final ConfigManager configManager;
 
     public TimerCheck(UltimateAntibotSpigot plugin){
         this.plugin = plugin;
-        AntibotManager antibotManager = plugin.getAntibotManager();
         this.pendingChecks = new ArrayList<>();
         this.completedChecksWaiting = new ArrayList<>();
-        List<String> approved = new ArrayList<>();
+        this.configManager = plugin.getConfigManager();
     }
 
     public void startCountDown(String ip, int waitTime){
@@ -49,6 +49,6 @@ public class TimerCheck {
             public void run() {
                 completedChecksWaiting.remove(ip);
             }
-        }.runTaskLater(plugin, Math.round((float)plugin.getConfigYml().getLong("checks.timer.between") * 20L / 1000));
+        }.runTaskLater(plugin, Math.round((float)configManager.getTimer_between() * 20L / 1000));
     }
 }

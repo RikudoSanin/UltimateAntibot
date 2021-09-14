@@ -24,10 +24,10 @@ public class FilesUpdater {
     }
 
     public void check(){
-        if(config.getDouble("version") != 2.8){
+        if(config.getDouble("version") != 2.9){
             ProxyServer.getInstance().getScheduler().schedule(plugin, () -> a("config"), 0, 1, TimeUnit.MINUTES);
         }
-        if(messages.getDouble("version") != 2.5){
+        if(messages.getDouble("version") != 2.6){
             ProxyServer.getInstance().getScheduler().schedule(plugin, () -> a("messages"), 0, 1, TimeUnit.MINUTES);
         }
     }

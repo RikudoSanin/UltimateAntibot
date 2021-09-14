@@ -42,6 +42,7 @@ public class UltimateAntibotSpigot extends JavaPlugin {
     private SlowJoinCheck slowJoinCheck;
     private AntibotInfo antibotInfo;
     private UserData userData;
+    private ConfigManager configManager;
 
     @Override
     public void onEnable() {
@@ -69,6 +70,7 @@ public class UltimateAntibotSpigot extends JavaPlugin {
     public void reload(){
         Bukkit.getScheduler().cancelTasks(this);
         new ConfigManager(this);
+        configManager = new ConfigManager(this);
         updater = new Updater(this);
         metrics = new Metrics(this, 11777);
         antibotInfo = new AntibotInfo();
@@ -187,5 +189,9 @@ public class UltimateAntibotSpigot extends JavaPlugin {
 
     public UserData getUserData() {
         return userData;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 }

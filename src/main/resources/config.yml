@@ -1,4 +1,4 @@
-version: 2.8
+version: 2.9
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -37,7 +37,7 @@ pingmode:
   trigger: 100
   #MotdKiller Protection
   #Send the server logo during a ping attack?
-  send_info: false
+  send_info: true
 
 #Works Only on Bungeecord Waterfall ect...
 handshakemode:
@@ -54,36 +54,9 @@ handshakemode:
 playtime_for_whitelist: 2 #minutes
 
 taskmanager:
-  analyzer: 5 #seconds
   clearcache: 5 #minutes
   queue: 1 #minutes
-
-#This is the section where you can change the check settings
-#How does it work?
-#
-#There is an analyzer, The analyzer is reset every 5 seconds during
-#anti-botmode or safe mode, If an ip reaches the maximum number of values
-#before resetting the analyzer, It is blacklisted
-#
-#Don't touch anything if you don't know what you are doing!
-blacklist:
-  #This is the section where you can change the
-  #maximum number to get the blacklist for an IP
-  max: 50
-  #If during the safe mode a bot enters and disconnects immediately adds 20
-  bypass: 20
-  #If the antibot mode is online every time the bot tries to connect it adds 15
-  antibot_mode: 15
-  #How much the queue clears up if the antibotmode is online adds 15
-  queue: 15
-  #on ping during antibotmode
-  ping: 3
-  #if percent < 50% add 5 on connection
-  usain: 5
-  #Increaser Only used with ping attacks!
-  ping_mode: 5
-  #strange situation
-  strange: 10
+  account: 60 #seconnds
 
 checks:
   #first join check
@@ -106,6 +79,14 @@ checks:
     blacklist_on_limit: true
     #Enabble this check?
     enable: true
+  account:
+    #This check checks the number of accounts entered by the same ip within
+    #60 (can be changed in the taskmanager) seconds during antibotmode
+    #
+    #Number of accounts to be blacklisted
+    limit: 3
+    #Enable this check
+    enable: true
   timer:
     #The timer check is an advanced check,
     #from a long disconnect screen a message
@@ -119,10 +100,6 @@ checks:
     #When the time for verification runs out,
     #you have 1 second to enter
     between: 1000 #milliseconds (1 SECOND)
-    #If you reconnect earlier (in the case of
-    #a standard configuration) after 2 failed
-    #checks it will be blacklisted
-    increaser: 25
     #There must be exactly 3 correct
     #checks to be whitelisted
     repeat: 3

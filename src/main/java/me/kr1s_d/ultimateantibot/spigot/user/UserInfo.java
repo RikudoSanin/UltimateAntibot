@@ -1,5 +1,6 @@
 package me.kr1s_d.ultimateantibot.spigot.user;
 
+import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
 import me.kr1s_d.ultimateantibot.spigot.Database.Config;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
@@ -11,29 +12,29 @@ import java.util.Map;
 
 public class UserInfo {
     private final Config database;
-    private final Config config;
     private final AntibotManager antibotManager;
     private final Config messages;
     private final UserData userData;
+    private final ConfigManager configManager;
 
     public UserInfo(UltimateAntibotSpigot plugin) {
         this.database = plugin.getDatabase();
-        this.config = plugin.getConfigYml();
         this.antibotManager = plugin.getAntibotManager();
         this.messages = plugin.getMessageYml();
         this.userData = plugin.getUserData();
+        this.configManager = plugin.getConfigManager();
     }
 
     /**
      * Metodi del First Join
      */
     public boolean checkFirstJoin(AsyncPlayerPreLoginEvent e, String ip){
-        if(config.getBoolean("checks.first_join.enabled")) {
+        if(configManager.isFirstJoin_enabled()) {
             if (!antibotManager.isOnline() && userData.isFirstJoin(ip)) {
                 antibotManager.removeWhitelist(ip);
                 antibotManager.removeBlackList(ip);
                 userData.setFirstJoin(ip, false);
-                e.disallow(PlayerPreLoginEvent.Result.KICK_OTHER, (Utils.colora(Utils.convertToString(messages.getStringList("first_join")))));
+                e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, (Utils.colora(Utils.convertToString(messages.getStringList("first_join")))));
                 return true;
             }
         }

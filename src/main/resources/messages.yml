@@ -1,4 +1,4 @@
-version: 2.5
+version: 2.6
 args_error: '&cUse /uab help'
 reload: '&aReload Completed!'
 title:
@@ -60,7 +60,7 @@ safe_mode:
   - '&7--------------------------------'
   - ''
   - '&cThe server has received a bot attack and you have been disconnected'
-  - '&cRe-enter the server in exactly in $1 seconds'
+  - '&cRe-enter the server in exactly in &f$1&c seconds'
   - '&cIf you are wrong you will have to do it all over again'
   - '&cRemaining&f $2'
   - '&7--------------------------------'

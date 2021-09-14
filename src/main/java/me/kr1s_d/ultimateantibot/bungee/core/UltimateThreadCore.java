@@ -51,22 +51,18 @@ public class UltimateThreadCore {
             antibotInfo.setBotSecond(counter.getBotSecond());
             antibotInfo.setPingSecond(counter.getPingSecond());
             antibotInfo.setCheckSecond(counter.getCheckPerSecond());
+            antibotInfo.setJoinSecond(counter.getJoinPerSecond());
             counter.setHandshakeSecond(0);
             counter.setBotSecond(0L);
             counter.setPingSecond(0L);
             counter.setJoinPerSecond(0L);
             counter.setCheck(0L);
+            counter.setJoinPerSecond(0L);
         }, 0, 1, TimeUnit.SECONDS);
     }
 
     public void hearthBeatMaximal() {
         Utils.debug(Utils.prefix() + "&aLoading BeatMaximal..");
-        ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
-            counter.getAnalyzer().clear();
-            counter.getPingAnalyZer().clear();
-        }, 0, plugin.getConfigYml().getLong("taskmanager.analyzer"), TimeUnit.SECONDS);
-
-
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
             if(!antibotManager.isOnline()) {
                 if (!antibotManager.isSafeAntiBotModeOnline()) {
@@ -86,7 +82,7 @@ public class UltimateThreadCore {
                 }
             }
 
-        },  0, plugin.getConfigYml().getLong("taskmanager.clearcache"), TimeUnit.MINUTES);
+        },  0, plugin.getConfigManager().getTaskManager_clearCache(), TimeUnit.MINUTES);
         Utils.debug(Utils.prefix() + "&aBeatMaximal Loaded!");
     }
 

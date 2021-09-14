@@ -146,4 +146,8 @@ public class AntibotManager {
             }
         }.runTaskLater(plugin, 2L);
     }
+
+    public boolean isSomeModeOnline(){
+        return safeAntiBotMode || pingMode || antibotModeStatus;
+    }
 }

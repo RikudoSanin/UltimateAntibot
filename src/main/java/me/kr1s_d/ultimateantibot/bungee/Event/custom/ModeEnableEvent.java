@@ -2,11 +2,10 @@ package me.kr1s_d.ultimateantibot.bungee.Event.custom;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
+import me.kr1s_d.ultimateantibot.bungee.Utils.Counter;
 import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
 import me.kr1s_d.ultimateantibot.bungee.user.UserData;
-import me.kr1s_d.ultimateantibot.bungee.user.UserInfo;
 import me.kr1s_d.ultimateantibot.commons.ModeType;
-import me.kr1s_d.ultimateantibot.bungee.Utils.Counter;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Cancellable;
