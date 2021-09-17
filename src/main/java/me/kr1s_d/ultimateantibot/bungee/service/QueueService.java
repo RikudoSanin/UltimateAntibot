@@ -1,6 +1,6 @@
 package me.kr1s_d.ultimateantibot.bungee.service;
 
-import me.kr1s_d.ultimateantibot.bungee.Task.QueueClearTask;
+import me.kr1s_d.ultimateantibot.bungee.task.QueueClearTask;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 
 import java.util.ArrayList;

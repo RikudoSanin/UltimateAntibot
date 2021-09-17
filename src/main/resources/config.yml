@@ -1,4 +1,4 @@
-version: 2.9
+version: 3.0
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -8,26 +8,11 @@ version: 2.9
 
 debug: false
 #Antibotmode has the utility of mitigating the attack, blacklisting + ip possible,
-#I tried to make it as secure as possible so as to blacklist only malicious connections
-#
-#At the end of the attack the blacklist is cleared for safety
-#in the future I will try to make the checks as safe as possible
 antibotmode:
   #Duration of the anti-botmode when activated
   keep: 15
   #If there are 5 connections in 1 second the antibot mode will be activated!
   trigger: 5
-
-#safemode, on the other hand, has the task of making access possible
-#through the timer check
-
-safemode:
-  #When 95% of the IPs have been blacklisted, safemode is activated
-  percent: 95
-  #Checks Per Second for enable while antibotmode is online
-  modifier: 100
-  #duration of safemode when activated
-  keep: 20
 
 #Pingmode allows player connections to your server!
 pingmode:
@@ -87,25 +72,25 @@ checks:
     limit: 3
     #Enable this check
     enable: true
-  timer:
-    #The timer check is an advanced check,
-    #from a long disconnect screen a message
-    #eg: "reconnect in 5 seconds"
-    #if the player reconnects in those 5 seconds
-    #he is whitelisted
-    #here you can set minium time
-    min: 5 #seconds
-    #here you can set max time
-    max: 10 #seconds
+  auth:
+    #Allows users to whitelist
+    #Through min-max ping
+    ping: 10-15
+    #Min max TimerCheck
+    timer: 5-10
     #When the time for verification runs out,
     #you have 1 second to enter
-    between: 1000 #milliseconds (1 SECOND)
-    #There must be exactly 3 correct
-    #checks to be whitelisted
-    repeat: 3
-    #If you don't enable it
-    #you are a really bad person :c
-    enable: true
+    between: 1000 #milliseconds
+    #BlackList enable condition
+    percent: 95
+    #If a player has to ping the verification,
+    #the non-verifying players will have a counter of the times they pinged the
+    #server to enter!
+    #On bungeecord will use protocol name
+    #On spigot will use the motd
+    ping_interface: true
+    #Enable this check
+    enabled: true
 filter: #works on Waterfall Spigot & PaperSpigot no on BungeeCord
   - 'InitialHandler has'
   - 'Connection reset by peer'

@@ -1,11 +1,11 @@
 package me.kr1s_d.ultimateantibot.spigot.core;
 
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
-import me.kr1s_d.ultimateantibot.spigot.Database.Config;
-import me.kr1s_d.ultimateantibot.spigot.Task.AutoWhitelistTask;
+import me.kr1s_d.ultimateantibot.spigot.database.Config;
+import me.kr1s_d.ultimateantibot.spigot.task.AutoWhitelistTask;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
-import me.kr1s_d.ultimateantibot.spigot.Utils.Counter;
-import me.kr1s_d.ultimateantibot.spigot.Utils.Utils;
+import me.kr1s_d.ultimateantibot.spigot.utils.Counter;
+import me.kr1s_d.ultimateantibot.spigot.utils.Utils;
 import me.kr1s_d.ultimateantibot.spigot.data.AntibotInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,7 +16,6 @@ public class UltimateThreadCore {
     private final Counter counter;
     private final AntibotManager antibotManager;
     private int count;
-    private final Config config;
     private final AntibotInfo antibotInfo;
 
     public UltimateThreadCore(UltimateAntibotSpigot plugin){
@@ -24,7 +23,6 @@ public class UltimateThreadCore {
         this.counter = plugin.getCounter();
         this.antibotManager = plugin.getAntibotManager();
         this.count = 0;
-        this.config = plugin.getConfigYml();
         this.antibotInfo = plugin.getAntibotInfo();
     }
 
@@ -33,7 +31,7 @@ public class UltimateThreadCore {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if(antibotManager.isOnline() || antibotManager.isSafeAntiBotModeOnline() || antibotManager.isPingModeOnline()) {
+                if(antibotManager.isOnline() || antibotManager.isPingModeOnline()) {
                     Utils.debug(Utils.prefix() + plugin.getMessageYml().getString("console.on_attack")
                             .replace("$1", String.valueOf(counter.getBotSecond()))
                             .replace("$2", String.valueOf(counter.getPingSecond()))
@@ -62,20 +60,18 @@ public class UltimateThreadCore {
             @Override
             public void run() {
                 if(!antibotManager.isOnline()) {
-                    if (!antibotManager.isSafeAntiBotModeOnline()) {
-                        count = count + 1;
-                        if (count > 3 && !antibotManager.isOnline() || !antibotManager.isSafeAntiBotModeOnline()) {
-                            antibotManager.getBlacklist().clear();
-                            antibotManager.getQueue().clear();
-                            for (Player p : Bukkit.getOnlinePlayers()) {
-                                if (antibotManager.getWhitelist().contains(Utils.getIP(p))) {
-                                    return;
-                                }
-                                new AutoWhitelistTask(plugin, p).start();
+                    count = count + 1;
+                    if (count > 3 && !antibotManager.isOnline()) {
+                        antibotManager.getBlacklist().clear();
+                        antibotManager.getQueue().clear();
+                        for (Player p : Bukkit.getOnlinePlayers()) {
+                            if (antibotManager.getWhitelist().contains(Utils.getIP(p))) {
+                                return;
                             }
-                        } else {
-                            count = 0;
+                            new AutoWhitelistTask(plugin, p).start();
                         }
+                    } else {
+                        count = 0;
                     }
                 }
             }

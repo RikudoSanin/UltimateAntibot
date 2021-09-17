@@ -1,9 +1,9 @@
 package me.kr1s_d.ultimateantibot.bungee.user;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
-import me.kr1s_d.ultimateantibot.bungee.Database.Config;
+import me.kr1s_d.ultimateantibot.bungee.database.Config;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
-import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
+import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.PreLoginEvent;
@@ -15,7 +15,6 @@ import java.util.Map;
 public class UserInfo {
 
     private final Configuration database;
-    private final Configuration config;
     private final AntibotManager antibotManager;
     private final Configuration messages;
     private final UserData userData;
@@ -23,7 +22,6 @@ public class UserInfo {
 
     public UserInfo(UltimateAntibotWaterfall plugin) {
         this.database = plugin.getDatabaseYml();
-        this.config = plugin.getConfigYml();
         this.antibotManager = plugin.getAntibotManager();
         this.messages = plugin.getMessageYml();
         this.userData = plugin.getUserData();

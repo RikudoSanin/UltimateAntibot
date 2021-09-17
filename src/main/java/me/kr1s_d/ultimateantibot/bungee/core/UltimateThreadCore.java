@@ -1,10 +1,10 @@
 package me.kr1s_d.ultimateantibot.bungee.core;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
-import me.kr1s_d.ultimateantibot.bungee.Task.AutoWhitelistTask;
+import me.kr1s_d.ultimateantibot.bungee.task.AutoWhitelistTask;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
-import me.kr1s_d.ultimateantibot.bungee.Utils.Counter;
-import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
+import me.kr1s_d.ultimateantibot.bungee.utils.Counter;
+import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.bungee.data.AntibotInfo;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -28,7 +28,7 @@ public class UltimateThreadCore {
     public void enable(){
         Utils.debug(Utils.prefix() + "&aLoading Core...");
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
-            if(antibotManager.isOnline() || antibotManager.isSafeAntiBotModeOnline() || antibotManager.isPingModeOnline()) {
+            if(antibotManager.isOnline() || antibotManager.isPingModeOnline()) {
                 Utils.debug(Utils.prefix() + plugin.getMessageYml().getString("console.on_attack")
                         .replace("$1", String.valueOf(counter.getBotSecond()))
                         .replace("$2", String.valueOf(counter.getPingSecond()))
@@ -38,7 +38,7 @@ public class UltimateThreadCore {
                         .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 );
             }
-            if(antibotManager.isHandShakeModeOnline() && !antibotManager.isOnline() && !antibotManager.isSafeAntiBotModeOnline() && !antibotManager.isPingModeOnline()){
+            if(antibotManager.isHandShakeModeOnline() && !antibotManager.isOnline() && !antibotManager.isPingModeOnline()){
                 Utils.debug(Utils.prefix() + plugin.getMessageYml().getString("console.handshake")
                         .replace("$1", String.valueOf(counter.getHandshakeSecond()))
                         .replace("$2", String.valueOf(plugin.getAntibotManager().getQueue().size()))
@@ -65,20 +65,18 @@ public class UltimateThreadCore {
         Utils.debug(Utils.prefix() + "&aLoading BeatMaximal..");
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
             if(!antibotManager.isOnline()) {
-                if (!antibotManager.isSafeAntiBotModeOnline()) {
-                        count = count + 1;
-                        if (count > 3 && !antibotManager.isOnline() || !antibotManager.isSafeAntiBotModeOnline()) {
-                            antibotManager.getBlacklist().clear();
-                            antibotManager.getQueue().clear();
-                            for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
-                                if (antibotManager.getWhitelist().contains(Utils.getIP(p))) {
-                                    return;
-                                }
-                                new AutoWhitelistTask(plugin, p).start();
-                            }
-                        } else {
-                            count = 0;
+                count = count + 1;
+                if (count > 3 && !antibotManager.isOnline()) {
+                    antibotManager.getBlacklist().clear();
+                    antibotManager.getQueue().clear();
+                    for (ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
+                        if (antibotManager.getWhitelist().contains(Utils.getIP(p))) {
+                            return;
                         }
+                        new AutoWhitelistTask(plugin, p).start();
+                    }
+                } else {
+                    count = 0;
                 }
             }
 

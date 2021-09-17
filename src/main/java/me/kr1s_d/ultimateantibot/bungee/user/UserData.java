@@ -1,7 +1,5 @@
 package me.kr1s_d.ultimateantibot.bungee.user;
 
-import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
-
 import java.util.HashMap;
 import java.util.Map;
 

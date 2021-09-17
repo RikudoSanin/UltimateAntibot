@@ -1,6 +1,6 @@
 package me.kr1s_d.ultimateantibot.spigot.service;
 
-import me.kr1s_d.ultimateantibot.spigot.Task.QueueClearTask;
+import me.kr1s_d.ultimateantibot.spigot.task.QueueClearTask;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 
 import java.util.ArrayList;

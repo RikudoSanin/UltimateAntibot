@@ -1,15 +1,15 @@
 package me.kr1s_d.ultimateantibot.spigot;
 
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
-import me.kr1s_d.ultimateantibot.spigot.Checks.SlowJoinCheck;
-import me.kr1s_d.ultimateantibot.spigot.Commands.antibotCommand;
-import me.kr1s_d.ultimateantibot.spigot.Database.Config;
-import me.kr1s_d.ultimateantibot.spigot.Event.AntibotModeListener;
-import me.kr1s_d.ultimateantibot.spigot.Event.PingListener;
-import me.kr1s_d.ultimateantibot.spigot.Event.PreloginListener;
-import me.kr1s_d.ultimateantibot.spigot.Filter.LogFilter;
+import me.kr1s_d.ultimateantibot.spigot.checks.SlowJoinCheck;
+import me.kr1s_d.ultimateantibot.spigot.commands.antibotCommand;
+import me.kr1s_d.ultimateantibot.spigot.database.Config;
+import me.kr1s_d.ultimateantibot.spigot.event.AntibotModeListener;
+import me.kr1s_d.ultimateantibot.spigot.event.PingListener;
+import me.kr1s_d.ultimateantibot.spigot.event.MainEventListener;
+import me.kr1s_d.ultimateantibot.spigot.filter.LogFilter;
 import me.kr1s_d.ultimateantibot.spigot.core.UltimateThreadCore;
-import me.kr1s_d.ultimateantibot.spigot.Utils.*;
+import me.kr1s_d.ultimateantibot.spigot.utils.*;
 import me.kr1s_d.ultimateantibot.spigot.data.AntibotInfo;
 import me.kr1s_d.ultimateantibot.spigot.service.QueueService;
 import me.kr1s_d.ultimateantibot.spigot.service.WhitelistService;
@@ -94,7 +94,7 @@ public class UltimateAntibotSpigot extends JavaPlugin {
         slowJoinCheck = new SlowJoinCheck(this);
         userInfo.loadFirstJoin();
         sendLogo();
-        Bukkit.getPluginManager().registerEvents(new PreloginListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new MainEventListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PingListener(this), this);
         Bukkit.getPluginManager().registerEvents(new AntibotModeListener(this), this);
         getCommand("ultimateantibot").setExecutor(new antibotCommand(this));

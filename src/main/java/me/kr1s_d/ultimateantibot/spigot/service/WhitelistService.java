@@ -2,9 +2,9 @@ package me.kr1s_d.ultimateantibot.spigot.service;
 
 
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
-import me.kr1s_d.ultimateantibot.spigot.Database.Config;
+import me.kr1s_d.ultimateantibot.spigot.database.Config;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
-import me.kr1s_d.ultimateantibot.spigot.Utils.Utils;
+import me.kr1s_d.ultimateantibot.spigot.utils.Utils;
 
 public class WhitelistService {
     private final AntibotManager antibotManager;

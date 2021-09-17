@@ -2,11 +2,10 @@ package me.kr1s_d.ultimateantibot.spigot.user;
 
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
-import me.kr1s_d.ultimateantibot.spigot.Database.Config;
+import me.kr1s_d.ultimateantibot.spigot.database.Config;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
-import me.kr1s_d.ultimateantibot.spigot.Utils.Utils;
+import me.kr1s_d.ultimateantibot.spigot.utils.Utils;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerPreLoginEvent;
 
 import java.util.Map;
 

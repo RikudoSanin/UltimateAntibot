@@ -1,16 +1,16 @@
 package me.kr1s_d.ultimateantibot.bungee;
 
-import me.kr1s_d.ultimateantibot.bungee.Checks.HandShakeCheck;
-import me.kr1s_d.ultimateantibot.bungee.Checks.SlowJoinCheck;
-import me.kr1s_d.ultimateantibot.bungee.Commands.antibotComands;
-import me.kr1s_d.ultimateantibot.bungee.Database.Config;
-import me.kr1s_d.ultimateantibot.bungee.Event.AntibotModeListener;
-import me.kr1s_d.ultimateantibot.bungee.Event.HandShakeListener;
-import me.kr1s_d.ultimateantibot.bungee.Event.PingListener;
-import me.kr1s_d.ultimateantibot.bungee.Event.PreloginEventListener;
-import me.kr1s_d.ultimateantibot.bungee.Filter.FilterManager;
+import me.kr1s_d.ultimateantibot.bungee.checks.HandShakeCheck;
+import me.kr1s_d.ultimateantibot.bungee.checks.SlowJoinCheck;
+import me.kr1s_d.ultimateantibot.bungee.commands.antibotCommands;
+import me.kr1s_d.ultimateantibot.bungee.database.Config;
+import me.kr1s_d.ultimateantibot.bungee.event.AntibotModeListener;
+import me.kr1s_d.ultimateantibot.bungee.event.HandShakeListener;
+import me.kr1s_d.ultimateantibot.bungee.event.PingListener;
+import me.kr1s_d.ultimateantibot.bungee.event.MainEventListener;
+import me.kr1s_d.ultimateantibot.bungee.filter.FilterManager;
 import me.kr1s_d.ultimateantibot.bungee.core.UltimateThreadCore;
-import me.kr1s_d.ultimateantibot.bungee.Utils.*;
+import me.kr1s_d.ultimateantibot.bungee.utils.*;
 import me.kr1s_d.ultimateantibot.bungee.data.AntibotInfo;
 import me.kr1s_d.ultimateantibot.bungee.service.QueueService;
 import me.kr1s_d.ultimateantibot.bungee.service.WhitelistService;
@@ -90,9 +90,9 @@ public final class UltimateAntibotWaterfall extends Plugin {
         slowJoinCheck = new SlowJoinCheck(this);
         handShakeCheck = new HandShakeCheck(this);
         userInfo.loadFirstJoin();
-        getProxy().getPluginManager().registerCommand(this, new antibotComands(this));
+        getProxy().getPluginManager().registerCommand(this, new antibotCommands(this));
         getProxy().getPluginManager().registerListener(this, new PingListener(this));
-        getProxy().getPluginManager().registerListener(this, new PreloginEventListener(this));
+        getProxy().getPluginManager().registerListener(this, new MainEventListener(this));
         getProxy().getPluginManager().registerListener(this, new AntibotModeListener(this));
         getProxy().getPluginManager().registerListener(this, new HandShakeListener(this));
         sendLogo();

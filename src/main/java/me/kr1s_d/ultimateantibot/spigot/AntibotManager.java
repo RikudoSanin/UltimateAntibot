@@ -2,10 +2,9 @@ package me.kr1s_d.ultimateantibot.spigot;
 
 
 import me.kr1s_d.ultimateantibot.commons.ModeType;
-import me.kr1s_d.ultimateantibot.spigot.Event.custom.ModeEnableEvent;
-import me.kr1s_d.ultimateantibot.spigot.Task.AntibotModeDisable;
-import me.kr1s_d.ultimateantibot.spigot.Task.PingModeDisabler;
-import me.kr1s_d.ultimateantibot.spigot.Task.SafemodeDisableListener;
+import me.kr1s_d.ultimateantibot.spigot.event.custom.ModeEnableEvent;
+import me.kr1s_d.ultimateantibot.spigot.task.AntibotModeDisable;
+import me.kr1s_d.ultimateantibot.spigot.task.PingModeDisabler;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -15,7 +14,6 @@ import java.util.List;
 public class AntibotManager {
     private final UltimateAntibotSpigot plugin;
     private boolean antibotModeStatus;
-    private boolean safeAntiBotMode;
     private boolean pingMode;
     private final List<String> queue;
     private final List<String> whitelist;
@@ -25,7 +23,6 @@ public class AntibotManager {
     public AntibotManager(UltimateAntibotSpigot plugin){
         this.plugin = plugin;
         this.antibotModeStatus = false;
-        this.safeAntiBotMode = false;
         this.queue = new ArrayList<>();
         this.whitelist = new ArrayList<>();
         this.blacklist = new ArrayList<>();
@@ -51,14 +48,6 @@ public class AntibotManager {
 
     public void setAntibotModeStatus(boolean antibotModeStatus) {
         this.antibotModeStatus = antibotModeStatus;
-    }
-
-    public void setSafeAntiBotMode(boolean safeAntiBotMode) {
-        this.safeAntiBotMode = safeAntiBotMode;
-    }
-
-    public boolean isSafeAntiBotModeOnline() {
-        return safeAntiBotMode;
     }
 
     public boolean isOnline(){
@@ -108,7 +97,6 @@ public class AntibotManager {
     }
 
     public void enableAntibotMode() {
-        setSafeAntiBotMode(false);
         setAntibotModeStatus(true);
         setPingMode(false);
         setModeType(ModeType.ANTIBOTMODE);
@@ -117,20 +105,6 @@ public class AntibotManager {
             @Override
             public void run() {
                 Bukkit.getPluginManager().callEvent(new ModeEnableEvent(plugin, ModeType.ANTIBOTMODE));
-            }
-        }.runTaskLater(plugin, 2L);
-    }
-
-    public void enableSafeMode(){
-        setAntibotModeStatus(false);
-        setSafeAntiBotMode(true);
-        setPingMode(false);
-        setModeType(ModeType.SAFEMODE);
-        new SafemodeDisableListener(plugin).start();
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                Bukkit.getPluginManager().callEvent(new ModeEnableEvent(plugin, ModeType.SAFEMODE));
             }
         }.runTaskLater(plugin, 2L);
     }
@@ -148,6 +122,6 @@ public class AntibotManager {
     }
 
     public boolean isSomeModeOnline(){
-        return safeAntiBotMode || pingMode || antibotModeStatus;
+        return pingMode || antibotModeStatus;
     }
 }

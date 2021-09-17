@@ -1,9 +1,9 @@
 package me.kr1s_d.ultimateantibot.bungee.service;
 
-import me.kr1s_d.ultimateantibot.bungee.Database.Config;
+import me.kr1s_d.ultimateantibot.bungee.database.Config;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
-import me.kr1s_d.ultimateantibot.bungee.Utils.Utils;
+import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import net.md_5.bungee.config.Configuration;
 
 public class WhitelistService {

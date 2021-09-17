@@ -1,16 +1,13 @@
 package me.kr1s_d.ultimateantibot.bungee;
 
 
-import me.kr1s_d.ultimateantibot.bungee.Event.custom.ModeEnableEvent;
-import me.kr1s_d.ultimateantibot.bungee.Filter.FilterManager;
-import me.kr1s_d.ultimateantibot.bungee.Task.AntibotModeDisable;
-import me.kr1s_d.ultimateantibot.bungee.Task.HandShakeModeDisable;
-import me.kr1s_d.ultimateantibot.bungee.Task.PingModeDisabler;
-import me.kr1s_d.ultimateantibot.bungee.Task.SafemodeDisableListener;
+import me.kr1s_d.ultimateantibot.bungee.event.custom.ModeEnableEvent;
+import me.kr1s_d.ultimateantibot.bungee.task.AntibotModeDisable;
+import me.kr1s_d.ultimateantibot.bungee.task.HandShakeModeDisable;
+import me.kr1s_d.ultimateantibot.bungee.task.PingModeDisabler;
 import me.kr1s_d.ultimateantibot.commons.ModeType;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import net.md_5.bungee.api.ProxyServer;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -18,7 +15,6 @@ public class AntibotManager {
 
     private final UltimateAntibotWaterfall plugin;
     private boolean antibotModeStatus;
-    private boolean safeAntiBotMode;
     private boolean pingMode;
     private boolean handShakeMode;
     private final List<String> queue;
@@ -30,7 +26,6 @@ public class AntibotManager {
     public AntibotManager(UltimateAntibotWaterfall plugin){
         this.plugin = plugin;
         this.antibotModeStatus = false;
-        this.safeAntiBotMode = false;
         this.queue = new ArrayList<>();
         this.whitelist = new ArrayList<>();
         this.blacklist = new ArrayList<>();
@@ -58,11 +53,6 @@ public class AntibotManager {
 
     public ModeType getModeType() {
         return modeType;
-    }
-
-
-    public boolean isSafeAntiBotModeOnline() {
-        return safeAntiBotMode;
     }
 
     public boolean isOnline(){
@@ -121,26 +111,12 @@ public class AntibotManager {
         this.antibotModeStatus = antibotModeStatus;
     }
 
-    public void setSafeAntiBotMode(boolean safeAntiBotMode) {
-        this.safeAntiBotMode = safeAntiBotMode;
-    }
-
     public void enableAntibotMode() {
-        setSafeAntiBotMode(false);
         setAntibotModeStatus(true);
         setPingMode(false);
         setModeType(ModeType.ANTIBOTMODE);
         new AntibotModeDisable(plugin).disable();
         ProxyServer.getInstance().getPluginManager().callEvent(new ModeEnableEvent(plugin, ModeType.ANTIBOTMODE));
-    }
-
-    public void enableSafeMode(){
-        setAntibotModeStatus(false);
-        setSafeAntiBotMode(true);
-        setPingMode(false);
-        setModeType(ModeType.SAFEMODE);
-        new SafemodeDisableListener(plugin).start();
-        ProxyServer.getInstance().getPluginManager().callEvent(new ModeEnableEvent(plugin, ModeType.SAFEMODE));
     }
 
     public void enablePingMode(){
@@ -159,7 +135,7 @@ public class AntibotManager {
     }
 
     public boolean isSomeModeOnline(){
-        return safeAntiBotMode || pingMode || antibotModeStatus || handShakeMode;
+        return pingMode || antibotModeStatus || handShakeMode;
     }
 
 }
