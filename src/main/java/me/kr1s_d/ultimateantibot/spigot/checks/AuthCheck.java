@@ -38,6 +38,7 @@ public class AuthCheck {
         this.pingMap = new HashMap<>();
         this.requiredPing = new HashMap<>();
         this.messages = plugin.getMessageYml();
+        loadTask();
     }
 
     /**
@@ -114,6 +115,9 @@ public class AuthCheck {
         }
         if(hasCompletedPingCheck(ip)){
             int check_timer = ThreadLocalRandom.current().nextInt(configManager.getAuth_TimerMin_Max()[0], configManager.getAuth_TimerMin_Max()[1]);
+            if(!pingMap.get(ip).equals(requiredPing.get(ip))){
+                reset(ip);
+            }
             startCountDown(ip, check_timer);
             e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,convertToString(Utils.coloralista(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("timer"), "$1", String.valueOf(check_timer)))));
         }else{
@@ -167,5 +171,21 @@ public class AuthCheck {
 
     private String convertToString(List<String> stringList) {
         return String.join(System.lineSeparator(), stringList);
+    }
+
+    private void loadTask(){
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (!antibotManager.isOnline()) {
+                    return;
+                }
+                pendingChecks.clear();
+                completedChecksWaiting.clear();
+                pingCheckCompleted.clear();
+                pingMap.clear();
+                requiredPing.clear();
+            }
+        }.runTaskTimer(plugin, 0, configManager.getTaskManager_auth() * 20L);
     }
 }

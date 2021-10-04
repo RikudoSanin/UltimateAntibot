@@ -61,7 +61,9 @@ public class UserInfo {
             for(String str : database.asBukkitConfig().getConfigurationSection("data").getKeys(false)){
                 String ip = deAdapt(str);
                 boolean status = database.getBoolean("data." + ip + ".firstJoin");
-                userData.getFirstJoinHashMap().put(ip, status);
+                if (antibotManager.getWhitelist().contains(ip)) {
+                    userData.getFirstJoinHashMap().put(ip, status);
+                }
             }
             Utils.debug(Utils.prefix() + "&a" + userData.getFirstJoinHashMap().size() + " Joindata have been loaded intro the Framework");
         }catch (Exception e){

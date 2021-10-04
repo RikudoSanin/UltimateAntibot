@@ -1,10 +1,7 @@
 package me.kr1s_d.ultimateantibot.bungee.event;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
-import me.kr1s_d.ultimateantibot.bungee.checks.DisconnectCheck;
-import me.kr1s_d.ultimateantibot.bungee.checks.NameChangerCheck;
-import me.kr1s_d.ultimateantibot.bungee.checks.SlowJoinCheck;
-import me.kr1s_d.ultimateantibot.bungee.checks.AuthCheck;
+import me.kr1s_d.ultimateantibot.bungee.checks.*;
 import me.kr1s_d.ultimateantibot.bungee.task.AutoWhitelistTask;
 import me.kr1s_d.ultimateantibot.bungee.task.TempJoin;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
@@ -15,10 +12,7 @@ import me.kr1s_d.ultimateantibot.bungee.user.UserInfo;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.event.PlayerDisconnectEvent;
-import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.event.PreLoginEvent;
-import net.md_5.bungee.api.event.ProxyPingEvent;
+import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.event.EventHandler;
@@ -32,6 +26,9 @@ public class MainEventListener implements Listener {
     private final Counter counter;
     private final Configuration messages;
     private final AuthCheck authCheck;
+    private final PacketCheck packetCheck;
+    private final RegisterCheck registerCheck;
+    private final SuperJoinCheck superJoinCheck;
     private final QueueService queueService;
     private final SlowJoinCheck slowJoinCheck;
     private final UserInfo userInfo;
@@ -44,6 +41,9 @@ public class MainEventListener implements Listener {
         this.counter = plugin.getCounter();
         this.messages = plugin.getMessageYml();
         this.authCheck = new AuthCheck(plugin);
+        this.packetCheck = new PacketCheck(plugin);
+        this.registerCheck = new RegisterCheck(plugin);
+        this.superJoinCheck = new SuperJoinCheck(plugin);
         this.queueService = plugin.getQueueService();
         this.slowJoinCheck = plugin.getSlowJoinCheck();
         this.userInfo = plugin.getUserInfo();
@@ -54,14 +54,16 @@ public class MainEventListener implements Listener {
     @EventHandler(priority = -128)
     public void onPreloginEvent(PreLoginEvent e){
         String ip =  e.getConnection().getAddress().getAddress().toString();
-        int blacklistAmount = antibotManager.getBlacklist().size();
-        int queueAmount = antibotManager.getQueue().size();
+        int blacklistAmount = antibotManager.getBlackListSize();
+        int queueAmount = antibotManager.getQueueSize();
         int totali = blacklistAmount + queueAmount;
         int percentualeBlacklistata = 0;
         if(blacklistAmount != 0 && totali != 0) {
             percentualeBlacklistata = Math.round((float) blacklistAmount / totali * 100);
         }
-        counter.addJoinSecond(1);
+        if(!antibotManager.isWhitelisted(ip)) {
+            counter.addJoinSecond(1);
+        }
         if(!antibotManager.getBlacklist().contains(ip) && !antibotManager.getWhitelist().contains(ip)) {
             counter.addChecks(1);
         }
@@ -72,18 +74,19 @@ public class MainEventListener implements Listener {
         /**
          * queue clear
          */
-        if(antibotManager.getWhitelist().contains(ip) || antibotManager.getBlacklist().contains(ip)){
+        if(antibotManager.isWhitelisted(ip) || antibotManager.isBlacklisted(ip)){
             antibotManager.removeQueue(ip);
         }
         /**
          * Check if is Whitelisted Or Blacklisted
          */
-        if(antibotManager.getBlacklist().contains(ip)){
+        if(antibotManager.isBlacklisted(ip)){
+            antibotManager.removeWhitelist(ip);
             e.setCancelReason(new TextComponent(convertToString(Utils.coloralista(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("blacklisted"), "$1", blacklisttime())))));
             e.setCancelled(true);
             return;
         }
-        if(antibotManager.getWhitelist().contains(ip)){
+        if(antibotManager.isWhitelisted(ip)){
             e.setCancelled(false);
             return;
         }
@@ -99,19 +102,16 @@ public class MainEventListener implements Listener {
          * if queue whitelist & blacklist doesn't contains ip
          * add to queue & to queue service
          */
-        if(!antibotManager.getQueue().contains(ip)){
-            if(!antibotManager.getWhitelist().contains(ip)) {
-                if(!antibotManager.getBlacklist().contains(ip)) {
-                    antibotManager.addQueue(ip);
-                    queueService.addToQueueService(ip);
-                }
-            }
+        if(!antibotManager.isQueued(ip) && !antibotManager.isWhitelisted(ip) && !antibotManager.isBlacklisted(ip)) {
+            antibotManager.addQueue(ip);
+            queueService.addToQueueService(ip);
         }
 
         /**
-         * NameChangerDetection check
+         * NameChangerDetection check & superjoin connections check
          */
-        if(antibotManager.isOnline()) {
+        if(antibotManager.isAntiBotModeOnline()) {
+            superJoinCheck.increaseConnection(ip);
             nameChangerDetection.detect(ip, e.getConnection().getName());
         }
 
@@ -119,7 +119,7 @@ public class MainEventListener implements Listener {
          * antibotmode enable
          */
         if(counter.getJoinPerSecond() > configManager.getAntiBotMode_trigger()){
-            if(!antibotManager.isOnline()) {
+            if(!antibotManager.isAntiBotModeOnline()) {
                 antibotManager.enableAntibotMode();
             }
         }
@@ -128,7 +128,7 @@ public class MainEventListener implements Listener {
          * Auth Check
          */
 
-        if(percentualeBlacklistata >= configManager.getAuth_enableCheckPercent() && antibotManager.isOnline() && configManager.isAuth_isEnabled()){
+        if(percentualeBlacklistata >= configManager.getAuth_enableCheckPercent() && antibotManager.isAntiBotModeOnline() && configManager.isAuth_isEnabled()){
             authCheck.checkForJoin(e, ip);
             return;
         }
@@ -151,13 +151,33 @@ public class MainEventListener implements Listener {
     public void onLoginEvent(PostLoginEvent e){
         ProxiedPlayer p = e.getPlayer();
         String ip = Utils.getIP(p);
+        registerCheck.onLogin(ip);
         slowJoinCheck.maxAccountCheck(ip, p);
-        if(!antibotManager.getWhitelist().contains(ip)) {
+        packetCheck.registerJoin(ip);
+        if(!antibotManager.isWhitelisted(ip)) {
             new AutoWhitelistTask(plugin, p).start();
             new DisconnectCheck(plugin).checkDisconnect(p);
             counter.addJoined(p);
             new TempJoin(plugin, p).clear();
         }
+    }
+
+    @EventHandler
+    public void onChat(ChatEvent e){
+        String ip = Utils.getIP(e.getSender());
+        registerCheck.registerPassword(ip, e.getMessage());
+    }
+
+    @EventHandler
+    public void onSwitch(ServerSwitchEvent e){
+        String ip = Utils.getIP(e.getPlayer());
+        registerCheck.onServerSwitch(ip);
+    }
+
+    @EventHandler
+    public void onSettings(SettingsChangedEvent e){
+        String ip = Utils.getIP(e.getPlayer());
+        packetCheck.registerPacket(ip);
     }
 
     @EventHandler
@@ -171,6 +191,8 @@ public class MainEventListener implements Listener {
         ProxiedPlayer p = e.getPlayer();
         String ip = Utils.getIP(p);
         slowJoinCheck.removeFromOnline(ip, p);
+        packetCheck.onUnLogin(ip);
+        registerCheck.onUnLogin(ip);
     }
 
     private String convertToString(List<String> stringList) {
@@ -179,10 +201,10 @@ public class MainEventListener implements Listener {
 
     private String blacklisttime(){
         int timemax = plugin.getConfigYml().getInt("taskmanager.clearcache") * 3;
-        if(!antibotManager.isOnline()){
+        if(!antibotManager.isAntiBotModeOnline()){
             return plugin.getMessageYml().getString("stuff.less") + " " + timemax + "m";
         }
-        if(antibotManager.isOnline()){
+        if(antibotManager.isAntiBotModeOnline()){
             return plugin.getMessageYml().getString("stuff.plus") + " " + timemax + "m";
         }
         return timemax + "m";

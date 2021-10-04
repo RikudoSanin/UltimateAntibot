@@ -5,6 +5,7 @@ import me.kr1s_d.ultimateantibot.commons.utils.Parser;
 import me.kr1s_d.ultimateantibot.spigot.database.Config;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.protocol.packet.ScoreboardObjective;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class ConfigManager {
     private final int taskManager_clearCache;
     private final int taskManager_queue;
     private final int taskManager_account;
+    private final int taskManager_auth;
+    private final int taskManager_packet;
+    private final int taskManager_register;
     private final boolean firstJoin_enabled;
     private final int slowMode_duration;
     private final boolean slowMode_disconnect;
@@ -36,6 +40,22 @@ public class ConfigManager {
     private final int auth_enableCheckPercent;
     private final boolean auth_ping_interface;
     private final boolean auth_isEnabled;
+    private final int superJoin_time;
+    private final int superJoin_amount;
+    private final boolean isSuperJoin_enabled;
+    private final int slowJoin_packet_time;
+    private final int slowJoin_packet_trigger;
+    private final boolean slowJoin_packet_blacklist;
+    private final boolean slowJoin_packet_kick;
+    private final boolean slowJoin_packet_antibotmode;
+    private final boolean slowJoin_packet_enabled;
+    private final int slowJoin_register_time;
+    private final int slowJoin_register_trigger;
+    private final boolean slowJoin_register_blacklist;
+    private final boolean slowJoin_register_kick;
+    private final boolean slowJoin_register_antibotmode;
+    private final boolean slowJoin_register_enabled;
+    private final List<String> cmd_register;
     private final List<String> filter;
 
     public ConfigManager(UltimateAntibotWaterfall plugin){
@@ -53,6 +73,9 @@ public class ConfigManager {
         taskManager_clearCache = config.getInt("taskmanager.clearcache");
         taskManager_queue = config.getInt("taskmanger.queue");
         taskManager_account = config.getInt("taskmanager.account");
+        taskManager_auth = config.getInt("taskmanager.auth");
+        taskManager_packet = config.getInt("taskmanager.packet");
+        taskManager_register = config.getInt("taskmanager.register");
         firstJoin_enabled = config.getBoolean("checks.first_join.enabled");
         slowMode_duration = config.getInt("checks.slowmode.duration");
         slowMode_disconnect = config.getBoolean("checks.slowmode.disconnect");
@@ -67,6 +90,22 @@ public class ConfigManager {
         auth_enableCheckPercent = config.getInt("checks.auth.percent");
         auth_ping_interface = config.getBoolean("checks.auth.ping_interface");
         auth_isEnabled = config.getBoolean("checks.auth.enabled");
+        superJoin_time = config.getInt("checks.super_join.time");
+        superJoin_amount = config.getInt("checks.super_join.amount");
+        isSuperJoin_enabled = config.getBoolean("checks.super_join.enabled");
+        slowJoin_packet_time = config.getInt("checks.slowjoin.packet.time");
+        slowJoin_packet_trigger = config.getInt("checks.slowjoin.packet.trigger");
+        slowJoin_packet_blacklist = config.getBoolean("checks.slowjoin.packet.blacklist");
+        slowJoin_packet_kick = config.getBoolean("checks.slowjoin.packet.kick");
+        slowJoin_packet_antibotmode = config.getBoolean("checks.slowjoin.packet.antibotmode");
+        slowJoin_packet_enabled = config.getBoolean("checks.slowjoin.packet.enabled");
+        slowJoin_register_time = config.getInt("checks.slowjoin.register.time");
+        slowJoin_register_trigger = config.getInt("checks.slowjoin.register.trigger");
+        slowJoin_register_blacklist = config.getBoolean("checks.slowjoin.register.blacklist");
+        slowJoin_register_kick = config.getBoolean("checks.slowjoin.register.kick");
+        slowJoin_register_antibotmode = config.getBoolean("checks.slowjoin.register.antibotmode");
+        slowJoin_register_enabled = config.getBoolean("checks.slowjoin.register.enabled");
+        cmd_register = config.getStringList("cmd.register");
         filter = config.getStringList("filter");
     }
 
@@ -85,6 +124,9 @@ public class ConfigManager {
         taskManager_clearCache = config.getInt("taskmanager.clearcache");
         taskManager_queue = config.getInt("taskmanger.queue");
         taskManager_account = config.getInt("taskmanager.account");
+        taskManager_auth = config.getInt("taskmanager.auth");
+        taskManager_packet = config.getInt("taskmanager.packet");
+        taskManager_register = config.getInt("taskmanager.register");
         firstJoin_enabled = config.getBoolean("checks.first_join.enabled");
         slowMode_duration = config.getInt("checks.slowmode.duration");
         slowMode_disconnect = config.getBoolean("checks.slowmode.disconnect");
@@ -99,7 +141,47 @@ public class ConfigManager {
         auth_enableCheckPercent = config.getInt("checks.auth.percent");
         auth_ping_interface = config.getBoolean("checks.auth.ping_interface");
         auth_isEnabled = config.getBoolean("checks.auth.enabled");
+        superJoin_time = config.getInt("checks.super_join.time");
+        superJoin_amount = config.getInt("checks.super_join.amount");
+        isSuperJoin_enabled = config.getBoolean("checks.super_join.enabled");
+        slowJoin_packet_time = config.getInt("checks.slowjoin.packet.time");
+        slowJoin_packet_trigger = config.getInt("checks.slowjoin.packet.trigger");
+        slowJoin_packet_blacklist = config.getBoolean("checks.slowjoin.packet.blacklist");
+        slowJoin_packet_kick = config.getBoolean("checks.slowjoin.packet.kick");
+        slowJoin_packet_antibotmode = config.getBoolean("checks.slowjoin.packet.antibotmode");
+        slowJoin_packet_enabled = config.getBoolean("checks.slowjoin.packet.enabled");
+        slowJoin_register_time = config.getInt("checks.slowjoin.register.time");
+        slowJoin_register_trigger = config.getInt("checks.slowjoin.register.trigger");
+        slowJoin_register_blacklist = config.getBoolean("checks.slowjoin.register.blacklist");
+        slowJoin_register_kick = config.getBoolean("checks.slowjoin.register.kick");
+        slowJoin_register_antibotmode = config.getBoolean("checks.slowjoin.register.antibotmode");
+        slowJoin_register_enabled = config.getBoolean("checks.slowjoin.register.enabled");
+        cmd_register = config.getStringList("cmd.register");
         filter = config.getStringList("filter");
+    }
+
+    public int getSlowJoin_packet_time() {
+        return slowJoin_packet_time;
+    }
+
+    public int getSlowJoin_packet_trigger() {
+        return slowJoin_packet_trigger;
+    }
+
+    public boolean isSlowJoin_packet_blacklist() {
+        return slowJoin_packet_blacklist;
+    }
+
+    public boolean isSlowJoin_packet_kick() {
+        return slowJoin_packet_kick;
+    }
+
+    public boolean isSlowJoin_packet_antibotmode() {
+        return slowJoin_packet_antibotmode;
+    }
+
+    public boolean isSlowJoin_packet_enabled() {
+        return slowJoin_packet_enabled;
     }
 
     public int[] getAuth_PingMin_Max() {
@@ -212,5 +294,57 @@ public class ConfigManager {
 
     public List<String> getFilter() {
         return filter;
+    }
+
+    public int getTaskManager_packet() {
+        return taskManager_packet;
+    }
+
+    public int getTaskManager_auth() {
+        return taskManager_auth;
+    }
+
+    public List<String> getCmd_register() {
+        return cmd_register;
+    }
+
+    public int getTaskManager_register() {
+        return taskManager_register;
+    }
+
+    public int getSlowJoin_register_time() {
+        return slowJoin_register_time;
+    }
+
+    public int getSlowJoin_register_trigger() {
+        return slowJoin_register_trigger;
+    }
+
+    public boolean isSlowJoin_register_antibotmode() {
+        return slowJoin_register_antibotmode;
+    }
+
+    public boolean isSlowJoin_register_blacklist() {
+        return slowJoin_register_blacklist;
+    }
+
+    public boolean isSlowJoin_register_enabled() {
+        return slowJoin_register_enabled;
+    }
+
+    public boolean isSlowJoin_register_kick() {
+        return slowJoin_register_kick;
+    }
+
+    public int getSuperJoin_amount() {
+        return superJoin_amount;
+    }
+
+    public int getSuperJoin_time() {
+        return superJoin_time;
+    }
+
+    public boolean isSuperJoin_enabled() {
+        return isSuperJoin_enabled;
     }
 }

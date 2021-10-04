@@ -23,6 +23,7 @@ import net.md_5.bungee.config.Configuration;
 
 public final class UltimateAntibotWaterfall extends Plugin {
 
+    public static UltimateAntibotWaterfall instance;
     private Counter counter;
     private UltimateThreadCore core;
     private AntibotManager antibotManager;
@@ -47,6 +48,7 @@ public final class UltimateAntibotWaterfall extends Plugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         long a = System.currentTimeMillis();
         this.configmanager = new Config(this);
         configmanager.createConfiguration("%datafolder%/config.yml");

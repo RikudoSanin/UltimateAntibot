@@ -20,6 +20,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
+import javax.naming.ldap.PagedResultsControl;
 import java.util.List;
 
 public class MainEventListener implements Listener {
@@ -30,6 +31,7 @@ public class MainEventListener implements Listener {
     private final AuthCheck authCheck;
     private final QueueService queueService;
     private final SlowJoinCheck slowJoinCheck;
+    private final SuperJoinCheck superJoinCheck;
     private final UserInfo userInfo;
     private final NameChangerCheck nameChangerCheck;
     private final ConfigManager configManager;
@@ -42,6 +44,7 @@ public class MainEventListener implements Listener {
         this.authCheck = new AuthCheck(plugin);
         this.queueService = plugin.getQueueService();
         this.slowJoinCheck = plugin.getSlowJoinCheck();
+        this.superJoinCheck = new SuperJoinCheck(plugin);
         this.userInfo = plugin.getUserInfo();
         this.nameChangerCheck =  new NameChangerCheck(plugin);
         this.configManager = plugin.getConfigManager();
@@ -57,7 +60,9 @@ public class MainEventListener implements Listener {
         if (blacklistAmount != 0 && totali != 0) {
             percentualeBlacklistata = Math.round((float) blacklistAmount / totali * 100);
         }
-        counter.addJoinSecond(1);
+        if(!antibotManager.getWhitelist().contains(ip)) {
+            counter.addJoinSecond(1);
+        }
         if (!antibotManager.getBlacklist().contains(ip) && !antibotManager.getWhitelist().contains(ip)) {
             counter.addChecks(1);
         }
@@ -78,6 +83,7 @@ public class MainEventListener implements Listener {
          */
 
         if (antibotManager.getBlacklist().contains(ip)) {
+            antibotManager.removeWhitelist(ip);
             e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, convertToString(Utils.coloralista(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("blacklisted"), "$1", blacklisttime()))));
             antibotManager.removeWhitelist(ip);
             return;
@@ -107,9 +113,10 @@ public class MainEventListener implements Listener {
         }
 
         /**
-         * NameChangerCheck
+         * NameChangerCheck & SuperjoinCheck
          */
-        if (antibotManager.isOnline()) {
+        if (antibotManager.isAntiBotModeOnline()) {
+            superJoinCheck.increaseConnection(ip);
             nameChangerCheck.detect(ip, e.getName());
         }
 
@@ -127,6 +134,7 @@ public class MainEventListener implements Listener {
          */
         if (percentualeBlacklistata >= configManager.getAuth_enableCheckPercent() && antibotManager.isOnline() && configManager.isAuth_isEnabled()) {
             authCheck.checkForJoin(e, ip);
+            return;
         }
 
         /**
@@ -155,7 +163,6 @@ public class MainEventListener implements Listener {
         }
 
     }
-
     @EventHandler
     public void onPing(ServerListPingEvent e){
         String ip = e.getAddress().getHostAddress();

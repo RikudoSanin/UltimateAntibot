@@ -9,7 +9,8 @@ import me.kr1s_d.ultimateantibot.commons.ModeType;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import net.md_5.bungee.api.ProxyServer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AntibotManager {
 
@@ -39,6 +40,7 @@ public class AntibotManager {
         return handShakeMode;
     }
 
+    @Deprecated
     public void setHandShakeModeStatus(boolean handShakeMode) {
         this.handShakeMode = handShakeMode;
     }
@@ -55,30 +57,23 @@ public class AntibotManager {
         return modeType;
     }
 
+    @Deprecated
     public boolean isOnline(){
         return antibotModeStatus;
     }
 
-    public void addQueue(String ip){
-        if(!queue.contains(ip)){
-            queue.add(ip);
-        }
+    public boolean isAntiBotModeOnline(){
+        return antibotModeStatus;
     }
 
-    public void removeQueue(String ip){
-        queue.remove(ip);
-    }
-
+    @Deprecated
     public void addWhitelist(String ip){
         if(!whitelist.contains(ip)){
             whitelist.add(ip);
         }
     }
 
-    public void removeWhitelist(String ip){
-        whitelist.remove(ip);
-    }
-
+    @Deprecated
     public void addBlackList(String ip){
         if(!blacklist.contains(ip)) {
             queue.remove(ip);
@@ -87,26 +82,27 @@ public class AntibotManager {
         }
     }
 
-    public void removeBlackList(String ip){
-        blacklist.remove(ip);
-    }
-
+    @Deprecated
     public List<String> getBlacklist() {
         return blacklist;
     }
 
+    @Deprecated
     public List<String> getQueue() {
         return queue;
     }
 
+    @Deprecated
     public List<String> getWhitelist() {
         return whitelist;
     }
 
+    @Deprecated
     public void setPingMode(boolean pingMode) {
         this.pingMode = pingMode;
     }
 
+    @Deprecated
     public void setAntibotModeStatus(boolean antibotModeStatus) {
         this.antibotModeStatus = antibotModeStatus;
     }
@@ -117,6 +113,14 @@ public class AntibotManager {
         setModeType(ModeType.ANTIBOTMODE);
         new AntibotModeDisable(plugin).disable();
         ProxyServer.getInstance().getPluginManager().callEvent(new ModeEnableEvent(plugin, ModeType.ANTIBOTMODE));
+    }
+
+    public void enableSlowAntibotMode() {
+        setAntibotModeStatus(true);
+        setPingMode(false);
+        setModeType(ModeType.SLOW);
+        new AntibotModeDisable(plugin).disable();
+        ProxyServer.getInstance().getPluginManager().callEvent(new ModeEnableEvent(plugin, ModeType.SLOW));
     }
 
     public void enablePingMode(){
@@ -136,6 +140,72 @@ public class AntibotManager {
 
     public boolean isSomeModeOnline(){
         return pingMode || antibotModeStatus || handShakeMode;
+    }
+
+    public boolean isWhitelisted(String ip){
+        return whitelist.contains(ip);
+    }
+
+    public void whitelist(String ip){
+        if (!isWhitelisted(ip)) {
+            whitelist.add(ip);
+        }
+    }
+
+    public void removeWhitelist(String ip){
+        whitelist.remove(ip);
+    }
+
+    public int getWhitelistSize(String ip){
+        return whitelist.size();
+    }
+
+    public List<String> getWhitelistInstance(){
+        return whitelist;
+    }
+
+    public boolean isBlacklisted(String ip){
+        return blacklist.contains(ip);
+    }
+
+    public void blacklist(String ip){
+        if(!isBlacklisted(ip)){
+            blacklist.add(ip);
+        }
+    }
+
+    public void removeBlackList(String ip){
+        blacklist.remove(ip);
+    }
+
+    public int getBlackListSize(){
+        return blacklist.size();
+    }
+
+    public List<String> getBlacklistInstance(){
+        return blacklist;
+    }
+
+    public boolean isQueued(String ip){
+        return queue.contains(ip);
+    }
+
+    public void addQueue(String ip){
+        if(!isQueued(ip)){
+            queue.add(ip);
+        }
+    }
+
+    public void removeQueue(String ip){
+        queue.remove(ip);
+    }
+
+    public int getQueueSize(){
+        return queue.size();
+    }
+
+    public List<String> getQueueInstance(){
+        return queue;
     }
 
 }

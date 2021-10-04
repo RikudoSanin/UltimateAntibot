@@ -24,6 +24,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class UltimateAntibotSpigot extends JavaPlugin {
 
+    public static UltimateAntibotSpigot instance;
     private Counter counter;
     private UltimateThreadCore core;
     private AntibotManager antibotManager;
@@ -44,8 +45,10 @@ public class UltimateAntibotSpigot extends JavaPlugin {
     private UserData userData;
     private ConfigManager configManager;
 
+
     @Override
     public void onEnable() {
+        instance = this;
         long a = System.currentTimeMillis();
         config = new Config(this, "config");
         message = new Config(this, "messages");
@@ -163,8 +166,8 @@ public class UltimateAntibotSpigot extends JavaPlugin {
         Utils.debug(Utils.prefix() + "&cSpigot has many processes to manage due to the various plugins");
         Utils.debug(Utils.prefix() + "&cmoreover the antibot to mitigate the attacks uses a system of tasks that could");
         Utils.debug(Utils.prefix() + "&cslow down servers with less powerful hardware");
-        Utils.debug(Utils.prefix() + "&cUse safety! Use BungeeCord or Waterfall");
-        //
+        Utils.debug(Utils.prefix() + "&cSpigot has fewer checks than Bungeecord and cannot handle too many connections per second");
+        Utils.debug(Utils.prefix() + "&cStay safe! Use Waterfall");
     }
 
     public QueueService getQueueService() {

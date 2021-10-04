@@ -86,8 +86,19 @@ public class UltimateThreadCore {
 
     public void hearthBeatExaminal(){
         Utils.debug(Utils.prefix() + "&aLoading BeatExaminal...");
-        plugin.getUpdater().check();
-        plugin.getUpdater().checkNotification();
+        ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
+            @Override
+            public void run() {
+                if(antibotManager.isAntiBotModeOnline()){
+                    return;
+                }
+                if(plugin.getUpdater().isAvailable()){
+                    return;
+                }
+                plugin.getUpdater().check();
+                plugin.getUpdater().checkNotification();
+            }
+        }, 0, 30, TimeUnit.MINUTES);
         Utils.debug(Utils.prefix() + "&aBeatExaminal loaded...");
     }
 

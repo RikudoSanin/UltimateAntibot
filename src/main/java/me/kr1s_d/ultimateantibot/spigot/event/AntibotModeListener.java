@@ -1,6 +1,7 @@
 package me.kr1s_d.ultimateantibot.spigot.event;
 
 
+import me.kr1s_d.ultimateantibot.commons.ModeType;
 import me.kr1s_d.ultimateantibot.spigot.database.Config;
 import me.kr1s_d.ultimateantibot.spigot.event.custom.ModeEnableEvent;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
@@ -17,9 +18,9 @@ public class AntibotModeListener implements Listener {
     @EventHandler
     public void onAntibotModeEnable(ModeEnableEvent e){
         /**
-         * Slow-mode Cecks
+         * Slow-mode Checks
          */
-        if(e.getAntibotManager().isOnline()){
+        if(e.getEnabledMode().equals(ModeType.ANTIBOTMODE)){
             if(config.getBoolean("checks.slowmode.disconnect")) {
                 e.disconnectBots();
             }

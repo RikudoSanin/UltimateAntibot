@@ -11,19 +11,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 import javax.net.ssl.HttpsURLConnection;
 
 public class Updater {
-    private String url = "https://api.spigotmc.org/legacy/update.php?resource=";
-    private String id = "93439";
     private final UltimateAntibotSpigot plugin;
+    private String localversion;
+    private String newVersion;
 
     public Updater(UltimateAntibotSpigot plugin){
         this.plugin = plugin;
+        this.localversion = plugin.getDescription().getVersion();
+        this.newVersion = "not_found";
     }
 
     private boolean isAvailable;
-
-    public void UpdateChecker() {
-
-    }
 
 
     public boolean isAvailable() {
@@ -38,6 +36,10 @@ public class Updater {
                 public void run() {
                     Utils.debug(Utils.prefix() + "&eNew Update Found!");
                     Utils.debug(Utils.prefix() + "&EI suggest you to update plugin!");
+                    Utils.debug(Utils.prefix() + "&EYour version $1, new Version $2"
+                            .replace("$1", localversion)
+                            .replace("$2", newVersion)
+                    );
                 }
             }.runTaskTimer(plugin, 0, 1200L * 20L);
         }
@@ -50,11 +52,13 @@ public class Updater {
     private boolean checkUpdate() {
         try {
             String localVersion = plugin.getDescription().getVersion();
+            localversion = localVersion;
             String id = "93439";
             String url = "https://api.spigotmc.org/legacy/update.php?resource=";
             HttpsURLConnection connection = (HttpsURLConnection) new URL(url + id).openConnection();
             connection.setRequestMethod("GET");
             String raw = new BufferedReader(new InputStreamReader(connection.getInputStream())).readLine();
+            newVersion = raw;
             if(!localVersion.equalsIgnoreCase(raw))
                 return true;
 

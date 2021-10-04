@@ -14,6 +14,8 @@ import net.md_5.bungee.config.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class antibotCommands extends Command {
 
