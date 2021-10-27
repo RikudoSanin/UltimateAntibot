@@ -1,6 +1,7 @@
 package me.kr1s_d.ultimateantibot.spigot;
 
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import me.kr1s_d.ultimateantibot.spigot.checks.SlowJoinCheck;
 import me.kr1s_d.ultimateantibot.spigot.commands.antibotCommand;
 import me.kr1s_d.ultimateantibot.spigot.database.Config;
@@ -96,6 +97,7 @@ public class UltimateAntibotSpigot extends JavaPlugin {
         whitelistService.loadWhitelist();
         slowJoinCheck = new SlowJoinCheck(this);
         userInfo.loadFirstJoin();
+        MessageManager.init(this);
         sendLogo();
         Bukkit.getPluginManager().registerEvents(new MainEventListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PingListener(this), this);
@@ -144,6 +146,10 @@ public class UltimateAntibotSpigot extends JavaPlugin {
         return counter;
     }
 
+    /**
+     * Use MessageManager for messaging
+     */
+    @Deprecated
     public Config getMessageYml() {
         return message;
     }

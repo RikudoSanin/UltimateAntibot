@@ -17,6 +17,7 @@ import me.kr1s_d.ultimateantibot.bungee.service.WhitelistService;
 import me.kr1s_d.ultimateantibot.bungee.user.UserData;
 import me.kr1s_d.ultimateantibot.bungee.user.UserInfo;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -46,6 +47,9 @@ public final class UltimateAntibotWaterfall extends Plugin {
     private UserData userData;
     private HandShakeCheck handShakeCheck;
 
+    // TODO: 18/10/2021 Rifare i comandi 
+    // TODO: 18/10/2021 Aggiornare MessageManager A tutto il pl 
+    
     @Override
     public void onEnable() {
         instance = this;
@@ -92,6 +96,7 @@ public final class UltimateAntibotWaterfall extends Plugin {
         slowJoinCheck = new SlowJoinCheck(this);
         handShakeCheck = new HandShakeCheck(this);
         userInfo.loadFirstJoin();
+        MessageManager.init(this);
         getProxy().getPluginManager().registerCommand(this, new antibotCommands(this));
         getProxy().getPluginManager().registerListener(this, new PingListener(this));
         getProxy().getPluginManager().registerListener(this, new MainEventListener(this));
@@ -133,6 +138,10 @@ public final class UltimateAntibotWaterfall extends Plugin {
         return blacklist;
     }
 
+    /**
+     * Use MessageManager for messaging
+     */
+    @Deprecated
     public Configuration getMessageYml() {
         return message;
     }

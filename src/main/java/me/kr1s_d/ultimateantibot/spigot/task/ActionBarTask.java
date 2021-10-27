@@ -1,5 +1,6 @@
 package me.kr1s_d.ultimateantibot.spigot.task;
 
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 import me.kr1s_d.ultimateantibot.spigot.utils.Counter;
 import me.kr1s_d.ultimateantibot.spigot.utils.Utils;
@@ -30,7 +31,7 @@ public class ActionBarTask {
         long checkSec = antibotInfo.getCheckSecond();
         long botTotal = counter.getTotalBot();
         long pingTotal = counter.getTotalPing();
-        String actionbarOnAttack = Utils.colora(Utils.prefix() + plugin.getMessageYml().getString("actionbar.antibot_mode"))
+        String actionbarOnAttack = Utils.colora(Utils.prefix() + MessageManager.getActionbar_antibot_mode())
                 .replace("$1", String.valueOf(botSec))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
@@ -38,7 +39,7 @@ public class ActionBarTask {
                 .replace("$5", String.valueOf(checkSec))
                 .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
-        String actionbarOnSafe = Utils.colora(Utils.prefix() + plugin.getMessageYml().getString("actionbar.no-attack"))
+        String actionbarOnSafe = Utils.colora(Utils.prefix() + MessageManager.getActionbar_no_attack())
                 .replace("$1", String.valueOf(counter.getJoinPerSecond()))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
@@ -46,7 +47,7 @@ public class ActionBarTask {
                 .replace("$5", String.valueOf(checkSec))
                 .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
-        if(plugin.getAntibotManager().isOnline()){
+        if(plugin.getAntibotManager().isOnline() || plugin.getAntibotManager().isPingModeOnline()){
                 Utils.sendActionbar(player, actionbarOnAttack);
         }else {
             Utils.sendActionbar(player, actionbarOnSafe);

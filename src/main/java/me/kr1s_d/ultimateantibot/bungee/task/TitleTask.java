@@ -4,6 +4,8 @@ import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.utils.Counter;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
+import me.kr1s_d.ultimateantibot.commons.helper.ComponentBuilder;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -47,8 +49,8 @@ public class TitleTask {
         title.fadeIn(0);
         title.fadeOut(0);
         title.stay(10);
-        title.title((BaseComponent) new TextComponent(Utils.colora(message.getString("title.title").replace("%blocked%", String.valueOf(botTotal)))));
-        title.subTitle((BaseComponent) new TextComponent(Utils.colora(Utils.prefix() + message.getString("title.subtitle").replace("%ip%", String.valueOf(percentualeBlacklistata)))));
+        title.title(ComponentBuilder.buildShortComponent(Utils.colora(MessageManager.getTitle_title().replace("%blocked%", String.valueOf(botTotal)))));
+        title.subTitle(ComponentBuilder.buildShortComponent(Utils.colora(Utils.prefix() + message.getString("title.subtitle").replace("%ip%", String.valueOf(percentualeBlacklistata)))));
     }
 
     public void start(){

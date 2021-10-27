@@ -4,6 +4,7 @@ import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
 
@@ -13,14 +14,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class SlowJoinCheck {
-    private final Configuration message;
     private final AntibotManager antibotManager;
     private final Map<String, Set<ProxiedPlayer>> maxAccountIp;
     private final ConfigManager configManager;
 
 
     public SlowJoinCheck(UltimateAntibotWaterfall plugin){
-        this.message = plugin.getMessageYml();
         this.antibotManager = plugin.getAntibotManager();
         this.maxAccountIp = new HashMap<>();
         this.configManager = plugin.getConfigManager();
@@ -46,7 +45,7 @@ public class SlowJoinCheck {
             if (getOnlineAccountAmount(ip).size() >= configManager.getSlowMode_limit()) {
                 resetAccounts(ip);
                 antibotManager.enableAntibotMode();
-                Utils.disconnectPlayerFromIp(ip, message.getStringList("account-online"));
+                Utils.disconnectPlayerFromIp(ip, MessageManager.getAccountOnlineMsg());
                 if (configManager.isSlowMode_blacklist_limit()) {
                     antibotManager.addBlackList(ip);
                     antibotManager.removeWhitelist(ip);

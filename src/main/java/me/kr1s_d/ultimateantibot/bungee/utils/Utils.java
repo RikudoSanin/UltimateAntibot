@@ -65,6 +65,7 @@ public class Utils {
         return connection.getAddress().getAddress().toString();
     }
 
+    @Deprecated
     public static String convertToString(List<String> stringList) {
         return String.join(System.lineSeparator(), stringList);
     }
@@ -77,6 +78,14 @@ public class Utils {
         }
     }
 
+    public static void disconnectPlayerFromIp(String ip,String reason){
+        for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()){
+            if(getIP(p).equalsIgnoreCase(ip)){
+                p.disconnect(new TextComponent(reason));
+            }
+        }
+    }
+
     public static void disconnectAll(List<String> ips, List<String> reason){
         ProxyServer.getInstance().getPlayers().forEach(player -> {
             ips.forEach(ip -> {
@@ -84,7 +93,17 @@ public class Utils {
                     player.disconnect(new TextComponent(colora(convertToString(reason))));
                 }
             });
-
         });
     }
+
+    public static void disconnectAll(List<String> ips, String reason){
+        ProxyServer.getInstance().getPlayers().forEach(player -> {
+            ips.forEach(ip -> {
+                if(Utils.getIP(player).equals(ip)){
+                    player.disconnect(new TextComponent(colora(reason)));
+                }
+            });
+        });
+    }
+
 }

@@ -1,5 +1,6 @@
 package me.kr1s_d.ultimateantibot.spigot.task;
 
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
 import me.kr1s_d.ultimateantibot.spigot.database.Config;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
@@ -16,7 +17,6 @@ public class TitleTask {
     private final List<Player> toggledTitle;
     private final Counter counter;
     private final AntibotManager antibotManager;
-    private final Config message;
 
     public TitleTask(UltimateAntibotSpigot plugin, Player player, List<Player> toggledTitle){
         this.plugin = plugin;
@@ -24,7 +24,6 @@ public class TitleTask {
         this.toggledTitle = toggledTitle;
         this.counter = plugin.getCounter();
         this.antibotManager = plugin.getAntibotManager();
-        this.message = plugin.getMessageYml();
     }
 
     public void start(){
@@ -39,8 +38,8 @@ public class TitleTask {
                     percentualeBlacklistata = Math.round((float) blacklistAmount / totali * 100);
                 }
                 long botTotal = counter.getTotalBot();
-                String title = (Utils.colora(message.getString("title.title").replace("%blocked%", String.valueOf(botTotal))));
-                String subtitle = (Utils.colora(Utils.prefix() + message.getString("title.subtitle").replace("%ip%", String.valueOf(percentualeBlacklistata))));
+                String title = (Utils.colora(MessageManager.getTitle_title().replace("%blocked%", String.valueOf(botTotal))));
+                String subtitle = (Utils.colora(Utils.prefix() + MessageManager.getTitle_subtitle()).replace("%ip%", String.valueOf(percentualeBlacklistata)));
                 if(!player.isOnline() || !toggledTitle.contains(player)){
                     cancel();
                 }

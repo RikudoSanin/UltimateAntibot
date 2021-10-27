@@ -1,4 +1,4 @@
-version: 3.0
+version: 3.1
 #   _    _ _ _   _                 _                        _   _ _           _
 #  | |  | | | | (_)               | |           /\         | | (_) |         | |
 #  | |  | | | |_ _ _ __ ___   __ _| |_ ___     /  \   _ __ | |_ _| |__   ___ | |_
@@ -24,7 +24,7 @@ pingmode:
   trigger: 100
   #MotdKiller Protection
   #Send the server logo during a ping attack?
-  send_info: true
+  send_info: false
 
 #Works Only on Bungeecord Waterfall ect...
 handshakemode:

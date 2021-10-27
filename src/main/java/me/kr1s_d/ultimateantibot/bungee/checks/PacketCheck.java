@@ -4,6 +4,7 @@ import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -23,7 +24,6 @@ public class PacketCheck {
     private final Set<String> suspected;
     private final ConfigManager configManager;
     private final AntibotManager antibotManager;
-    private final Configuration messages;
 
     public PacketCheck(UltimateAntibotWaterfall plugin){
         this.plugin = plugin;
@@ -32,7 +32,6 @@ public class PacketCheck {
         this.suspected = new HashSet<>();
         this.configManager = plugin.getConfigManager();
         this.antibotManager = plugin.getAntibotManager();
-        this.messages = plugin.getMessageYml();
         loadTask();
     }
 
@@ -72,7 +71,7 @@ public class PacketCheck {
                 }
             });
             if(suspected.size() >= configManager.getSlowJoin_packet_trigger()){
-                Utils.disconnectAll(new ArrayList<>(suspected), messages.getStringList("safe_mode"));
+                Utils.disconnectAll(new ArrayList<>(suspected), MessageManager.getSafeModeMsg());
                 for(String ip : suspected){
                     if(configManager.isSlowJoin_packet_blacklist()) {
                         antibotManager.blacklist(ip);

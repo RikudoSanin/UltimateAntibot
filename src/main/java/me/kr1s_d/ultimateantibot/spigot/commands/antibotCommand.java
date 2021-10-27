@@ -1,6 +1,7 @@
 package me.kr1s_d.ultimateantibot.spigot.commands;
 
 
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
 import me.kr1s_d.ultimateantibot.spigot.database.Config;
 import me.kr1s_d.ultimateantibot.spigot.task.ActionBarTask;
@@ -19,7 +20,6 @@ import java.util.List;
 public class antibotCommand implements CommandExecutor {
 
     private final UltimateAntibotSpigot plugin;
-    private final Config messages;
     private final AntibotManager antibotManager;
     private final List<Player> toggleplayeractionbar;
     private final List<Player> toggledplayertitle;
@@ -27,7 +27,6 @@ public class antibotCommand implements CommandExecutor {
 
     public antibotCommand(UltimateAntibotSpigot plugin){
         this.plugin = plugin;
-        this.messages = plugin.getMessageYml();
         this.antibotManager = plugin.getAntibotManager();
         this.toggleplayeractionbar = new ArrayList<>();
         this.toggledplayertitle = new ArrayList<>();
@@ -49,10 +48,11 @@ public class antibotCommand implements CommandExecutor {
      *
      */
 
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(args.length == 0){
-            sender.sendMessage((Utils.colora(Utils.prefix() + messages.getString("args_error"))));
+            sender.sendMessage((Utils.colora(Utils.prefix() + MessageManager.getArgs_error())));
             return true;
         }
         switch (args[0].toLowerCase()){
@@ -60,7 +60,7 @@ public class antibotCommand implements CommandExecutor {
                 sender.sendMessage("§8§l§n___________________________________________");
                 sender.sendMessage("");
                 sender.sendMessage("§f§lRunning §4§lUltimate§c§lAnti§f§lBot §r§7- V" + plugin.getDescription().getVersion());
-                for (String msg : messages.getStringList("help")) {
+                for (String msg : MessageManager.getHelp_msg()) {
                     sender.sendMessage(Utils.colora(msg));
                 }
                 sender.sendMessage("§8§l§n___________________________________________");
@@ -69,7 +69,7 @@ public class antibotCommand implements CommandExecutor {
             case "antibotmode":
                 if(sender.hasPermission("ab.antibotmode") || sender.hasPermission("ab.admin")) {
                     if (args[1].equalsIgnoreCase("on")) {
-                        antibotManager.setAntibotModeStatus(true);
+                        antibotManager.enableAntibotMode();
                         sender.sendMessage(Utils.colora(Utils.prefix() + "AntibotMode &aon"));
                     }
                     if (args[1].equalsIgnoreCase("off")) {
@@ -118,7 +118,7 @@ public class antibotCommand implements CommandExecutor {
                             sender.sendMessage("§8§l§n___________________________________________");
                             sender.sendMessage("");
                             sender.sendMessage("§f§lRunning §4§lUltimate§c§lAnti§f§lBot §r§7- V" + plugin.getDescription().getVersion());
-                            for (String msg : messages.getStringList("help")) {
+                            for (String msg : MessageManager.getHelp_msg()) {
                                 sender.sendMessage(Utils.colora(msg));
                             }
                             sender.sendMessage("§8§l§n___________________________________________");
@@ -128,31 +128,37 @@ public class antibotCommand implements CommandExecutor {
             case "clearwhitelist":
                 if(sender.hasPermission("ab.clear") || sender.hasPermission("ab.admin")){
                     antibotManager.getWhitelist().clear();
+                    sender.sendMessage(Utils.colora(Utils.prefix() + MessageManager.getCommands_cleared("Whitelist")));
                 }
                 return true;
             case "clearblacklist":
                 if(sender.hasPermission("ab.clear") || sender.hasPermission("ab.admin")){
                     antibotManager.getBlacklist().clear();
+                    sender.sendMessage(Utils.colora(Utils.prefix() + MessageManager.getCommands_cleared("Blacklist")));
                 }
                 return true;
             case "addwhitelist":
                 if(sender.hasPermission("ab.addwhitelist") || sender.hasPermission("ab.admin")){
-                    antibotManager.addWhitelist(args[1]);
+                    antibotManager.addWhitelist("/" + args[1]);
+                    sender.sendMessage(Utils.colora(Utils.prefix() + MessageManager.getCommands_added(args[1], "Whitelist")));
                 }
                 return true;
             case "addblacklist":
                 if(sender.hasPermission("ab.addblacklist") || sender.hasPermission("ab.admin")){
-                    antibotManager.addBlackList(args[1]);
+                    antibotManager.addBlackList("/" + args[1]);
+                    sender.sendMessage(Utils.colora(Utils.prefix() + MessageManager.getCommands_added(args[1], "Blacklist")));
                 }
                 return true;
             case "removewhitelist":
                 if(sender.hasPermission("ab.removewhitelist") || sender.hasPermission("ab.admin")){
-                    antibotManager.removeWhitelist(args[1]);
+                    antibotManager.removeWhitelist("/" + args[1]);
+                    sender.sendMessage(Utils.colora(Utils.prefix() + MessageManager.getCommands_removed(args[1], "Whitelist")));
                 }
                 return true;
             case "removeblacklist":
                 if(sender.hasPermission("ab.removeblacklist") || sender.hasPermission("ab.admin")){
-                    antibotManager.removeBlackList(args[1]);
+                    antibotManager.removeBlackList("/" + args[1]);
+                    sender.sendMessage(Utils.colora(Utils.prefix() + MessageManager.getCommands_removed(args[1], "Blacklist")));
                 }
                 return true;
             case "stats":
@@ -160,7 +166,7 @@ public class antibotCommand implements CommandExecutor {
                     sender.sendMessage("§8§l§n___________________________________________");
                     sender.sendMessage("");
                     sender.sendMessage("§f§lRunning §4§lUltimate§c§lAnti§f§lBot §r§7- V" + plugin.getDescription().getVersion());
-                    for (String msg : messages.getStringList("stats")) {
+                    for (String msg : MessageManager.getStats_msg()) {
                         sender.sendMessage(Utils.colora(msg)
                                 .replace("$1", String.valueOf(counter.getBotSecond()))
                                 .replace("$2", String.valueOf(counter.getPingSecond()))
@@ -173,12 +179,6 @@ public class antibotCommand implements CommandExecutor {
                         );
                     }
                     sender.sendMessage("§8§l§n___________________________________________");
-                }
-                return true;
-            case "reload":
-                if(sender.hasPermission("ab.admin") || sender.hasPermission("ab.admin")){
-                    plugin.reload();
-                    sender.sendMessage(Utils.colora(messages.getString("reload")));
                 }
                 return true;
         }

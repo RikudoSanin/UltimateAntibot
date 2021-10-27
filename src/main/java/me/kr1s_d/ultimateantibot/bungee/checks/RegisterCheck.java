@@ -5,6 +5,7 @@ import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.commons.elements.RegisterInfo;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,7 +22,6 @@ public class RegisterCheck {
     private final Set<String> joined;
     private final Set<RegisterInfo> suspect;
     private final List<RegisterInfo> bots;
-    private final Configuration messaeges;
     private String lastPass;
 
     public RegisterCheck(UltimateAntibotWaterfall plugin){
@@ -31,7 +31,6 @@ public class RegisterCheck {
         this.joined = new HashSet<>();
         this.suspect = new HashSet<>();
         this.bots  = new ArrayList<>();
-        this.messaeges = plugin.getMessageYml();
         this.lastPass = "A";
         if(!configManager.isSlowJoin_register_enabled()){
             return;
@@ -110,7 +109,7 @@ public class RegisterCheck {
         for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()){
             if(Utils.getIP(p).equalsIgnoreCase(ip)){
                 if(configManager.isSlowJoin_register_kick()) {
-                    p.disconnect(new TextComponent(Utils.colora(Utils.convertToString(messaeges.getStringList("safe_mode")))));
+                    p.disconnect(new TextComponent(Utils.colora(MessageManager.getSafeModeMsg())));
                 }
             }
             if(configManager.isSlowJoin_register_blacklist()){

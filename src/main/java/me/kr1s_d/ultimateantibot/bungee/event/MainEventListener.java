@@ -10,6 +10,8 @@ import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.bungee.service.QueueService;
 import me.kr1s_d.ultimateantibot.bungee.user.UserInfo;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
+import me.kr1s_d.ultimateantibot.commons.helper.ComponentBuilder;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.*;
@@ -24,7 +26,6 @@ public class MainEventListener implements Listener {
     private final UltimateAntibotWaterfall plugin;
     private final AntibotManager antibotManager;
     private final Counter counter;
-    private final Configuration messages;
     private final AuthCheck authCheck;
     private final PacketCheck packetCheck;
     private final RegisterCheck registerCheck;
@@ -39,7 +40,6 @@ public class MainEventListener implements Listener {
         this.plugin = plugin;
         this.antibotManager = plugin.getAntibotManager();
         this.counter = plugin.getCounter();
-        this.messages = plugin.getMessageYml();
         this.authCheck = new AuthCheck(plugin);
         this.packetCheck = new PacketCheck(plugin);
         this.registerCheck = new RegisterCheck(plugin);
@@ -82,7 +82,7 @@ public class MainEventListener implements Listener {
          */
         if(antibotManager.isBlacklisted(ip)){
             antibotManager.removeWhitelist(ip);
-            e.setCancelReason(new TextComponent(convertToString(Utils.coloralista(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("blacklisted"), "$1", blacklisttime())))));
+            e.setCancelReason(ComponentBuilder.buildShortComponent(Utils.colora(MessageManager.getBlacklisted_msg(blacklisttime()))));
             e.setCancelled(true);
             return;
         }
@@ -141,7 +141,7 @@ public class MainEventListener implements Listener {
             if(antibotManager.getWhitelist().contains(ip)){
                 e.setCancelled(false);
             }else {
-                e.setCancelReason(new TextComponent(convertToString(Utils.coloralista(Utils.coloraListaConReplaceDueVolte(messages.getStringList("antibotmode"), "$1", String.valueOf(configManager.getAuth_enableCheckPercent()), "$2", String.valueOf(percentualeBlacklistata))))));
+                e.setCancelReason(ComponentBuilder.buildShortComponent(Utils.colora(MessageManager.getAntiBotModeMsg(String.valueOf(configManager.getAuth_enableCheckPercent()), String.valueOf(percentualeBlacklistata)))));
                 e.setCancelled(true);
             }
         }

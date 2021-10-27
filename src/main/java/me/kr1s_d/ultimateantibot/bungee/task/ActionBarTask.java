@@ -4,6 +4,7 @@ import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.utils.Counter;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.bungee.data.AntibotInfo;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -35,7 +36,7 @@ public class ActionBarTask {
         long checkSec = antibotInfo.getCheckSecond();
         long botTotal = counter.getTotalBot();
         long pingTotal = counter.getTotalPing();
-        String actionbarOnAttack = Utils.colora(Utils.prefix() + plugin.getMessageYml().getString("actionbar.antibot_mode"))
+        String actionbarOnAttack = Utils.colora(Utils.prefix() + MessageManager.getConsole_on_attack())
                 .replace("$1", String.valueOf(botSec))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
@@ -43,7 +44,7 @@ public class ActionBarTask {
                 .replace("$5", String.valueOf(checkSec))
                 .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
-        String actionbarOnSafe = Utils.colora(Utils.prefix() + plugin.getMessageYml().getString("actionbar.no-attack"))
+        String actionbarOnSafe = Utils.colora(Utils.prefix() + MessageManager.getActionbar_no_attack())
                 .replace("$1", String.valueOf(counter.getJoinPerSecond()))
                 .replace("$2", String.valueOf(pingSec))
                 .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
@@ -51,12 +52,12 @@ public class ActionBarTask {
                 .replace("$5", String.valueOf(checkSec))
                 .replace("%type%", String.valueOf(plugin.getAntibotManager().getModeType()))
                 ;
-        if(plugin.getAntibotManager().isOnline()){
+        if(plugin.getAntibotManager().isOnline() || plugin.getAntibotManager().isPingModeOnline()){
             player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(actionbarOnAttack));
         }else {
             if (plugin.getAntibotManager().isHandShakeModeOnline()) {
                 player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Utils.colora(Utils.prefix() +
-                        plugin.getMessageYml().getString("actionbar.handshake")
+                        MessageManager.getConsole_onHandShake()
                                 .replace("$1", String.valueOf(antibotInfo.getHandShakeSecond()))
                                 .replace("$2", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                                 .replace("$3", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))

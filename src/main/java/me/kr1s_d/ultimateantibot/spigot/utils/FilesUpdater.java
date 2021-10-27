@@ -23,7 +23,7 @@ public class FilesUpdater {
     }
 
     public void check(){
-        if(config.getDouble("version") != 3.0){
+        if(config.getDouble("version") != 3.1){
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -31,7 +31,7 @@ public class FilesUpdater {
                 }
             }.runTaskTimer(plugin, 0, 20*60L);
         }
-        if(messages.getDouble("version") != 2.7){
+        if(messages.getDouble("version") != 3.1){
             new BukkitRunnable() {
                 @Override
                 public void run() {

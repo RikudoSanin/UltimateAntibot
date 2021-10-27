@@ -5,6 +5,8 @@ import me.kr1s_d.ultimateantibot.bungee.task.TimedWhitelist;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
+import me.kr1s_d.ultimateantibot.commons.helper.ComponentBuilder;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -28,7 +30,6 @@ public class AuthCheck {
     private final ConfigManager configManager;
     private final Map<String, Integer> pingMap;
     private final Map<String, Integer> requiredPing;
-    private final Configuration messages;
 
     public AuthCheck(UltimateAntibotWaterfall plugin){
         this.plugin = plugin;
@@ -39,7 +40,6 @@ public class AuthCheck {
         this.configManager = plugin.getConfigManager();
         this.pingMap = new HashMap<>();
         this.requiredPing = new HashMap<>();
-        this.messages = plugin.getMessageYml();
         loadTask();
     }
 
@@ -115,13 +115,15 @@ public class AuthCheck {
                 reset(ip);
             }
             startCountDown(ip, check_timer);
-            e.setCancelReason(new TextComponent(convertToString(Utils.coloralista(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("timer"), "$1", String.valueOf(check_timer))))));
+            e.setCancelReason(ComponentBuilder.buildShortComponent(Utils.colora(MessageManager.getTimer_msg(String.valueOf(check_timer)))));
             e.setCancelled(true);
         }else{
             int check_ping = ThreadLocalRandom.current().nextInt(configManager.getAuth_PingMin_Max()[0], configManager.getAuth_PingMin_Max()[1]);
             reset(ip);
             startPing(ip, check_ping);
-            e.setCancelReason(new TextComponent(convertToString(Utils.coloralista(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("ping"), "$1", String.valueOf(check_ping))))));
+            e.setCancelReason(ComponentBuilder.buildShortComponent(Utils.colora(
+                    MessageManager.getPing_msg(String.valueOf(check_ping))
+            )));
             e.setCancelled(true);
         }
     }
@@ -158,9 +160,14 @@ public class AuthCheck {
                 ServerPing ping = e.getResponse();
                 ping.getVersion().setProtocol(0);
                 if(pingMap.get(ip).equals(requiredPing.get(ip))){
-                    ping.getVersion().setName(Utils.colora(messages.getString("onping.ready")));
+                    ping.getVersion().setName(Utils.colora(MessageManager.getOnping_ready()));
                 }else{
-                    ping.getVersion().setName(Utils.colora(messages.getString("onping.normal").replace("$2", String.valueOf(requiredPing.get(ip))).replace("$1", String.valueOf(pingMap.get(ip)))));
+                    ping.getVersion().setName(Utils.colora(
+                            MessageManager.getOnping_normal(
+                                    String.valueOf(pingMap.get(ip)),
+                                    String.valueOf(requiredPing.get(ip))
+                            )
+                    ));
                 }
             }
             if(pingMap.get(ip).equals(requiredPing.get(ip))) {

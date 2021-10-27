@@ -5,6 +5,8 @@ import me.kr1s_d.ultimateantibot.bungee.database.Config;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
+import me.kr1s_d.ultimateantibot.commons.helper.ComponentBuilder;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.PreLoginEvent;
@@ -20,7 +22,6 @@ public class UserInfo {
 
     private final Configuration database;
     private final AntibotManager antibotManager;
-    private final Configuration messages;
     private final UserData userData;
     private final ConfigManager configManager;
     private int removed;
@@ -30,7 +31,6 @@ public class UserInfo {
     public UserInfo(UltimateAntibotWaterfall plugin) {
         this.database = plugin.getDatabaseYml();
         this.antibotManager = plugin.getAntibotManager();
-        this.messages = plugin.getMessageYml();
         this.userData = plugin.getUserData();
         this.configManager = plugin.getConfigManager();
         this.removed = 0;
@@ -46,7 +46,7 @@ public class UserInfo {
                 antibotManager.removeWhitelist(ip);
                 antibotManager.removeBlackList(ip);
                 userData.setFirstJoin(ip, false);
-                e.setCancelReason(new TextComponent(Utils.colora(Utils.convertToString(messages.getStringList("first_join")))));
+                e.setCancelReason(ComponentBuilder.buildShortComponent(Utils.colora(MessageManager.getFirstJoinMsg())));
                 e.setCancelled(true);
                 return true;
             }

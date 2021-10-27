@@ -1,16 +1,16 @@
 package me.kr1s_d.ultimateantibot.spigot.event;
 
-import me.kr1s_d.ultimateantibot.spigot.data.AntibotInfo;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
+import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
+import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
 import me.kr1s_d.ultimateantibot.spigot.checks.*;
 import me.kr1s_d.ultimateantibot.spigot.service.QueueService;
-import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
-import me.kr1s_d.ultimateantibot.spigot.database.Config;
-import me.kr1s_d.ultimateantibot.spigot.task.*;
-import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
+import me.kr1s_d.ultimateantibot.spigot.task.AutoWhitelistTask;
+import me.kr1s_d.ultimateantibot.spigot.task.TempJoin;
+import me.kr1s_d.ultimateantibot.spigot.user.UserInfo;
 import me.kr1s_d.ultimateantibot.spigot.utils.Counter;
 import me.kr1s_d.ultimateantibot.spigot.utils.Utils;
-import me.kr1s_d.ultimateantibot.spigot.user.UserInfo;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,14 +20,12 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 
-import javax.naming.ldap.PagedResultsControl;
 import java.util.List;
 
 public class MainEventListener implements Listener {
     private final UltimateAntibotSpigot plugin;
     private final AntibotManager antibotManager;
     private final Counter counter;
-    private final Config messages;
     private final AuthCheck authCheck;
     private final QueueService queueService;
     private final SlowJoinCheck slowJoinCheck;
@@ -40,7 +38,6 @@ public class MainEventListener implements Listener {
         this.plugin = plugin;
         this.antibotManager = plugin.getAntibotManager();
         this.counter = plugin.getCounter();
-        this.messages = plugin.getMessageYml();
         this.authCheck = new AuthCheck(plugin);
         this.queueService = plugin.getQueueService();
         this.slowJoinCheck = plugin.getSlowJoinCheck();
@@ -84,7 +81,7 @@ public class MainEventListener implements Listener {
 
         if (antibotManager.getBlacklist().contains(ip)) {
             antibotManager.removeWhitelist(ip);
-            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, convertToString(Utils.coloralista(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("blacklisted"), "$1", blacklisttime()))));
+            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Utils.colora(MessageManager.getBlacklisted_msg(blacklisttime())));
             antibotManager.removeWhitelist(ip);
             return;
         }
@@ -145,7 +142,9 @@ public class MainEventListener implements Listener {
             if(antibotManager.getWhitelist().contains(ip)){
                 e.setLoginResult(AsyncPlayerPreLoginEvent.Result.ALLOWED);
             }else {
-                e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, convertToString(Utils.coloralista(Utils.coloraListaConReplaceDueVolte(messages.getStringList("antibotmode"), "$1", String.valueOf(configManager.getAuth_enableCheckPercent()), "$2", String.valueOf(percentualeBlacklistata)))));
+                e.disallow(
+                        AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
+                        Utils.colora(MessageManager.getAntiBotModeMsg(String.valueOf(configManager.getAuth_enableCheckPercent()), String.valueOf(percentualeBlacklistata))));
             }
         }
     }

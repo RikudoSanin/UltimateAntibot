@@ -2,9 +2,9 @@ package me.kr1s_d.ultimateantibot.spigot.checks;
 
 
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
-import me.kr1s_d.ultimateantibot.spigot.database.Config;
 import me.kr1s_d.ultimateantibot.spigot.task.TimedWhitelist;
 import me.kr1s_d.ultimateantibot.spigot.utils.Utils;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
@@ -26,7 +26,6 @@ public class AuthCheck {
     private final ConfigManager configManager;
     private final Map<String, Integer> pingMap;
     private final Map<String, Integer> requiredPing;
-    private final Config messages;
 
     public AuthCheck(UltimateAntibotSpigot plugin){
         this.plugin = plugin;
@@ -37,7 +36,6 @@ public class AuthCheck {
         this.configManager = plugin.getConfigManager();
         this.pingMap = new HashMap<>();
         this.requiredPing = new HashMap<>();
-        this.messages = plugin.getMessageYml();
         loadTask();
     }
 
@@ -119,12 +117,12 @@ public class AuthCheck {
                 reset(ip);
             }
             startCountDown(ip, check_timer);
-            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,convertToString(Utils.coloralista(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("timer"), "$1", String.valueOf(check_timer)))));
+            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Utils.colora(MessageManager.getTimer_msg(String.valueOf(check_timer))));
         }else{
             int check_ping = ThreadLocalRandom.current().nextInt(configManager.getAuth_PingMin_Max()[0], configManager.getAuth_PingMin_Max()[1]);
             reset(ip);
             startPing(ip, check_ping);
-            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,convertToString(Utils.coloralista(Utils.coloraListaConReplaceUnaVolta(messages.getStringList("ping"), "$1", String.valueOf(check_ping)))));
+            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Utils.colora(MessageManager.getPing_msg(String.valueOf(check_ping))));
         }
     }
 
@@ -158,9 +156,9 @@ public class AuthCheck {
             pingMap.put(ip, pingMap.get(ip) + 1);
             if(antibotManager.isOnline() && configManager.isAuth_ping_interface()){
                 if(pingMap.get(ip).equals(requiredPing.get(ip))){
-                    e.setMotd(Utils.colora(messages.getString("onping.ready")));
+                    e.setMotd(Utils.colora(MessageManager.getOnping_ready()));
                 }else{
-                    e.setMotd(Utils.colora(messages.getString("onping.normal").replace("$2", String.valueOf(requiredPing.get(ip))).replace("$1", String.valueOf(pingMap.get(ip)))));
+                    e.setMotd(Utils.colora(MessageManager.getOnping_normal(String.valueOf(pingMap.get(ip)), String.valueOf(requiredPing.get(ip)))));
                 }
             }
             if(pingMap.get(ip).equals(requiredPing.get(ip))) {

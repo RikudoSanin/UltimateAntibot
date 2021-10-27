@@ -2,6 +2,7 @@ package me.kr1s_d.ultimateantibot.spigot.event.custom;
 
 
 import me.kr1s_d.ultimateantibot.commons.ModeType;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
 import me.kr1s_d.ultimateantibot.spigot.database.Config;
 import me.kr1s_d.ultimateantibot.spigot.UltimateAntibotSpigot;
@@ -22,7 +23,6 @@ public class ModeEnableEvent extends Event implements Cancellable {
     private final AntibotManager antibotManager;
     private final Counter counter;
     private final ModeType modeType;
-    private final Config messages;
     private boolean cancelled;
     private final UserData userData;
     private static final HandlerList HANDLER = new HandlerList();
@@ -33,7 +33,6 @@ public class ModeEnableEvent extends Event implements Cancellable {
         this.antibotManager = plugin.getAntibotManager();
         this.counter = plugin.getCounter();
         this.modeType = modeType;
-        this.messages = plugin.getMessageYml();
         this.cancelled = false;
         this.userData = plugin.getUserData();
     }
@@ -63,7 +62,7 @@ public class ModeEnableEvent extends Event implements Cancellable {
                         return;
                     }
                     userData.setFirstJoin(Utils.getIP(p), true);
-                    p.kickPlayer(Utils.convertToString(Utils.coloralista(messages.getStringList("safe_mode"))));
+                    p.kickPlayer(Utils.colora(MessageManager.getSafeModeMsg()));
                 }
                 counter.getJoined().clear();
             }

@@ -1,5 +1,6 @@
 package me.kr1s_d.ultimateantibot.spigot.core;
 
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import me.kr1s_d.ultimateantibot.spigot.AntibotManager;
 import me.kr1s_d.ultimateantibot.spigot.database.Config;
 import me.kr1s_d.ultimateantibot.spigot.task.AutoWhitelistTask;
@@ -32,7 +33,7 @@ public class UltimateThreadCore {
             @Override
             public void run() {
                 if(antibotManager.isOnline() || antibotManager.isPingModeOnline()) {
-                    Utils.debug(Utils.prefix() + plugin.getMessageYml().getString("console.on_attack")
+                    Utils.debug(Utils.prefix() + MessageManager.getConsole_on_attack()
                             .replace("$1", String.valueOf(counter.getBotSecond()))
                             .replace("$2", String.valueOf(counter.getPingSecond()))
                             .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))

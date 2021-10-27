@@ -6,6 +6,7 @@ import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.utils.Counter;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.bungee.data.AntibotInfo;
+import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +30,7 @@ public class UltimateThreadCore {
         Utils.debug(Utils.prefix() + "&aLoading Core...");
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
             if(antibotManager.isOnline() || antibotManager.isPingModeOnline()) {
-                Utils.debug(Utils.prefix() + plugin.getMessageYml().getString("console.on_attack")
+                Utils.debug(Utils.prefix() + MessageManager.getConsole_on_attack()
                         .replace("$1", String.valueOf(counter.getBotSecond()))
                         .replace("$2", String.valueOf(counter.getPingSecond()))
                         .replace("$3", String.valueOf(plugin.getAntibotManager().getQueue().size()))
@@ -39,7 +40,7 @@ public class UltimateThreadCore {
                 );
             }
             if(antibotManager.isHandShakeModeOnline() && !antibotManager.isOnline() && !antibotManager.isPingModeOnline()){
-                Utils.debug(Utils.prefix() + plugin.getMessageYml().getString("console.handshake")
+                Utils.debug(Utils.prefix() + MessageManager.getConsole_onHandShake()
                         .replace("$1", String.valueOf(counter.getHandshakeSecond()))
                         .replace("$2", String.valueOf(plugin.getAntibotManager().getQueue().size()))
                         .replace("$3", String.valueOf(plugin.getAntibotManager().getBlacklist().size()))
