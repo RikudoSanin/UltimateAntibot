@@ -56,13 +56,12 @@ public class UltimateThreadCore {
     }
 
     public void hearthBeatMaximal() {
-        Utils.debug(Utils.prefix() + "&aLoading BeatMaximal..");
         new BukkitRunnable() {
             @Override
             public void run() {
                 if(!antibotManager.isOnline()) {
                     count = count + 1;
-                    if (count > 3 && !antibotManager.isOnline()) {
+                    if (count > 3 && !antibotManager.isSomeModeOnline()) {
                         antibotManager.getBlacklist().clear();
                         antibotManager.getQueue().clear();
                         for (Player p : Bukkit.getOnlinePlayers()) {
@@ -77,14 +76,11 @@ public class UltimateThreadCore {
                 }
             }
         }.runTaskTimer(plugin, 0, plugin.getConfigManager().getTaskManager_clearCache() * 20L * 60L);
-        Utils.debug(Utils.prefix() + "&aBeatMaximal Loaded!");
     }
 
     public void hearthBeatExaminal(){
-        Utils.debug(Utils.prefix() + "&aLoading BeatExaminal...");
                 plugin.getUpdater().check();
                 plugin.getUpdater().checkNotification();
-        Utils.debug(Utils.prefix() + "&aBeatExaminal loaded...");
     }
 
     public void heartBeatMinimal(){

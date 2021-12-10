@@ -1,18 +1,16 @@
 package me.kr1s_d.ultimateantibot.bungee.checks;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
-import me.kr1s_d.ultimateantibot.bungee.task.TimedWhitelist;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
+import me.kr1s_d.ultimateantibot.bungee.task.TimedWhitelist;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.commons.helper.ComponentBuilder;
 import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.ServerPing;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.event.ProxyPingEvent;
-import net.md_5.bungee.config.Configuration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,7 +113,7 @@ public class AuthCheck {
                 reset(ip);
             }
             startCountDown(ip, check_timer);
-            e.setCancelReason(ComponentBuilder.buildShortComponent(Utils.colora(MessageManager.getTimer_msg(String.valueOf(check_timer)))));
+            e.setCancelReason(ComponentBuilder.buildShortComponent(Utils.colora(MessageManager.getTimer_msg(String.valueOf(check_timer + 1)))));
             e.setCancelled(true);
         }else{
             int check_ping = ThreadLocalRandom.current().nextInt(configManager.getAuth_PingMin_Max()[0], configManager.getAuth_PingMin_Max()[1]);

@@ -1,22 +1,21 @@
 package me.kr1s_d.ultimateantibot.bungee.event;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
+import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.bungee.checks.*;
+import me.kr1s_d.ultimateantibot.bungee.data.AntibotInfo;
+import me.kr1s_d.ultimateantibot.bungee.service.QueueService;
 import me.kr1s_d.ultimateantibot.bungee.task.AutoWhitelistTask;
 import me.kr1s_d.ultimateantibot.bungee.task.TempJoin;
-import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
+import me.kr1s_d.ultimateantibot.bungee.user.UserInfo;
 import me.kr1s_d.ultimateantibot.bungee.utils.Counter;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
-import me.kr1s_d.ultimateantibot.bungee.service.QueueService;
-import me.kr1s_d.ultimateantibot.bungee.user.UserInfo;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.commons.helper.ComponentBuilder;
 import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
-import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.event.EventHandler;
 
 import java.util.List;

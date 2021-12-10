@@ -42,7 +42,7 @@ public class SlowJoinCheck {
             Set<ProxiedPlayer> newList = getOnlineAccountAmount(ip);
             newList.add(player);
             maxAccountIp.put(ip, newList);
-            if (getOnlineAccountAmount(ip).size() >= configManager.getSlowMode_limit()) {
+            if (getOnlineAccountAmount(ip).size() > configManager.getSlowMode_limit()) {
                 resetAccounts(ip);
                 antibotManager.enableAntibotMode();
                 Utils.disconnectPlayerFromIp(ip, MessageManager.getAccountOnlineMsg());

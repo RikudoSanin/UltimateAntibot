@@ -63,9 +63,8 @@ public class UltimateThreadCore {
     }
 
     public void hearthBeatMaximal() {
-        Utils.debug(Utils.prefix() + "&aLoading BeatMaximal..");
         ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
-            if(!antibotManager.isOnline()) {
+            if(!antibotManager.isSomeModeOnline()) {
                 count = count + 1;
                 if (count > 3 && !antibotManager.isOnline()) {
                     antibotManager.getBlacklist().clear();
@@ -82,11 +81,9 @@ public class UltimateThreadCore {
             }
 
         },  0, plugin.getConfigManager().getTaskManager_clearCache(), TimeUnit.MINUTES);
-        Utils.debug(Utils.prefix() + "&aBeatMaximal Loaded!");
     }
 
     public void hearthBeatExaminal(){
-        Utils.debug(Utils.prefix() + "&aLoading BeatExaminal...");
         ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
             @Override
             public void run() {
@@ -100,7 +97,6 @@ public class UltimateThreadCore {
                 plugin.getUpdater().checkNotification();
             }
         }, 0, 30, TimeUnit.MINUTES);
-        Utils.debug(Utils.prefix() + "&aBeatExaminal loaded...");
     }
 
     public void heartBeatMinimal(){

@@ -28,7 +28,7 @@ public class HandShakeCheck {
         if (handshake.getRequestedProtocol() > 2) {
             handshake.setRequestedProtocol(1); // converting to ping
             if (configManager.isHandShakeMode_blacklistProtocol()) {
-                antibotManager.addBlackList(Utils.getIP(connection));
+                antibotManager.blacklist(Utils.getIP(connection));
             }
         }
         if(currentHandShake > configManager.getHandShakeMode_trigger()) {

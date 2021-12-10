@@ -117,7 +117,7 @@ public class AuthCheck {
                 reset(ip);
             }
             startCountDown(ip, check_timer);
-            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Utils.colora(MessageManager.getTimer_msg(String.valueOf(check_timer))));
+            e.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, Utils.colora(MessageManager.getTimer_msg(String.valueOf(check_timer + 1))));
         }else{
             int check_ping = ThreadLocalRandom.current().nextInt(configManager.getAuth_PingMin_Max()[0], configManager.getAuth_PingMin_Max()[1]);
             reset(ip);

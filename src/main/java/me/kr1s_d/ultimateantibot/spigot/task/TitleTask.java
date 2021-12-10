@@ -47,6 +47,6 @@ public class TitleTask {
                     Utils.sendTitle(player, title, subtitle, 0, 20, 0);
                 }
             }
-        }.runTaskTimer(plugin, 0, 10L);
+        }.runTaskTimer(plugin, 0, 5L);
     }
 }

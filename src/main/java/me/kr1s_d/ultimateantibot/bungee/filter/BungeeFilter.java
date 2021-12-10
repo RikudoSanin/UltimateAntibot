@@ -2,6 +2,8 @@ package me.kr1s_d.ultimateantibot.bungee.filter;
 
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
 import java.util.logging.Filter;

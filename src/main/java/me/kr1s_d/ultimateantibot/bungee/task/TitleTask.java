@@ -2,6 +2,7 @@ package me.kr1s_d.ultimateantibot.bungee.task;
 
 import me.kr1s_d.ultimateantibot.bungee.AntibotManager;
 import me.kr1s_d.ultimateantibot.bungee.UltimateAntibotWaterfall;
+import me.kr1s_d.ultimateantibot.bungee.data.AntibotInfo;
 import me.kr1s_d.ultimateantibot.bungee.utils.Counter;
 import me.kr1s_d.ultimateantibot.bungee.utils.Utils;
 import me.kr1s_d.ultimateantibot.commons.helper.ComponentBuilder;
@@ -65,6 +66,6 @@ public class TitleTask {
                     player.sendTitle(title);
                 }
             }
-        },1, 500, TimeUnit.MILLISECONDS);
+        },1, 200, TimeUnit.MILLISECONDS);
     }
 }

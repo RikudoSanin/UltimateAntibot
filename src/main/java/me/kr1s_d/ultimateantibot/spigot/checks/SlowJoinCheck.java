@@ -1,7 +1,5 @@
 package me.kr1s_d.ultimateantibot.spigot.checks;
 
-
-
 import me.kr1s_d.ultimateantibot.commons.config.ConfigManager;
 import me.kr1s_d.ultimateantibot.commons.message.MessageManager;
 import me.kr1s_d.ultimateantibot.spigot.utils.Utils;
@@ -41,7 +39,7 @@ public class SlowJoinCheck {
             Set<Player> newList = getOnlineAccountAmount(ip);
             newList.add(player);
             maxAccountIp.put(ip, newList);
-            if (getOnlineAccountAmount(ip).size() >= configManager.getSlowMode_limit()) {
+            if (getOnlineAccountAmount(ip).size() > configManager.getSlowMode_limit()) {
                 resetAccounts(ip);
                 antibotManager.enableAntibotMode();
                 Utils.disconnectPlayerFromIp(ip, Utils.colora(MessageManager.getSafeModeMsg()));
